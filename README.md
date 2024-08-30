@@ -1,4 +1,4 @@
-# Admin Interface for Hospital Management System
+# Admin Interface for Hospital Management System - Angular
 
 The **Admin Interface for the Hospital Management System** is a comprehensive and user-friendly dashboard designed to facilitate the efficient management of hospital operations. Built with Angular, this interface offers a responsive and intuitive design, ensuring seamless navigation across different devices.
 
