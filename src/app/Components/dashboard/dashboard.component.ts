@@ -1,17 +1,13 @@
 import { Component } from '@angular/core';
-import { ChartType } from 'chart.js';
+import { AppointmentsCalendarComponent } from '../appointments-calendar/appointments-calendar.component';
+import { StatisticsChartComponent } from '../statistics-chart/statistics-chart.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [],
+  imports: [AppointmentsCalendarComponent,StatisticsChartComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
-  chartData: number[] = [120, 45, 75];
-  chartLabels: string[] = ['Patients', 'Doctors', 'Appointments'];
-  chartType: ChartType = 'doughnut';
-
-  ngOnInit(): void {}
 }
