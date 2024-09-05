@@ -52,6 +52,6 @@ The **Admin Interface for the Hospital Management System** is a comprehensive an
 
 ## Design and Technology
 
-- **Front-End:** Angular with TypeScript, Angular Material for UI components, and Tailwind CSS for styling.
+- **Front-End:** Angular with TypeScript, Angular Material for UI components, and bootstrap CSS for styling.
 - **Responsive Design:** Ensures that the interface adapts to various screen sizes, making it accessible on desktops, tablets, and mobile devices.
 - **Security:** Implement role-based access control, secure login, and data encryption to protect sensitive hospital and patient information.
