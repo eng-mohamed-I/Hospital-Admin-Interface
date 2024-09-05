@@ -27,9 +27,12 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+                "node_modules/bootstrap/dist/css/bootstrap.min.css",
+                "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+              ],
+            "scripts": [
             ],
-            "scripts": [],
             "server": "src/main.server.ts",
             "prerender": true,
             "ssr": {
@@ -90,6 +93,7 @@
               }
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -97,5 +101,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "d5637697-428c-4bf8-9416-f3c385972195"
   }
 }
