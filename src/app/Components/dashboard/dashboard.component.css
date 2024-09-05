@@ -1,0 +1,14 @@
+.card {
+    border-radius: 8px;
+  }
+  
+  .card-title {
+    font-size: 1.2rem;
+    color: #007bff;
+  }
+  
+  .card-text {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  

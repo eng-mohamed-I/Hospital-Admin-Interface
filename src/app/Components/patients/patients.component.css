@@ -1,0 +1,13 @@
+.card {
+    border-radius: 8px;
+  }
+  
+  .card-title {
+    font-size: 1.2rem;
+    color: #007bff;
+  }
+  
+  .table {
+    margin-top: 20px;
+  }
+  

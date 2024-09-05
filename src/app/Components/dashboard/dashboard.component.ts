@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ChartType } from 'chart.js';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,5 +9,9 @@ import { Component } from '@angular/core';
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
+  chartData: number[] = [120, 45, 75];
+  chartLabels: string[] = ['Patients', 'Doctors', 'Appointments'];
+  chartType: ChartType = 'doughnut';
 
+  ngOnInit(): void {}
 }

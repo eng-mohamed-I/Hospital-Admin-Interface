@@ -1,1 +1,40 @@
-<p>dashboard works!</p>
+<div class="row">
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Total Patients</h5>
+          <p class="card-text">120</p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Total Doctors</h5>
+          <p class="card-text">45</p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Total Appointments</h5>
+          <p class="card-text">75</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Chart Section -->
+  <div class="card mt-4 shadow-sm">
+    <div class="card-body">
+      <canvas baseChart
+        [data]="chartData"
+        [labels]="chartLabels"
+        [chartType]="chartType">
+      </canvas>
+    </div>
+  </div>
+  
