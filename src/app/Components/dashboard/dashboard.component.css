@@ -1,0 +1,24 @@
+.card-body {
+    display: flex;
+    align-items: center;
+  }
+  
+  .card-body svg {
+    width: 40px; /* Adjust size as needed */
+    height: 40px; /* Maintain aspect ratio */
+    margin-right: 15px; /* Space between SVG and text */
+  }
+  
+  .text-content {
+    display: flex;
+    flex-direction: column; /* Stack title and text vertically */
+  }
+  
+  .card-title {
+    margin: 0; /* Remove default margin */
+  }
+  
+  .card-text {
+    margin: 0; /* Remove default margin */
+    color: gray; /* Optional: change text color */
+  }

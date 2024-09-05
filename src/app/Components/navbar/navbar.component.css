@@ -1,0 +1,12 @@
+.navbar {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .navbar-brand {
+    color: #007bff;
+  }
+  
+  .navbar-nav .nav-link {
+    color: #007bff;
+  }
+  
