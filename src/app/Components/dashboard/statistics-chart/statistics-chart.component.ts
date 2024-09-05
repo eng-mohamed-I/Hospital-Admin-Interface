@@ -1,25 +1,25 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, Inject, PLATFORM_ID } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 import { CommonModule } from '@angular/common';
- 
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-statistics-chart',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './statistics-chart.component.html',
-  styleUrl: './statistics-chart.component.css'
+  styleUrls: ['./statistics-chart.component.css']
 })
 export class StatisticsChartComponent implements AfterViewInit {
 
-
-
   chart: any;
 
-  constructor() { }
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
 
   ngAfterViewInit(): void {
-    this.createChart();
+    if (isPlatformBrowser(this.platformId)) {
+      this.createChart();
+    }
   }
 
   createChart(): void {
