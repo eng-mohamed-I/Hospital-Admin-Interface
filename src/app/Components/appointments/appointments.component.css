@@ -1,0 +1,48 @@
+.container {
+    padding: 20px;
+    background-color: #f5f7fa;
+    border-radius: 10px;
+  }
+  
+  h2 {
+    color: #3f51b5;
+  }
+  
+  .colorful-table {
+    width: 100%;
+    overflow: auto;
+  }
+  
+  .colorful-table th {
+    background-color: #3f51b5;
+    color: white;
+  }
+  
+  .colorful-table td {
+    background-color: #e3f2fd;
+  }
+  
+  .status-confirmed {
+    color: #4caf50; /* Green for confirmed */
+    font-weight: bold;
+  }
+  
+  .status-pending {
+    color: #ff9800; /* Orange for pending */
+    font-weight: bold;
+  }
+  
+  .mat-fab {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+  }
+  
+  .mat-raised-button {
+    margin: 0 5px;
+  }
+  
+  .mat-icon {
+    font-size: 20px;
+  }
+  
