@@ -1,0 +1,38 @@
+<div class="container">
+  <h3>Create Blog</h3>
+  <form>
+    <div class="mb-3">
+      <label for="txtTitle" class="form-label">Title</label>
+      <input
+        type="text"
+        name="title"
+        [(ngModel)]="formdata.title"
+        class="form-control"
+        id="txtTitle"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="txtBody" class="form-label">Body</label>
+      <input
+        type="text"
+        name="body"
+        [(ngModel)]="formdata.body"
+        class="form-control"
+        id="txtBody"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="image" class="form-label">Img</label>
+      <input
+        type="file"
+        name="img"
+        [(ngModel)]="formdata.url"
+        class="form-control"
+        id="image"
+      />
+    </div>
+    <button type="button" (click)="create()" class="btn btn-primary">
+      Create
+    </button>
+  </form>
+</div>
