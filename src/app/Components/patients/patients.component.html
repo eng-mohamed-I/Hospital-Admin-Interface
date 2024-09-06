@@ -1,29 +1,27 @@
 <div class="card shadow-sm">
-    <div class="card-body">
-      <h5 class="card-title">Patients List</h5>
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Age</th>
-            <th>Gender</th>
-            <th>Condition</th>
-          </tr>
-        </thead>
-        <tbody>
-            @for (patient of patients; track $index) {
-                <tr >
-                    <td>{{ patient.id }}</td>
-                    <td>{{ patient.name }}</td>
-                    <td>{{ patient.age }}</td>
-                    <td>{{ patient.gender }}</td>
-                    <td>{{ patient.condition }}</td>
-                  </tr>
-            }
-        
-        </tbody>
-      </table>
-    </div>
+  <div class="card-body">
+    <h5 class="card-title">Patients List</h5>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Gender</th>
+          <th>Condition</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (patient of patients; track $index) {
+        <tr>
+          <td>{{ patient.id }}</td>
+          <td>{{ patient.name }}</td>
+          <td>{{ patient.age }}</td>
+          <td>{{ patient.gender }}</td>
+          <td>{{ patient.condition }}</td>
+        </tr>
+        }
+      </tbody>
+    </table>
   </div>
-  
+</div>
