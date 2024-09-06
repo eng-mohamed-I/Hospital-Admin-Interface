@@ -1,0 +1,36 @@
+<div class="container">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#"> Blogs</a>
+    </div>
+    <div class="d-flex me-3">
+      <button class="btn btn-success" routerLink="/blog/create">ADD+</button>
+    </div>
+  </nav>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scop="col">Id</th>
+        <th scop="col">Img</th>
+        <th scop="col">Title</th>
+        <th scop="col">Body</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of allblogs">
+        <th scope="row">{{ item.id }}</th>
+        <td>
+          <img
+            src="{{ item.url }}"
+            alt="{{ item.title }}"
+            width="100"
+            height="100"
+          />
+        </td>
+        <td>{{ item.title }}</td>
+        <td>{{ item.body }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
