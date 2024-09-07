@@ -13,7 +13,7 @@ export class BlogService {
   }
 
   create(data: Blog) {
-    return this.httpClient.post('http://localhost:3000/blogs', data);
+    return this.httpClient.post<Blog>('http://localhost:3000/blogs', data);
   }
 
   edit(id: number) {

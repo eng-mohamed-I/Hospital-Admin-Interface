@@ -21,8 +21,17 @@ export class BlogManagementComponent implements OnInit {
   }
 
   deleteItem(id: number) {
-    this.blogService.delete(id).subscribe((data) => {
-      this.allblogs = this.allblogs.filter((_) => _.id != id);
+    const confirmation = confirm('Are you sure you want to delete this blog?');
+    if (!confirmation) return;
+    this.blogService.delete(id).subscribe({
+      next: () => {
+        this.allblogs = this.allblogs.filter((blog) => blog.id !== id);
+        alert('Blog has been deleted successfully.');
+      },
+      error: (err) => {
+        console.error('Error deleting blog:', err);
+        alert('Please try delete again.');
+      },
     });
   }
 }

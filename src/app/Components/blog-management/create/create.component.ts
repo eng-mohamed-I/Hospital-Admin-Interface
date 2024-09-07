@@ -24,6 +24,7 @@ export class CreateComponent {
   create() {
     this.blogService.create(this.formdata).subscribe({
       next: (data) => {
+        console.log('Created blog:', data);
         this.router.navigate(['/blog-management']);
       },
       error: (er) => {
