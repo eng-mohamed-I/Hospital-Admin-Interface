@@ -5,12 +5,15 @@ import { PatientProfileComponent } from './Components/Pages/patient-profile/pati
 import { DoctorListComponent } from './Components/doctors/doctor-list/doctor-list.component';
 import { DoctorsComponent } from './Components/doctors/doctors.component';
 import { DoctorFormComponent } from './Components/doctors/doctor-form/doctor-form.component';
+import { DepartmentComponent } from './Components/department/department.component';
 
 export const routes: Routes = [
 
+  
         { path: '', component: DashboardComponent },
         { path: 'patients', component: PatientsTableComponent },
         { path: 'patients-profile', component: PatientProfileComponent },
+        { path: 'department' , component: DepartmentComponent },
         { path: 'doctor', component: DoctorsComponent, children: [
                 { path: 'doctor-list', component: DoctorListComponent },
                 { path: 'doctor-form', component: DoctorFormComponent },
