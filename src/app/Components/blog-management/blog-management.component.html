@@ -1,10 +1,19 @@
 <div class="container">
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav
+    class="navbar navbar-expand-lg navbar-light"
+    style="background-color: #abc2f5"
+  >
     <div class="container-fluid">
       <a class="navbar-brand" href="#"> Blogs</a>
     </div>
     <div class="d-flex me-3">
-      <button class="btn btn-success" routerLink="/blog/create">ADD+</button>
+      <button
+        class="btn btn-success"
+        routerLink="/blog/create"
+        style="background-color: #233763"
+      >
+        ADD+
+      </button>
     </div>
   </nav>
 
@@ -18,7 +27,7 @@
         <th scop="col">Action</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody class="tbodyText">
       <tr *ngFor="let item of allblogs">
         <th scope="row">{{ item.id }}</th>
         <td>
@@ -28,17 +37,21 @@
         <td>{{ item.body }}</td>
         <td>
           <a
+            style="font-size: 13px"
             href=""
-            class="btn btn-primary mb-2"
+            class="btn btn-light border border-warning mb-2 updatebtn"
             [routerLink]="['/blog/edit', item.id]"
+          >
+            <i class="fa-solid fa-pen-to-square" style="font-size: 14px"></i
             >Update</a
           >
           <button
+            style="font-size: 15px"
             type="button"
             (click)="deleteItem(item.id)"
-            class="btn btn-warning"
+            class="btn btn-light border border-danger deletebtn"
           >
-            Delete
+            <i class="fa-solid fa-trash"></i>Delete
           </button>
         </td>
       </tr>

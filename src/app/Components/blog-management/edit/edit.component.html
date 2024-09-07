@@ -1,15 +1,24 @@
 <div class="container">
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav
+    class="navbar navbar-expand-lg navbar-light"
+    style="background-color: #abc2f5"
+  >
     <div class="container-fluid">
       <a class="navbar-brand" href="#"> Blogs</a>
     </div>
     <div class="d-flex me-3">
-      <button class="btn btn-success" routerLink="/blog/create">ADD+</button>
+      <button
+        class="btn btn-success"
+        routerLink="/blog/create"
+        style="background-color: #233763"
+      >
+        ADD+
+      </button>
     </div>
   </nav>
 
-  <h3>Edit Blog</h3>
-  <form #myForm="ngForm">
+  <h3 style="color: #233763">Edit Blog</h3>
+  <form #myForm="ngForm" class="bg-light p-3 rounded">
     <div class="mb-3">
       <label for="txtTitle" class="form-label">Title</label>
       <input

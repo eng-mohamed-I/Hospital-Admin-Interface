@@ -1,0 +1,20 @@
+.tbodyText{
+  font-size: 12px;
+}
+
+.updatebtn{
+  color:#f5ce5b;
+}
+.updatebtn:hover{
+  background-color: #f5ce5b;
+  color: white;
+ }
+
+ .deletebtn{
+  color: #dc3545;
+ }
+
+ .deletebtn:hover{
+  color: white;
+  background-color: #dc3545;
+ }
