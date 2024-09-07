@@ -15,4 +15,8 @@ export class BlogService {
   create(data: Blog) {
     return this.httpClient.post('http://localhost:3000/blogs', data);
   }
+
+  edit(id: number) {
+    return this.httpClient.get<Blog>(`http://localhost:3000/blogs/${id}`);
+  }
 }
