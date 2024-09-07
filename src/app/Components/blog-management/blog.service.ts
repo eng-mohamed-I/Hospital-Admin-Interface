@@ -19,4 +19,11 @@ export class BlogService {
   edit(id: number) {
     return this.httpClient.get<Blog>(`http://localhost:3000/blogs/${id}`);
   }
+
+  update(data: Blog) {
+    return this.httpClient.put<Blog>(
+      `http://localhost:3000/blogs/${data.id}`,
+      data
+    );
+  }
 }

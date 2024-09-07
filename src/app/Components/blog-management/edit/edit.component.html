@@ -12,16 +12,36 @@
   <form>
     <div class="mb-3">
       <label for="txtTitle" class="form-label">Title</label>
-      <input type="text" name="title" class="form-control" id="txtTitle" />
+      <input
+        type="text"
+        name="title"
+        [(ngModel)]="formdata.title"
+        class="form-control"
+        id="txtTitle"
+      />
     </div>
     <div class="mb-3">
       <label for="txtBody" class="form-label">Body</label>
-      <input type="text" name="body" class="form-control" id="txtBody" />
+      <input
+        type="text"
+        name="body"
+        [(ngModel)]="formdata.body"
+        class="form-control"
+        id="txtBody"
+      />
     </div>
     <div class="mb-3">
       <label for="image" class="form-label">Img</label>
-      <input type="file" name="img" class="form-control" id="image" />
+      <input
+        type="file"
+        name="img"
+        [(ngModel)]="formdata.url"
+        class="form-control"
+        id="image"
+      />
     </div>
-    <button type="button" class="btn btn-primary">Edit</button>
+    <button type="button" (click)="update()" class="btn btn-primary">
+      Update
+    </button>
   </form>
 </div>
