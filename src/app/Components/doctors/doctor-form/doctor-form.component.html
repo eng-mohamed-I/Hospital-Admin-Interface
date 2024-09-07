@@ -1,59 +1,69 @@
-<form [formGroup]="doctorForm" (ngSubmit)="saveDoctor()">
-    <div class="form-group">
-      <label for="name">Name</label>
-      <input formControlName="name" type="text" class="form-control" />
+<form [formGroup]="doctorForm" (ngSubmit)="saveDoctor()" class="shadow rounded p-5 my-3">
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input formControlName="name" type="text" class="form-control" [ngClass]="{'is-invalid': doctorForm.get('name')?.invalid && doctorForm.get('name')?.touched}" />
+    <div *ngIf="doctorForm.get('name')?.invalid && doctorForm.get('name')?.touched" class="text-danger">
+      Name is required.
     </div>
-  
-    <div class="form-group">
-      <label for="department">Department</label>
-      <select formControlName="department" class="form-control">
-        <option *ngFor="let department of departments" [value]="department">{{ department }}</option>
-      </select>
+  </div>
+
+  <div class="form-group">
+    <label for="department">Department</label>
+    <select formControlName="department" class="form-control" [ngClass]="{'is-invalid': doctorForm.get('department')?.invalid && doctorForm.get('department')?.touched}">
+      <option *ngFor="let department of departments" [value]="department">{{ department }}</option>
+    </select>
+    <div *ngIf="doctorForm.get('department')?.invalid && doctorForm.get('department')?.touched" class="text-danger">
+      Department is required.
     </div>
-  
-    <div class="form-group">
-      <label for="specialist">Specialist</label>
-      <select formControlName="specialist" class="form-control">
-        <option *ngFor="let specialist of specialists" [value]="specialist">{{ specialist }}</option>
-      </select>
+  </div>
+
+  <div class="form-group">
+    <label for="specialist">Specialist</label>
+    <select formControlName="specialist" class="form-control" [ngClass]="{'is-invalid': doctorForm.get('specialist')?.invalid && doctorForm.get('specialist')?.touched}">
+      <option *ngFor="let specialist of specialists" [value]="specialist">{{ specialist }}</option>
+    </select>
+    <div *ngIf="doctorForm.get('specialist')?.invalid && doctorForm.get('specialist')?.touched" class="text-danger">
+      Specialist is required.
     </div>
-  
-    <div class="form-group">
-      <label for="gender">Gender</label>
-      <select formControlName="gender" class="form-control">
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-      </select>
+  </div>
+
+  <div class="form-group">
+    <label for="gender">Gender</label>
+    <select formControlName="gender" class="form-control" [ngClass]="{'is-invalid': doctorForm.get('gender')?.invalid && doctorForm.get('gender')?.touched}">
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+    </select>
+    <div *ngIf="doctorForm.get('gender')?.invalid && doctorForm.get('gender')?.touched" class="text-danger">
+      Gender is required.
     </div>
-  
+  </div>
+
+  <div class="form-group">
+    <label for="availableAppointments">Available Appointments</label>
     <div class="form-group">
-      <label for="availableAppointments">Available Appointments</label>
-      <div class="form-group">
-        <label>Select Date and Time:</label>
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Select dates and times"
-          bsDatepicker
-          [bsConfig]="datePickerConfig"
-          (bsValueChange)="onDateTimeChange($event)"
-        />
-        <input
-          type="time"
-          class="form-control mt-2"
-          placeholder="Select Time"
-          multiple
-          (change)="onTimeChange($event)"
-        />
-      </div>
-      <ul>
-        <li *ngFor="let appointment of availableAppointments">
-          {{ appointment.date }} at {{ appointment.time }}
-          <button type="button" (click)="removeAppointment(appointment)">Remove</button>
-        </li>
-      </ul>
+      <label>Select Date and Time:</label>
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Select dates"
+        bsDatepicker
+        [bsConfig]="datePickerConfig"
+        (bsValueChange)="onDateTimeChange($event)"
+      />
+      <input
+        type="time"
+        class="form-control mt-2"
+        placeholder="Select Time"
+        (change)="onTimeChange($event)"
+      />
     </div>
-  
-    <button type="submit" class="btn btn-primary">Save</button>
-  </form>
-  
+    <ul>
+      <li *ngFor="let appointment of availableAppointments">
+        {{ appointment.date }} at {{ appointment.time }}
+        <button type="button" class="btn btn-danger btn-sm" (click)="removeAppointment(appointment)">Remove</button>
+      </li>
+    </ul>
+  </div>
+
+  <button type="submit" class="btn btn-primary w-25">Save</button>
+</form>

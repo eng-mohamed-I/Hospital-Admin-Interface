@@ -1,19 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 import { DoctorService } from '../../../services/doctor.service';
-import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { Doctor } from '../../../models/doctor.model';
+import { CommonModule } from '@angular/common';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-
 @Component({
   selector: 'app-doctor-form',
   standalone: true,
-  imports: [BsDatepickerModule,NgMultiSelectDropDownModule,FormsModule,CommonModule,ReactiveFormsModule,NgbDatepickerModule],
+  imports: [BsDatepickerModule, NgMultiSelectDropDownModule, CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './doctor-form.component.html',
-  styleUrl: './doctor-form.component.css'
+  styleUrls: ['./doctor-form.component.css']
 })
 export class DoctorFormComponent implements OnInit {
   doctorForm: FormGroup;
@@ -42,7 +40,7 @@ export class DoctorFormComponent implements OnInit {
       specialist: ['', Validators.required],
       gender: ['', Validators.required],
       availableAppointments: this.fb.array([]) 
-        });
+    });
   }
 
   ngOnInit(): void {
@@ -75,6 +73,7 @@ export class DoctorFormComponent implements OnInit {
     if (this.doctorForm.valid) {
       const doctor: Doctor = this.doctorForm.value;
       doctor.availableAppointments = this.availableAppointments;
+
       const saveOperation = this.doctorId
         ? this.doctorService.updateDoctor(this.doctorId, doctor)
         : this.doctorService.addDoctor(doctor);
@@ -82,6 +81,9 @@ export class DoctorFormComponent implements OnInit {
       saveOperation.subscribe(() => {
         this.router.navigate(['/doctor/doctor-list']);
       });
+    } else {
+      // Mark all controls as touched to trigger validation messages
+      this.doctorForm.markAllAsTouched();
     }
   }
 

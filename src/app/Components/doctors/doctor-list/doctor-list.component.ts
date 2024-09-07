@@ -10,16 +10,45 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './doctor-list.component.html',
-  styleUrls: ['./doctor-list.component.css'] // Fixed typo
+  styleUrls: ['./doctor-list.component.css']
 })
 export class DoctorListComponent implements OnInit {
   doctors: Doctor[] = [];
+  filteredDoctors: Doctor[] = [];
+
+  searchName: string = '';
+  selectedDepartment: string = '';
+  selectedSpecialist: string = '';
+
+  departments: string[] = ['Cardiology', 'Neurology', 'Orthopedics', 'Pediatrics', 'Dermatology'];
+  specialists: string[] = ['Heart Specialist', 'Neurologist', 'Orthopedic Surgeon', 'Pediatrician', 'Dermatologist'];
 
   constructor(private doctorService: DoctorService, private router: Router) {}
 
   ngOnInit(): void {
-    // Fetch the list of doctors when the component initializes
-    this.doctorService.getDoctors().subscribe(doctors => this.doctors = doctors);
+    this.getDoctors();
+  }
+
+  getDoctors(): void {
+    this.doctorService.getDoctors().subscribe((doctors) => {
+      this.doctors = doctors;
+      this.filteredDoctors = [...this.doctors]; // Initialize filteredDoctors with all doctors
+    });
+  }
+
+  filterDoctors(): void {
+    this.filteredDoctors = this.doctors.filter(doctor =>
+      (!this.selectedDepartment || doctor.department === this.selectedDepartment) &&
+      (!this.selectedSpecialist || doctor.specialist === this.selectedSpecialist) &&
+      (!this.searchName || doctor.name.toLowerCase().includes(this.searchName.toLowerCase()))
+    );
+  }
+
+  clearFilters(): void {
+    this.searchName = '';
+    this.selectedDepartment = '';
+    this.selectedSpecialist = '';
+    this.filteredDoctors = [...this.doctors]; // Reset the filtered list to show all doctors
   }
 
   updateDoctor(id: number): void {
@@ -27,9 +56,7 @@ export class DoctorListComponent implements OnInit {
   }
 
   deleteDoctor(id: number): void {
-    // Call delete method from the service
     this.doctorService.deleteDoctor(id);
-    // Optionally, you can reload the list or handle after deletion
     this.doctorService.getDoctors().subscribe(doctors => this.doctors = doctors);
   }
   confirmDeleteDoctor(id: number): void {
