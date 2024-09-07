@@ -26,4 +26,7 @@ export class BlogService {
       data
     );
   }
+  delete(id: number) {
+    return this.httpClient.delete<Blog>(`http://localhost:3000/blogs/${id}`);
+  }
 }

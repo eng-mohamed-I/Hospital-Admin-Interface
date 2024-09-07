@@ -33,6 +33,13 @@
             [routerLink]="['/blog/edit', item.id]"
             >Update</a
           >
+          <button
+            type="button"
+            (click)="deleteItem(item.id)"
+            class="btn btn-warning"
+          >
+            Delete
+          </button>
         </td>
       </tr>
     </tbody>

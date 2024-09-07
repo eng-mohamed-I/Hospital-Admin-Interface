@@ -19,4 +19,10 @@ export class BlogManagementComponent implements OnInit {
       this.allblogs = data;
     });
   }
+
+  deleteItem(id: number) {
+    this.blogService.delete(id).subscribe((data) => {
+      this.allblogs = this.allblogs.filter((_) => _.id != id);
+    });
+  }
 }
