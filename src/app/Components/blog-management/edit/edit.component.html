@@ -9,16 +9,30 @@
   </nav>
 
   <h3>Edit Blog</h3>
-  <form>
+  <form #myForm="ngForm">
     <div class="mb-3">
       <label for="txtTitle" class="form-label">Title</label>
       <input
         type="text"
         name="title"
         [(ngModel)]="formdata.title"
+        required
+        minlength="3"
+        #titleInput="ngModel"
+        [ngClass]="{
+          'is-invalid':
+            (titleInput.touched || titleInput.dirty) && titleInput.invalid
+        }"
         class="form-control"
         id="txtTitle"
       />
+      <span class=""
+        >@if(titleInput.errors?.['required']) {<span class="text-danger"
+          >title is required</span
+        >} @if(titleInput.errors?.['minlength']) {<span class="text-danger"
+          >title must be at least 3 char.</span
+        >}
+      </span>
     </div>
     <div class="mb-3">
       <label for="txtBody" class="form-label">Body</label>
@@ -26,9 +40,23 @@
         type="text"
         name="body"
         [(ngModel)]="formdata.body"
+        required
+        minlength="10"
+        #bodyInput="ngModel"
+        [ngClass]="{
+          'is-invalid':
+            (bodyInput.touched || bodyInput.dirty) && bodyInput.invalid
+        }"
         class="form-control"
         id="txtBody"
       />
+      <span class=""
+        >@if(bodyInput.errors?.['required']) {<span class="text-danger"
+          >body is required</span
+        >} @if(bodyInput.errors?.['minlength']) {<span class="text-danger"
+          >body must be at least 10 char.</span
+        >}
+      </span>
     </div>
     <div class="mb-3">
       <label for="image" class="form-label">Img</label>
@@ -40,7 +68,12 @@
         id="image"
       />
     </div>
-    <button type="button" (click)="update()" class="btn btn-primary">
+    <button
+      type="button"
+      (click)="update()"
+      class="btn btn-primary"
+      [disabled]="myForm.invalid"
+    >
       Update
     </button>
   </form>
