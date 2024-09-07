@@ -1,8 +1,0 @@
-main {
-    margin-left: 250px; /* Adjust according to the sidebar width */
-    padding: 20px;
-  }
-  /* Adjust navbar and main content */
-.navbar {
-    z-index: 1050; 
-}  

@@ -1,0 +1,32 @@
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Department</th>
+        <th>Specialist</th>
+        <th>Gender</th>
+        <th>Available Appointments</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let doctor of doctors">
+        <td>{{ doctor.name }}</td>
+        <td>{{ doctor.department }}</td>
+        <td>{{ doctor.specialist }}</td>
+        <td>{{ doctor.gender }}</td>
+        <td>
+          <ul>
+            <li *ngFor="let appointment of doctor.availableAppointments">
+              {{ appointment.date }} at {{ appointment.time }}
+            </li>
+          </ul>
+        </td>
+        <td>
+          <button class="btn btn-warning" (click)="updateDoctor(doctor.id)" title="Update Doctor">Update</button>
+          <button class="btn btn-danger" (click)="confirmDeleteDoctor(doctor.id)" title="Delete Doctor">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  
