@@ -1,28 +1,52 @@
 {
-  "blogs":[
-  {
-    "id": 1,
-    "url":"https://img.freepik.com/free-photo/medical-physician-doctor-man_1150-15053.jpg",
-    "title": " Diagnosed with chronic kidney disease. Now what?",
-    "body": "As you know, kidneys remove waste and fluids from the body through urination.failer is wh salt.\nReduce sodium intake by limiting convenience foods, salty snacks and. "
-  },
-  {
-    "id": 2,
-    "url":"https://img.freepik.com/premium-photo/create-highresolution-realistic-closeup-photograph-stethoscope-lying-doctors-desk_1101825-14207.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1725062400&semt=ais_hybrid",
-    "title": " Diagnosed with chronic kidney disease. Now what?",
-    "body": "As you know, kidnetage renal failer is when dialysis or a kidney transplant is needed to stay alive\nSimilar to how high blood pressure is calleho need medications to help with blood pressure control.  "
-  },
-  {
-    "id": 3,
-    "url": "https://img.freepik.com/free-photo/young-handsome-physician-medical-robe-with-stethoscope_1303-17818.jpg",
-    "title": " Diagnosed with chronic kidney disease. Now what?",
-    "body": "As you know, kidneys remove waspeople in the U.S.\nYour healthcare professional will discuss what's best to help slow progression of kidney disease in your situation,l. "
-  },
-  {
-    "id": 4,
-    "url": "https://img.freepik.com/premium-photo/create-highresolution-realistic-closeup-photograph-stethoscope-lying-doctors-desk_1101825-14207.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1725062400&semt=ais_hybrid",
-    "title": " Diagnosed with chronic kidney disease. Now what?",
-    "body": "As you know, kidneys remove waste and fluids from therse of the disease process. In fact, one in nine people may not know they have chronic kidney disease,. "
-  }
-]
+  "blogs": [
+    {
+      "id": "1",
+      "url": "https://img.freepik.com/free-photo/medical-physician-doctor-man_1150-15053.jpg",
+      "title": " Diagnosed with chronic kidney disease. Now what?",
+      "body": "As you know, kidneys remove waste and fluids from the body through urination.failer is wh salt.\nReduce sodium intake by limiting convenience foods, salty snacks and. "
+    },
+    {
+      "id": "2",
+      "url": "https://img.freepik.com/premium-photo/create-highresolution-realistic-closeup-photograph-stethoscope-lying-doctors-desk_1101825-14207.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1725062400&semt=ais_hybrid",
+      "title": " Diagnosed with chronic kidney disease. Now what?",
+      "body": "As you know, kidnetage renal failer is when dialysis or a kidney transplant is needed to stay alive\nSimilar to how high blood pressure is calleho need medications to help with blood pressure control.  "
+    },
+    {
+      "id": "3",
+      "url": "https://img.freepik.com/free-photo/young-handsome-physician-medical-robe-with-stethoscope_1303-17818.jpg",
+      "title": " Diagnosed with chronic kidney disease. Now what?",
+      "body": "As you know, kidneys remove waspeople in the U.S.\nYour healthcare professional will discuss what's best to help slow progression of kidney disease in your situation,l. "
+    },
+    {
+      "id": "4",
+      "url": "https://img.freepik.com/premium-photo/create-highresolution-realistic-closeup-photograph-stethoscope-lying-doctors-desk_1101825-14207.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1725062400&semt=ais_hybrid",
+      "title": " Diagnosed with chronic kidney disease. Now what?",
+      "body": "As you know, kidneys remove waste and fluids from therse of the disease process. In fact, one in nine people may not know they have chronic kidney disease,. "
+    },
+    {
+      "id": 0,
+      "url": "C:\\fakepath\\icon512_maskable.png",
+      "title": "test",
+      "body": "test test test"
+    },
+    {
+      "id": 0,
+      "url": "C:\\fakepath\\icon512_rounded.png",
+      "title": "sssssssssssss",
+      "body": "cssssssssssssssssssssssssssssssssssssssssss"
+    },
+    {
+      "id": 0,
+      "url": "C:\\fakepath\\Screenshot 2024-08-26 at 1.10.05 PM.png",
+      "title": "aas",
+      "body": "dcc"
+    },
+    {
+      "id": 0,
+      "url": "C:\\fakepath\\topne.jpg",
+      "title": "sss",
+      "body": "ddd"
+    }
+  ]
 }
