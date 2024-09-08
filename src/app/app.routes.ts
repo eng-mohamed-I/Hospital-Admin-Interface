@@ -6,6 +6,9 @@ import { DoctorListComponent } from './Components/doctors/doctor-list/doctor-lis
 import { DoctorsComponent } from './Components/doctors/doctors.component';
 import { DoctorFormComponent } from './Components/doctors/doctor-form/doctor-form.component';
 import { DepartmentComponent } from './Components/department/department.component';
+import { DepartmentDetailsComponent } from './Components/department/department-details/department-details.component';
+import { DepartmentListComponent } from './Components/department/department-list/department-list.component';
+import { DepartmentFormComponent } from './Components/department/department-form/department-form.component';
 
 export const routes: Routes = [
 
@@ -13,7 +16,11 @@ export const routes: Routes = [
         { path: '', component: DashboardComponent },
         { path: 'patients', component: PatientsTableComponent },
         { path: 'patients-profile', component: PatientProfileComponent },
-        { path: 'department' , component: DepartmentComponent },
+        { path: 'department' , component: DepartmentComponent,children: [
+                { path: "details" , component: DepartmentDetailsComponent }, 
+                { path: "list" , component: DepartmentListComponent }, 
+                { path: "form" , component: DepartmentFormComponent }
+        ] },
         { path: 'doctor', component: DoctorsComponent, children: [
                 { path: 'doctor-list', component: DoctorListComponent },
                 { path: 'doctor-form', component: DoctorFormComponent },

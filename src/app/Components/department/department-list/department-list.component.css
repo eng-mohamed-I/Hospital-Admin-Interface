@@ -1,0 +1,35 @@
+/* Add your custom styles here */
+.table {
+    margin-top: 20px;
+  }
+  
+  .table thead th {
+    background-color: #f8f9fa;
+    color: #495057;
+  }
+  
+  .table tbody tr:hover {
+    background-color: #e9ecef;
+  }
+  
+  .btn {
+    font-size: 14px;
+  }
+  
+  .btn-warning {
+    background-color: #ffc107;
+  }
+  
+  .btn-danger {
+    background-color: #dc3545;
+  }
+  
+  .btn-secondary {
+    background-color: #6c757d;
+  }
+  
+  .form-control,
+  .form-select {
+    border-radius: 0.25rem;
+  }
+  

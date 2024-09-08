@@ -20,67 +20,6 @@
         >Add</a
       >
     </div>
-
     <router-outlet></router-outlet>
-
-    <h2 class="text-center">Department Statistics</h2>
-    <div class="row mt-4">
-      <!-- Card 1: Length of each department -->
-      <div class="col-md-6 mb-4">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body">
-            <h4 class="card-title">Department & Doctor Count</h4>
-            <ul class="list-group list-group-flush">
-              <li
-                *ngFor="let department of departments"
-                class="list-group-item"
-              >
-                <strong>{{ department.name }}:</strong>
-                {{ department.doctors.length }} doctors
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 2: Intelligent Analysis -->
-      <div class="col-md-6 mb-4">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body">
-            <h4 class="card-title">Intelligent Analysis</h4>
-            <p class="card-text">
-              {{ getAnalysis() }}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
-
-  <div class="container mt-4">
-    <h2 class="text-center">Departments</h2>
-    <div class="row mt-4">
-      <div class="col-md-4 mb-4" *ngFor="let department of departments">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body text-center">
-            <h3 class="card-title">{{ department.name }}</h3>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <h2>Details</h2>
-
-  @for(item of departments; track $index){
-  <div class="department">
-    <h3>{{ item.name }}</h3>
-    <ul>
-      @for( doctor of item.doctors; track $index ){
-      <li>{{ doctor.name }} : {{ doctor.specialty }}</li>
-      }
-    </ul>
-  </div>
-
-  }
 </div>
