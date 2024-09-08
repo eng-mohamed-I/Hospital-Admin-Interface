@@ -1,0 +1,108 @@
+<div class="container mt-4">
+  <!-- Search and Sort Section -->
+  <div class="row mb-4 align-items-center">
+    <div class="col-md-4">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Search by department name"
+        [(ngModel)]="searchTerm"
+      />
+    </div>
+    <div class="col-md-4">
+      <select
+        id="sortOrder"
+        class="form-select"
+        [(ngModel)]="sortOrder"
+        (change)="sortDepartments()"
+      >
+        <option value="asc">Sort by number of doctors (Ascending)</option>
+        <option value="desc">Sort by number of doctors (Descending)</option>
+      </select>
+    </div>
+    <div class="col-md-4">
+      <button class="btn btn-info" (click)="resetFilters()">Default</button>
+    </div>
+  </div>
+
+  <!-- Department Table -->
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Department</th>
+        <th>Doctors</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let department of filteredDepartments()">
+        <td>{{ department.name }}</td>
+        <td>
+          <ul>
+            <li *ngFor="let doctor of department.doctors">
+              {{ doctor.name }} - {{ doctor.specialty }}
+            </li>
+          </ul>
+        </td>
+        <td>
+          <button
+            class="btn btn-warning m-1"
+            (click)="updateDepartment(department)"
+          >
+            <i class="fas fa-edit"></i> Update
+          </button>
+          <button
+            class="btn btn-danger m-1"
+            (click)="openConfirmDialog(department)"
+          >
+            <i class="fas fa-trash"></i> Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Confirmation Modal -->
+  <div
+    class="modal"
+    [ngClass]="{ show: showConfirmModal }"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="confirmModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmModalLabel">Confirm Delete</h5>
+          <button type="button" class="close" (click)="closeConfirmDialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Are you sure you want to delete the department "{{
+              selectedDepartment?.name
+            }}"?
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="closeConfirmDialog()"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="confirmDelete()"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
