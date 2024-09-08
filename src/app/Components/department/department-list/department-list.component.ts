@@ -1,11 +1,11 @@
-import { NgClass, NgFor } from '@angular/common';
+import { CommonModule, NgClass, NgFor } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-department-list',
   standalone: true,
-  imports: [NgFor,FormsModule,NgClass],
+  imports: [NgFor,FormsModule,NgClass,CommonModule],
   templateUrl: './department-list.component.html',
   styleUrl: './department-list.component.css'
 })
@@ -73,8 +73,7 @@ export class DepartmentListComponent {
   }
 
   updateDepartment(department: any) {
-    // Logic to update the department
-    console.log('Updating department:', department);
+    console.log(department);
   }
 
   openConfirmDialog(department: any) {

@@ -17,11 +17,11 @@ export const routes: Routes = [
         { path: '', component: DashboardComponent },
         { path: 'patients', component: PatientsTableComponent },
         { path: 'patients-profile', component: PatientProfileComponent },
-        { path: 'department' , component: DepartmentComponent,children: [
+        { path: 'department' , component: DepartmentComponent , children: [
                 { path: "details" , component: DepartmentDetailsComponent }, 
                 { path: "list" , component: DepartmentListComponent }, 
                 { path: "form" , component: DepartmentFormComponent }
-        ] },
+              ]},
         { path: 'doctor', component: DoctorsComponent, children: [
                 { path: 'doctor-list', component: DoctorListComponent },
                 { path: 'doctor-form', component: DoctorFormComponent },
