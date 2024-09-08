@@ -12,15 +12,18 @@ import { DepartmentComponent } from './Components/department/department.componen
 import { DepartmentDetailsComponent } from './Components/department/department-details/department-details.component';
 import { DepartmentListComponent } from './Components/department/department-list/department-list.component';
 import { DepartmentFormComponent } from './Components/department/department-form/department-form.component';
+import { DepartmentUpdateComponent } from './Components/department/department-list/department-update/department-update.component';
 
 export const routes: Routes = [  
         { path: '', component: DashboardComponent },
         { path: 'patients', component: PatientsTableComponent },
         { path: 'patients-profile', component: PatientProfileComponent },
         { path: 'department' , component: DepartmentComponent , children: [
+                { path: '' , redirectTo: "details" , pathMatch: "full"},
                 { path: "details" , component: DepartmentDetailsComponent }, 
-                { path: "list" , component: DepartmentListComponent }, 
-                { path: "form" , component: DepartmentFormComponent }
+                { path: "list" , component: DepartmentListComponent },
+                { path: "form" , component: DepartmentFormComponent },
+                { path: 'update' , component: DepartmentUpdateComponent}
               ]},
         { path: 'doctor', component: DoctorsComponent, children: [
                 { path: 'doctor-list', component: DoctorListComponent },
