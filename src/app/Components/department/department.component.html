@@ -1,5 +1,28 @@
 <div class="departments-container">
   <div class="container mt-4">
+    <div class="btn-group">
+      <a
+        routerLink="details"
+        routerLinkActive="active"
+        class="btn btn-outline-primary"
+        >Details</a
+      >
+      <a
+        routerLink="list"
+        routerLinkActive="active"
+        class="btn btn-outline-primary"
+        >List</a
+      >
+      <a
+        routerLink="form"
+        routerLinkActive="active"
+        class="btn btn-outline-primary"
+        >Add</a
+      >
+    </div>
+
+    <router-outlet></router-outlet>
+
     <h2 class="text-center">Department Statistics</h2>
     <div class="row mt-4">
       <!-- Card 1: Length of each department -->

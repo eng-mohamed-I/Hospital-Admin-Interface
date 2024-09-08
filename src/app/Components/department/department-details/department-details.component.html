@@ -1,0 +1,33 @@
+<h2 class="text-center">Department Statistics</h2>
+    <div class="row mt-4">
+      <!-- Card 1: Length of each department -->
+      <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h4 class="card-title">Department & Doctor Count</h4>
+            <ul class="list-group list-group-flush">
+              <li
+                *ngFor="let department of departments"
+                class="list-group-item"
+              >
+                <strong>{{ department.name }}:</strong>
+                {{ department.doctors.length }} doctors
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Intelligent Analysis -->
+      <!-- <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h4 class="card-title">Intelligent Analysis</h4>
+            <p class="card-text">
+              {{ getAnalysis() }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
