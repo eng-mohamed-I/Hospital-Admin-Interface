@@ -9,7 +9,7 @@
   <hr />
   <ul class="nav nav-pills flex-column mb-auto">
     <li class="nav-item">
-      <a href="#" class="nav-link active">
+      <a routerLink="/" class="nav-link" routerLinkActive="router-link-active">
         <i class="fa-solid fa-chart-pie"></i>
         Overview
       </a>
@@ -17,7 +17,7 @@
     <li class="nav-item">
       <a
         [routerLink]="['/patients']"
-        routerLinkActive="router-link-active"
+        routerLinkActive="active"
         class="nav-link"
       >
         <i class="fa-solid fa-users"></i>
@@ -32,11 +32,7 @@
       </a>
     </li>
     <li class="nav-item">
-      <a
-        [routerLink]="['/doctor']"
-        routerLinkActive="router-link-active"
-        class="nav-link"
-      >
+      <a [routerLink]="['/doctor']" routerLinkActive="active" class="nav-link">
         <i class="fa-solid fa-user-md"></i>
         Doctors
       </a>
@@ -44,7 +40,7 @@
 
     <li class="nav-item">
       <a
-        [routerLink]="['/department/details']"
+        [routerLink]="['/department']"
         routerLinkActive="active"
         class="nav-link"
       >
@@ -54,14 +50,18 @@
       </a>
     </li>
     <li class="nav-item">
-      <a [routerLink]="['/blog-management']" routerLinkActive="active">
+      <a
+        class="nav-link"
+        [routerLink]="['/blog-management']"
+        routerLinkActive="active"
+      >
         <i class="fa-solid fa-users"></i>
         <!-- Icon for Blogs -->
         Blogs
       </a>
     </li>
     <li class="nav-item">
-      <a href="#" class="nav-link">
+      <a routerLink="earnings" class="nav-link" routerLinkActive="active">
         <i class="fa-solid fa-money-bill-wave"></i>
         <!-- Icon for Earnings -->
         Earnings
