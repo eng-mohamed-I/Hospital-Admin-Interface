@@ -17,11 +17,11 @@
   }
   
   .btn-warning {
-    background-color: #ffc107;
+    background-color: #ffc107b6;
   }
   
   .btn-danger {
-    background-color: #dc3545;
+    background-color: #c63543cc;
   }
   
   .btn-secondary {
@@ -33,7 +33,7 @@
     border-radius: 0.25rem;
   }
   
-/* comfirmation message */ 
+/* comfirmation message  */ 
   .modal {
     display: none;
     position: fixed;
