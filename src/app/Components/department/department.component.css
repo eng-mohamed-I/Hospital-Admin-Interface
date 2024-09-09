@@ -1,7 +1,5 @@
 .departments-container {
     padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
   }
   
   .department {
@@ -10,16 +8,6 @@
     padding: 15px;
     border-radius: 8px;
     background-color: #f9f9f9;
-  }
-  
-  h2 {
-    text-align: center;
-    color: #232f66;
-  }
-  
-  h3 {
-    color: #dea94d;
-    margin-bottom: 10px;
   }
   
   ul {
@@ -33,3 +21,4 @@
     color: #606161;
   }
   
+

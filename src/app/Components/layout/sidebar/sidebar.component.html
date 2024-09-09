@@ -1,4 +1,4 @@
-<div class="d-flex flex-column p-3 bg-light" style="width: 280px">
+<div class="d-flex flex-column p-3 pe-5 bg-light" style="width: fit-content">
   <a
     href="/"
     class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none"
@@ -9,22 +9,18 @@
   <hr />
   <ul class="nav nav-pills flex-column mb-auto">
     <li class="nav-item">
-      <a [routerLink]="['/']"
-      routerLinkActive="router-link-active"
-      class="nav-link" class="nav-link active">
+      <a routerLink="/" class="nav-link" routerLinkActive="active">
         <i class="fa-solid fa-chart-pie"></i>
-        <!-- Icon for Overview -->
         Overview
       </a>
     </li>
     <li class="nav-item">
       <a
         [routerLink]="['/patients']"
-        routerLinkActive="router-link-active"
+        routerLinkActive="active"
         class="nav-link"
       >
         <i class="fa-solid fa-users"></i>
-        <!-- Icon for Patients -->
         Patients
       </a>
     </li>
@@ -32,14 +28,12 @@
     <li class="nav-item">
       <a href="#" class="nav-link">
         <i class="fa-solid fa-calendar-check"></i>
-        <!-- Appointment icon -->
         Appointments
       </a>
     </li>
     <li class="nav-item">
-      <a href="#" class="nav-link">
+      <a [routerLink]="['/doctor']" routerLinkActive="active" class="nav-link">
         <i class="fa-solid fa-user-md"></i>
-        <!-- Doctor icon -->
         Doctors
       </a>
     </li>
@@ -56,14 +50,18 @@
       </a>
     </li>
     <li class="nav-item">
-      <a href="#" class="nav-link">
+      <a
+        class="nav-link"
+        [routerLink]="['/blog-management']"
+        routerLinkActive="active"
+      >
         <i class="fa-solid fa-users"></i>
-        <!-- Icon for Employees -->
-        Employees
+        <!-- Icon for Blogs -->
+        Blogs
       </a>
     </li>
     <li class="nav-item">
-      <a href="#" class="nav-link">
+      <a routerLink="earnings" class="nav-link" routerLinkActive="active">
         <i class="fa-solid fa-money-bill-wave"></i>
         <!-- Icon for Earnings -->
         Earnings

@@ -1,0 +1,32 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Blog } from './blog';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class BlogService {
+  constructor(private httpClient: HttpClient) {}
+
+  getAll() {
+    return this.httpClient.get<Blog[]>('http://localhost:3000/blogs');
+  }
+
+  create(data: Blog) {
+    return this.httpClient.post<Blog>('http://localhost:3000/blogs', data);
+  }
+
+  edit(id: number) {
+    return this.httpClient.get<Blog>(`http://localhost:3000/blogs/${id}`);
+  }
+
+  update(data: Blog) {
+    return this.httpClient.put<Blog>(
+      `http://localhost:3000/blogs/${data.id}`,
+      data
+    );
+  }
+  delete(id: number) {
+    return this.httpClient.delete<Blog>(`http://localhost:3000/blogs/${id}`);
+  }
+}
