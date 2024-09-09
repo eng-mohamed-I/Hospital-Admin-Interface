@@ -1,38 +1,77 @@
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
-<table class="table table-striped">
+<div class="container mt-4">
+  <h2 class="mb-4 text-center text-primary">Patient Management</h2>
 
+  <!-- Toggle Button -->
+  <button class="btn btn-dark mb-4 btn-lg rounded-pill shadow-sm" (click)="toggleForm()">
+    {{ isFormVisible ? 'Cancel' : 'Add Patient' }}
+  </button>
 
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Patient Name</th>
-      <th>Gender</th>
-      <th>Age</th>
-      <th>Admitted Date</th>
-      <th>Type</th>
-      <th>Status</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let patient of patients">
-      <td>{{ patient.id }}</td>
-      <td>{{ patient.name }}</td>
-      <td>{{ patient.gender }}</td>
-      <td>{{ patient.age }}</td>
-      <td>{{ patient.admittedDate }}</td>
-      <td>{{ patient.type }}</td>
-      <td> <span [ngClass]="{
-        'status-confirmed': patient.status === 'confirmed',
-        'status-pending': patient.status === 'pending',
-        'status-rejected': patient.status === 'rejected'
-      }">
-        {{ patient.status }}
-      </span></td>
-      <td>
-        <i class="bi bi-pencil"></i>
-        <i class="bi bi-trash"></i>
-      </td>
-    </tr>
-  </tbody>
-</table>
+  <!-- Add Patient Form -->
+  <form *ngIf="isFormVisible" [formGroup]="patientForm" (ngSubmit)="onSubmit()" class="mb-4">
+    <div class="row g-3">
+      <div class="col-md-4">
+        <input formControlName="name" class="form-control form-control-lg border-primary hover-expand" placeholder="Patient Name" />
+      </div>
+      <div class="col-md-3">
+        <select formControlName="gender" class="form-control form-control-lg border-primary hover-expand">
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <input formControlName="age" type="number" class="form-control form-control-lg border-primary hover-expand" placeholder="Age" />
+      </div>
+      <div class="col-md-3">
+        <input formControlName="admittedDate" type="date" class="form-control form-control-lg border-primary hover-expand" />
+      </div>
+      <div class="col-md-3">
+        <select formControlName="type" class="form-control form-control-lg border-primary hover-expand">
+          <option value="Inpatient">Inpatient</option>
+          <option value="Outpatient">Outpatient</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <button type="submit" class="btn btn-success btn-lg w-100 rounded-pill shadow-sm">Submit</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Patient Table -->
+  <table class="table table-hover table-bordered table-striped mt-4">
+    <thead class="table-light">
+      <tr>
+        <th>id</th>
+        <th>Patient Name</th>
+        <th>Gender</th>
+        <th>Age</th>
+        <th>Admitted Date</th>
+        <th>Type</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let patient of patients">
+        <td class="hover-expand">{{ patient.id }}</td>
+        <td class="hover-expand">{{ patient.name }}</td>
+        <td class="hover-expand">{{ patient.gender }}</td>
+        <td class="hover-expand">{{ patient.age }}</td>
+        <td class="hover-expand">{{ patient.admittedDate }}</td>
+        <td class="hover-expand">{{ patient.type }}</td>
+        <td class="hover-expand">
+          <span
+            [ngClass]="{
+              'badge custom-badge-success': patient.status === 'confirmed',
+              'badge custom-badge-warning': patient.status === 'pending',
+              'badge custom-badge-danger': patient.status === 'rejected'
+            }"
+          >{{ patient.status }}</span>
+        </td>
+        <td class="hover-expand">
+          <i class="bi bi-pencil text-primary me-2" (click)="editPatient(patient)"></i>
+          <i class="bi bi-trash text-danger" (click)="deletePatient(patient.id)"></i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
