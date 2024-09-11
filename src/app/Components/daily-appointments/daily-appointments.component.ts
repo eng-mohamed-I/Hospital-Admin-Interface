@@ -27,14 +27,6 @@ interface Appointment {
 export class DailyAppointmentsComponent implements OnInit {
   appointments: Appointment[] = [
     { id: 1, patientName: 'John Doe', doctorName: 'Dr. Smith', time: '10:00', period: 'AM', status: 'Confirmed', day: 'Monday', date: '2024-09-09' },
-    { id: 2, patientName: 'John Doe', doctorName: 'Dr. Smith', time: '10:00', period: 'AM', status: 'Confirmed', day: 'Monday', date: '2024-09-09' },
-    { id: 3, patientName: 'John Doe', doctorName: 'Dr. Smith', time: '10:00', period: 'AM', status: 'Confirmed', day: 'Monday', date: '2024-09-09' },
-    { id: 4, patientName: 'John Doe', doctorName: 'Dr. Smith', time: '10:00', period: 'AM', status: 'Confirmed', day: 'Monday', date: '2024-09-09' },
-    { id: 11, patientName: 'John Doe', doctorName: 'Dr. Smith', time: '10:00', period: 'AM', status: 'Confirmed', day: 'Monday', date: '2024-09-09' },
-    { id: 23, patientName: 'John Doe', doctorName: 'Dr. Smith', time: '10:00', period: 'AM', status: 'Confirmed', day: 'Monday', date: '2024-09-09' },
-    { id: 34, patientName: 'John Doe', doctorName: 'Dr. Smith', time: '10:00', period: 'AM', status: 'Confirmed', day: 'Monday', date: '2024-09-09' },
-    { id: 45, patientName: 'John Doe', doctorName: 'Dr. Smith', time: '10:00', period: 'AM', status: 'Confirmed', day: 'Monday', date: '2024-09-09' },
-    { id: 55, patientName: 'John Doe', doctorName: 'Dr. Smith', time: '10:00', period: 'AM', status: 'Confirmed', day: 'Monday', date: '2024-09-09' },
   ];
 
   newAppointment: Appointment = {
@@ -42,7 +34,7 @@ export class DailyAppointmentsComponent implements OnInit {
     patientName: '',
     doctorName: '',
     time: '',
-    period: 'AM', 
+    period: 'AM', // القيمة الافتراضية
     status: 'Pending',
     day: 'Monday',
     date: ''
@@ -62,10 +54,18 @@ export class DailyAppointmentsComponent implements OnInit {
 
   searchTerm: string = '';
   currentPage = 1;
+  minDate: string = ''; // تعريف minDate
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // تعيين الحد الأدنى للتاريخ ليكون تاريخ اليوم
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = (today.getMonth() + 1).toString().padStart(2, '0');
+    const day = today.getDate().toString().padStart(2, '0');
+    this.minDate = `${year}-${month}-${day}`;
+  }
 
   get filteredAppointments() {
     return this.appointments.filter(appointment => 
@@ -125,8 +125,9 @@ export class DailyAppointmentsComponent implements OnInit {
       this.formErrors.patientName = 'Patient Name should contain letters only.';
       isInvalid = true;
     }
-    if (!doctorName || !/^[A-Za-z\s]+$/.test(doctorName)) {
-      this.formErrors.doctorName = 'Doctor Name should contain letters only.';
+    if (!doctorName || !/^[A-Za-z\s.\/]+$/.test(doctorName)) {
+      // السماح باستخدام . و /
+      this.formErrors.doctorName = 'Doctor Name should contain letters, dots, and slashes only.';
       isInvalid = true;
     }
     if (!time || !/^\d{1,2}:\d{2}$/.test(time) || !this.isValidTime(time)) {
@@ -141,8 +142,8 @@ export class DailyAppointmentsComponent implements OnInit {
       this.formErrors.day = 'Day is required.';
       isInvalid = true;
     }
-    if (!date) {
-      this.formErrors.date = 'Date is required.';
+    if (!date || !this.isValidDate(date)) {
+      this.formErrors.date = 'Date is required and cannot be in the past.';
       isInvalid = true;
     }
     return isInvalid;
@@ -151,6 +152,13 @@ export class DailyAppointmentsComponent implements OnInit {
   isValidTime(time: string): boolean {
     const [hours, minutes] = time.split(':').map(Number);
     return hours >= 1 && hours <= 12 && minutes >= 0 && minutes < 60;
+  }
+
+  isValidDate(date: string): boolean {
+    const selectedDate = new Date(date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // لتجنب مشاكل الوقت
+    return selectedDate >= today; // تأكيد أن التاريخ المحدد ليس في الماضي
   }
 
   resetFormErrors() {
