@@ -1,74 +1,10 @@
 <div class="container mt-4">
   <h2 class="mb-4 text-center text-primary">Patient Management</h2>
 
-  <!-- Toggle Button -->
-  <button class="btn btn-dark mb-4 btn-lg rounded-pill shadow-sm" (click)="toggleForm()">
-    {{ isFormVisible ? 'Cancel' : 'Add Patient' }}
-  </button>
-
-  <!-- Add Patient Form -->
-  <form *ngIf="isFormVisible" [formGroup]="patientForm" (ngSubmit)="onSubmit()" class="mb-4">
-    <div class="row g-3">
-  
-      <!-- Name Field -->
-      <div class="col-md-4">
-        <input formControlName="name" class="form-control form-control-lg border-primary hover-expand" placeholder="Patient Name" />
-        <div *ngIf="patientForm.get('name')?.invalid && (patientForm.get('name')?.touched || patientForm.get('name')?.dirty)" class="text-danger">
-          <small *ngIf="patientForm.get('name')?.errors?.['required']">Patient name is required.</small>
-          <small *ngIf="patientForm.get('name')?.errors?.['minlength']">Name must be at least 3 characters long.</small>
-        </div>
-      </div>
-  
-      <!-- Gender Field -->
-      <div class="col-md-3">
-        <select formControlName="gender" class="form-control form-control-lg border-primary hover-expand">
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-        </select>
-        <div *ngIf="patientForm.get('gender')?.invalid && patientForm.get('gender')?.touched" class="text-danger">
-          <small>Gender is required.</small>
-        </div>
-      </div>
-  
-      <!-- Age Field -->
-      <div class="col-md-2">
-        <input formControlName="age" type="number" class="form-control form-control-lg border-primary hover-expand" placeholder="Age" />
-        <div *ngIf="patientForm.get('age')?.invalid && (patientForm.get('age')?.touched || patientForm.get('age')?.dirty)" class="text-danger">
-          <small *ngIf="patientForm.get('age')?.errors?.['required']">Age is required.</small>
-          <small *ngIf="patientForm.get('age')?.errors?.['min']">Age must be at least 1.</small>
-          <small *ngIf="patientForm.get('age')?.errors?.['max']">Age must be no more than 120.</small>
-        </div>
-      </div>
-  
-      <!-- Admitted Date Field -->
-      <div class="col-md-3">
-        <input formControlName="admittedDate" type="date" class="form-control form-control-lg border-primary hover-expand" />
-        <div *ngIf="patientForm.get('admittedDate')?.invalid && patientForm.get('admittedDate')?.touched" class="text-danger">
-          <small>Admitted date is required.</small>
-        </div>
-      </div>
-  
-      <!-- Type Field -->
-      <div class="col-md-3">
-        <select formControlName="type" class="form-control form-control-lg border-primary hover-expand">
-          <option value="Inpatient">Inpatient</option>
-          <option value="Outpatient">Outpatient</option>
-        </select>
-        <div *ngIf="patientForm.get('type')?.invalid && patientForm.get('type')?.touched" class="text-danger">
-          <small>Patient type is required.</small>
-        </div>
-      </div>
-  
-      <!-- Submit Button -->
-      <div class="col-md-3">
-        <button type="submit" class="btn btn-success btn-lg w-100 rounded-pill shadow-sm" [disabled]="patientForm.invalid">Submit</button>
-      </div>
-    </div>
-  </form>
-  
+  <button mat-raised-button color="primary" (click)="openPatientModal()">Add Patient</button>
 
   <!-- Patient Table -->
-  <table class="table table-hover table-bordered table-striped mt-4">
+  <table class="table table-bordered table-striped mt-4">
     <thead class="table-light">
       <tr>
         <th>id</th>
@@ -99,7 +35,7 @@
           >{{ patient.status }}</span>
         </td>
         <td class="hover-expand">
-          <i class="bi bi-pencil text-primary me-2" (click)="editPatient(patient)"></i>
+           <i class="bi bi-pencil text-primary me-2"></i> <!--(click)="editPatient(patient) -->
           <i class="bi bi-trash text-danger" (click)="deletePatient(patient.id)"></i>
         </td>
       </tr>

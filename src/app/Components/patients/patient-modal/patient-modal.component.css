@@ -1,0 +1,28 @@
+.dialog-title {
+    font-size: 24px; /* Increase title font size */
+  }
+  
+  .full-width-form-field {
+    width: 100%; /* Make form fields full-width */
+  }
+  
+  .form-label {
+    font-size: 16px; /* Increase label font size */
+  }
+  
+  .form-input, .form-select {
+    font-size: 16px; /* Increase input and select font size */
+  }
+  
+  .mat-form-field {
+    margin-bottom: 16px; /* Add margin between form fields */
+  }
+  
+  .mat-dialog-content {
+    padding: 20px; /* Add padding inside the dialog */
+  }
+  
+  button.mat-raised-button {
+    font-size: 16px; /* Increase font size of buttons */
+  }
+  
