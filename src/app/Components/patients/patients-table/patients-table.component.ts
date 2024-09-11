@@ -27,9 +27,9 @@ export class PatientsTableComponent  implements OnInit {
 
   constructor(private fb: FormBuilder) {
     this.patientForm = this.fb.group({
-      name: ['', Validators.required],
+      name: ['', [Validators.required, Validators.minLength(3)]], // Name must have at least 3 characters
       gender: ['Male', Validators.required],
-      age: [null, Validators.required],
+      age: [null, [Validators.required, Validators.min(1), Validators.max(120)]], // Age must be between 1 and 120
       admittedDate: ['', Validators.required],
       type: ['Inpatient', Validators.required],
     });
@@ -39,11 +39,19 @@ export class PatientsTableComponent  implements OnInit {
     // Initialize with some patients (optional)
     this.patients = [
       { id: 1, name: 'John Doe', gender: 'Male', age: 30, admittedDate: '2024-09-01', type: 'Inpatient', status: 'confirmed' },
-      { id: 2, name: 'Jane Smith', gender: 'Female', age: 25, admittedDate: '2024-09-05', type: 'Outpatient', status: 'pending' }
+      { id: 2, name: 'Jane Smith', gender: 'Female', age: 25, admittedDate: '2024-09-05', type: 'Outpatient', status: 'pending' },
     ];
   }
 
+  
   onSubmit() {
+    // Check if the form is valid
+    if (!this.patientForm.valid) {
+      // Mark all controls as touched to display validation errors
+      this.patientForm.markAllAsTouched();
+      return; // Exit the function, don't add or update the patient
+    }
+  
     if (this.currentPatientId === null) {
       // Add new patient
       const newPatient: Patient = {
@@ -60,20 +68,22 @@ export class PatientsTableComponent  implements OnInit {
       }
       this.currentPatientId = null;
     }
-
-    // Clear the form and hide it
+  
+    // Clear the form and reset the form state
     this.patientForm.reset({ gender: 'Male', type: 'Inpatient' });
     this.isFormVisible = false;
   }
+  
 
   toggleForm() {
     this.isFormVisible = !this.isFormVisible;
+    console.log(this.isFormVisible);  // Add this for debugging
     if (this.isFormVisible) {
-      // Reset the form when opening to add a new patient
       this.patientForm.reset({ gender: 'Male', type: 'Inpatient' });
-      this.currentPatientId = null; // Ensure it's not in edit mode
+      this.currentPatientId = null;
     }
   }
+  
 
   editPatient(patient: Patient) {
     this.currentPatientId = patient.id;
@@ -82,6 +92,7 @@ export class PatientsTableComponent  implements OnInit {
   }
 
   deletePatient(id: number) {
-    this.patients = this.patients.filter((p) => p.id !== id);
+ 
+    if(confirm('Are you sure you want to delete that user'))  this.patients = this.patients.filter((p) => p.id !== id);
   }
 }

@@ -41,19 +41,12 @@
   /* Custom badge styles */
 
 /* Table hover effects */
-.table-hover tbody tr:hover {
-  background-color: rgba(0, 0, 0, 0.05); /* Light gray on hover */
-}
 
 /* Add smooth transition for buttons */
 .btn {
   transition: background-color 0.3s, transform 0.3s;
 }
 
-.btn:hover {
-  background-color: #0056b3; /* Darker blue for hover effect */
-  transform: scale(1.05); /* Slightly enlarge button on hover */
-}
 
 .btn:active {
   transform: scale(0.98); /* Slightly shrink button on click */
@@ -61,24 +54,9 @@
 
 
 /* Hover expand effect */
-.hover-expand {
-  transition: all 0.3s ease-in-out; /* Smooth transition for padding change */
-}
-
-.hover-expand:hover {
-  padding: 3rem; /* Increase padding on hover */
-  background-color: rgba(0, 0, 0, 0.05); /* Light background color on hover */
-  border-radius: 0.375rem; /* Rounded corners for form fields and table cells */
-}
 
 /* Optional: Add padding to form fields and table cells */
 input.form-control, select.form-control, .table td, .table th {
   padding: 0.75rem; /* Default padding */
 }
 
-/* Optional: Adjust hover effect for table cells */
-.table td:hover, .table th:hover {
-  background-color: rgba(0, 0, 0, 0.1); /* Slightly darker background on hover */
-  padding: 1rem; /* Increase padding on hover */
-
-}
