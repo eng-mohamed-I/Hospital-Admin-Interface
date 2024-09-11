@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PatientProfileComponent } from './patient-profile.component';
+import { CommonModule } from '@angular/common';
 
 describe('PatientProfileComponent', () => {
   let component: PatientProfileComponent;
@@ -8,7 +9,7 @@ describe('PatientProfileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PatientProfileComponent]
+      imports: [PatientProfileComponent,CommonModule]
     })
     .compileComponents();
 

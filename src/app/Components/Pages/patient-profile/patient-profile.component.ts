@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
- 
+
 @Component({
   selector: 'app-patient-profile',
   templateUrl: './patient-profile.component.html',
@@ -25,7 +25,6 @@ export class PatientProfileComponent implements OnInit {
     reports: [
       { id: 1, name: 'Checkup Result', date: '12 Mon, 2022' },
       { id: 2, name: 'Medicine Prescription', date: '17 Jan, 2022' },
-      // Other reports
     ],
     healthyHabits: {
       followingPlan: 10,

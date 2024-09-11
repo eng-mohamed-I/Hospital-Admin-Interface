@@ -1,40 +1,90 @@
 <div class="container mt-4">
   <h2 class="text-center mb-4">Daily Appointments</h2>
-  <div class="mb-3 text-end">
-    <button class="btn btn-primary" (click)="addAppointment()">Add Appointment</button>
-  </div>
-  <table class="table table-striped table-bordered">
 
+  <!-- Search input -->
+  <div class="mb-3">
+    <input type="text" class="form-control" placeholder="Search by patient, doctor, or day" [(ngModel)]="searchTerm">
+  </div>
+
+  <form (ngSubmit)="addAppointment()" class="mb-3">
+    <div class="row g-2">
+      <div class="col">
+        <input type="text" class="form-control" placeholder="Patient Name" [(ngModel)]="newAppointment.patientName" name="patientName" required>
+        <div *ngIf="formErrors.patientName" class="text-danger">
+          {{ formErrors.patientName }}
+        </div>
+      </div>
+      <div class="col">
+        <input type="text" class="form-control" placeholder="Doctor Name" [(ngModel)]="newAppointment.doctorName" name="doctorName" required>
+        <div *ngIf="formErrors.doctorName" class="text-danger">
+          {{ formErrors.doctorName }}
+        </div>
+      </div>
+      <div class="col">
+        <input type="text" class="form-control" placeholder="Time (e.g. 10:00)" [(ngModel)]="newAppointment.time" name="time" required>
+        <div *ngIf="formErrors.time" class="text-danger">
+          {{ formErrors.time }}
+        </div>
+      </div>
+      <div class="col">
+        <select class="form-select" [(ngModel)]="newAppointment.period" name="period" required>
+          <option value="AM">AM</option>
+          <option value="PM">PM</option>
+        </select>
+        <div *ngIf="formErrors.period" class="text-danger">
+          {{ formErrors.period }}
+        </div>
+      </div>
+      <div class="col">
+        <select class="form-select" [(ngModel)]="newAppointment.day" name="day" required>
+          <option *ngFor="let day of daysOfWeek" [value]="day">{{ day }}</option>
+        </select>
+        <div *ngIf="formErrors.day" class="text-danger">
+          {{ formErrors.day }}
+        </div>
+      </div>
+      <div class="col">
+        <input type="date" class="form-control" [(ngModel)]="newAppointment.date" name="date" required>
+        <div *ngIf="formErrors.date" class="text-danger">
+          {{ formErrors.date }}
+        </div>
+      </div>
+      <div class="col">
+        <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Update' : 'Add' }} Appointment</button>
+      </div>
+    </div>
+  </form>
+
+  <table class="table table-striped table-bordered">
     <thead class="thead-dark">
       <tr>
         <th scope="col">Patient Name</th>
         <th scope="col">Doctor</th>
         <th scope="col">Appointment Time</th>
-        <th scope="col">Day</th>  
-        <th scope="col">Date</th>  
+        <th scope="col">Period</th>
+        <th scope="col">Day</th>
+        <th scope="col">Date</th>
         <th scope="col">Status</th>
         <th scope="col">Actions</th>
       </tr>
     </thead>
-    
     <tbody>
-      <tr *ngFor="let appointment of appointments">
-        <td>{{appointment.patientName}}</td>
-        <td>{{appointment.doctorName}}</td>
-        <td>{{appointment.time}}</td>
-        <td>{{appointment.day}}</td>  
-        <td>{{appointment.date | date: 'yyyy-MM-dd'}}</td>  
+      <tr *ngFor="let appointment of filteredAppointments | paginate: { itemsPerPage: 5, currentPage: currentPage }; index as i">
+        <td>{{ appointment.patientName }}</td>
+        <td>{{ appointment.doctorName }}</td>
+        <td>{{ appointment.time }}</td>
+        <td>{{ appointment.period }}</td>
+        <td>{{ appointment.day }}</td>
+        <td>{{ appointment.date }}</td>
+        <td>{{ appointment.status }}</td>
         <td>
-          <span class="badge" [ngClass]="{
-            'bg-success': appointment.status === 'Confirmed',
-            'bg-warning': appointment.status === 'Pending'
-          }">{{appointment.status}}</span>
-        </td>
-        <td>
-          <button class="btn btn-warning btn-sm me-2" (click)="editAppointment(appointment)">Edit</button>
-          <button class="btn btn-danger btn-sm" (click)="deleteAppointment(appointment.id)">Delete</button>
+          <button class="btn btn-warning" (click)="editAppointment(appointment, i)">Edit</button>
+          <button class="btn btn-danger" (click)="deleteAppointment(appointment.id)">Delete</button>
         </td>
       </tr>
     </tbody>
   </table>
+
+  <!-- Pagination -->
+  <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
 </div>
