@@ -9,32 +9,63 @@
   <!-- Add Patient Form -->
   <form *ngIf="isFormVisible" [formGroup]="patientForm" (ngSubmit)="onSubmit()" class="mb-4">
     <div class="row g-3">
+  
+      <!-- Name Field -->
       <div class="col-md-4">
         <input formControlName="name" class="form-control form-control-lg border-primary hover-expand" placeholder="Patient Name" />
+        <div *ngIf="patientForm.get('name')?.invalid && (patientForm.get('name')?.touched || patientForm.get('name')?.dirty)" class="text-danger">
+          <small *ngIf="patientForm.get('name')?.errors?.['required']">Patient name is required.</small>
+          <small *ngIf="patientForm.get('name')?.errors?.['minlength']">Name must be at least 3 characters long.</small>
+        </div>
       </div>
+  
+      <!-- Gender Field -->
       <div class="col-md-3">
         <select formControlName="gender" class="form-control form-control-lg border-primary hover-expand">
           <option value="Male">Male</option>
           <option value="Female">Female</option>
         </select>
+        <div *ngIf="patientForm.get('gender')?.invalid && patientForm.get('gender')?.touched" class="text-danger">
+          <small>Gender is required.</small>
+        </div>
       </div>
+  
+      <!-- Age Field -->
       <div class="col-md-2">
         <input formControlName="age" type="number" class="form-control form-control-lg border-primary hover-expand" placeholder="Age" />
+        <div *ngIf="patientForm.get('age')?.invalid && (patientForm.get('age')?.touched || patientForm.get('age')?.dirty)" class="text-danger">
+          <small *ngIf="patientForm.get('age')?.errors?.['required']">Age is required.</small>
+          <small *ngIf="patientForm.get('age')?.errors?.['min']">Age must be at least 1.</small>
+          <small *ngIf="patientForm.get('age')?.errors?.['max']">Age must be no more than 120.</small>
+        </div>
       </div>
+  
+      <!-- Admitted Date Field -->
       <div class="col-md-3">
         <input formControlName="admittedDate" type="date" class="form-control form-control-lg border-primary hover-expand" />
+        <div *ngIf="patientForm.get('admittedDate')?.invalid && patientForm.get('admittedDate')?.touched" class="text-danger">
+          <small>Admitted date is required.</small>
+        </div>
       </div>
+  
+      <!-- Type Field -->
       <div class="col-md-3">
         <select formControlName="type" class="form-control form-control-lg border-primary hover-expand">
           <option value="Inpatient">Inpatient</option>
           <option value="Outpatient">Outpatient</option>
         </select>
+        <div *ngIf="patientForm.get('type')?.invalid && patientForm.get('type')?.touched" class="text-danger">
+          <small>Patient type is required.</small>
+        </div>
       </div>
+  
+      <!-- Submit Button -->
       <div class="col-md-3">
-        <button type="submit" class="btn btn-success btn-lg w-100 rounded-pill shadow-sm">Submit</button>
+        <button type="submit" class="btn btn-success btn-lg w-100 rounded-pill shadow-sm" [disabled]="patientForm.invalid">Submit</button>
       </div>
     </div>
   </form>
+  
 
   <!-- Patient Table -->
   <table class="table table-hover table-bordered table-striped mt-4">
@@ -52,13 +83,13 @@
     </thead>
     <tbody>
       <tr *ngFor="let patient of patients">
-        <td class="hover-expand">{{ patient.id }}</td>
-        <td class="hover-expand">{{ patient.name }}</td>
-        <td class="hover-expand">{{ patient.gender }}</td>
-        <td class="hover-expand">{{ patient.age }}</td>
-        <td class="hover-expand">{{ patient.admittedDate }}</td>
-        <td class="hover-expand">{{ patient.type }}</td>
-        <td class="hover-expand">
+        <td>{{ patient.id }}</td>
+        <td>{{ patient.name }}</td>
+        <td>{{ patient.gender }}</td>
+        <td>{{ patient.age }}</td>
+        <td>{{ patient.admittedDate }}</td>
+        <td>{{ patient.type }}</td>
+        <td>
           <span
             [ngClass]="{
               'badge custom-badge-success': patient.status === 'confirmed',
