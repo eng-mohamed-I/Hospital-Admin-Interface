@@ -23,7 +23,7 @@ export class AppointmentsComponent {
     alert('Edit Appointment functionality to be implemented');
   }
   deleteAppointment(id: number) {
-    this.appointments = this.appointments.filter(app => app.id !== id);
+    // this.appointments = this.appointments.filter(app => app.id !== id);
     alert('Appointment deleted');
   }
 
