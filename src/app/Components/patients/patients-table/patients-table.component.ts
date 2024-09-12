@@ -1,6 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component ,OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { PatientModalComponent } from '../patient-modal/patient-modal.component'; 
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
 
 interface Patient {
   id: number;
@@ -15,17 +22,23 @@ interface Patient {
 @Component({
   selector: 'app-patients-table',
   standalone: true,
-  imports: [CommonModule,ReactiveFormsModule],
+  imports: [CommonModule,ReactiveFormsModule, PatientModalComponent, ReactiveFormsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule],
   templateUrl: './patients-table.component.html',
   styleUrl: './patients-table.component.css'
 })
 export class PatientsTableComponent  implements OnInit {
+ 
   patients: Patient[] = [];
   patientForm: FormGroup;
   currentPatientId: number | null = null; // Used for editing
   isFormVisible: boolean = false; // Control form visibility
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,public dialog: MatDialog) {
     this.patientForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]], // Name must have at least 3 characters
       gender: ['Male', Validators.required],
@@ -43,37 +56,32 @@ export class PatientsTableComponent  implements OnInit {
     ];
   }
 
-  
-  onSubmit() {
-    // Check if the form is valid
-    if (!this.patientForm.valid) {
-      // Mark all controls as touched to display validation errors
-      this.patientForm.markAllAsTouched();
-      return; // Exit the function, don't add or update the patient
-    }
-  
-    if (this.currentPatientId === null) {
-      // Add new patient
-      const newPatient: Patient = {
-        id: this.patients.length + 1,
-        ...this.patientForm.value,
-        status: 'pending',
-      };
-      this.patients.push(newPatient);
-    } else {
-      // Update existing patient
-      const index = this.patients.findIndex((p) => p.id === this.currentPatientId);
-      if (index > -1) {
-        this.patients[index] = { ...this.patients[index], ...this.patientForm.value };
+  openPatientModal(patient?: Patient): void {
+    const dialogRef = this.dialog.open(PatientModalComponent, {
+      width: '500px',
+      data: patient || {}, // Pass any data you want to edit here
+      panelClass: 'centered-dialog' // Add custom class
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+       if (result) {
+      if (patient) {
+        // Update the patient
+        const index = this.patients.findIndex(p => p.id === patient.id);
+        if (index > -1) {
+          this.patients[index] = result; // Update the edited patient
+        }
+      } else {
+        // Add new patient
+        result.id = this.patients.length + 1; // Assign a new ID
+        result.status = 'pending'; // Set a default status
+        this.patients.push(result); // Add the new patient to the list
       }
-      this.currentPatientId = null;
     }
-  
-    // Clear the form and reset the form state
-    this.patientForm.reset({ gender: 'Male', type: 'Inpatient' });
-    this.isFormVisible = false;
+  });
+    
   }
-  
+
 
   toggleForm() {
     this.isFormVisible = !this.isFormVisible;
@@ -85,11 +93,11 @@ export class PatientsTableComponent  implements OnInit {
   }
   
 
-  editPatient(patient: Patient) {
-    this.currentPatientId = patient.id;
-    this.patientForm.patchValue(patient);
-    this.isFormVisible = true; // Show the form when editing
-  }
+  // editPatient(patient: Patient) {
+  //   this.currentPatientId = patient.id;
+  //   this.patientForm.patchValue(patient);
+  //   this.isFormVisible = true; // Show the form when editing
+  // }
 
   deletePatient(id: number) {
  

@@ -1,0 +1,51 @@
+<h1 mat-dialog-title class="dialog-title">{{ data.id ? 'Edit Patient' : 'Add Patient' }}</h1>
+
+<div mat-dialog-content>
+  <form [formGroup]="patientForm" (ngSubmit)="onSubmit()">
+    
+    <mat-form-field appearance="fill" class="full-width-form-field">
+      <mat-label class="form-label">Patient Name</mat-label>
+      <input matInput formControlName="name" class="form-input" />
+      <mat-error *ngIf="patientForm.get('name')?.invalid && patientForm.get('name')?.touched">
+        <div *ngIf="patientForm.get('name')?.errors?.['required']">Name is required.</div>
+        <div *ngIf="patientForm.get('name')?.errors?.['minlength']">Name must be at least 3 characters long.</div>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width-form-field">
+      <mat-label class="form-label">Gender</mat-label>
+      <mat-select formControlName="gender" class="form-select">
+        <mat-option value="Male">Male</mat-option>
+        <mat-option value="Female">Female</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width-form-field">
+      <mat-label class="form-label">Age</mat-label>
+      <input matInput type="number" formControlName="age" class="form-input" />
+      <mat-error *ngIf="patientForm.get('age')?.invalid && patientForm.get('age')?.touched">
+        <div *ngIf="patientForm.get('age')?.errors?.['required']">Age is required.</div>
+        <div *ngIf="patientForm.get('age')?.errors?.['min']">Age must be at least 1.</div>
+        <div *ngIf="patientForm.get('age')?.errors?.['max']">Age cannot be more than 120.</div>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width-form-field">
+      <mat-label class="form-label">Admitted Date</mat-label>
+      <input matInput type="date" formControlName="admittedDate" class="form-input" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width-form-field">
+      <mat-label class="form-label">Type</mat-label>
+      <mat-select formControlName="type" class="form-select">
+        <mat-option value="Inpatient">Inpatient</mat-option>
+        <mat-option value="Outpatient">Outpatient</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div mat-dialog-actions>
+      <button mat-button (click)="onNoClick()">Cancel</button>
+      <button mat-raised-button color="primary" type="submit">Submit</button>
+    </div>
+  </form>
+</div>
