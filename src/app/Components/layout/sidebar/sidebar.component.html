@@ -1,17 +1,17 @@
 <div class="d-flex flex-column p-3 pe-5 bg-light" style="width: fit-content">
   <a
-    href="/"
+    [routerLink]="['']"
     class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none"
   >
-    <span class="fs-4">CureSync</span>
     <i class="fa-solid fa-hospital"></i>
+    <span class="fs-4">Hospital</span>
   </a>
   <hr />
   <ul class="nav nav-pills flex-column mb-auto">
     <li class="nav-item">
-      <a routerLink="/" class="nav-link" routerLinkActive="active">
+      <a routerLink="dashboard" class="nav-link" routerLinkActive="active">
         <i class="fa-solid fa-chart-pie"></i>
-        Overview
+        Dashboard
       </a>
     </li>
     <li class="nav-item">
@@ -60,31 +60,28 @@
         Blogs
       </a>
     </li>
-    <li class="nav-item">
+    <!-- <li class="nav-item">
       <a routerLink="earnings" class="nav-link" routerLinkActive="active">
-        <i class="fa-solid fa-money-bill-wave"></i>
-        <!-- Icon for Earnings -->
+        <i class="fa-solid fa-money-bill-wave"></i> 
         Earnings
       </a>
-    </li>
+    </li> -->
 
     <hr />
 
     <li class="nav-item">
-      <a href="#" class="nav-link">
-        <i class="fa-solid fa-gear"></i>
-        <!-- Icon for Settings -->
-        Settings
+      <a [routerLink]="['/login']" class="nav-link">
+        <i class="fa-solid fa-right-to-bracket"></i>
+        <!-- Icon for Login -->
+        Login
       </a>
     </li>
     <li class="nav-item">
       <a href="#" class="nav-link">
-        <i class="fa-solid fa-circle-info"></i>
-        <!-- Icon for Help & Support -->
-        Help & Support
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <!-- Icon for Logout -->
+        Logout
       </a>
     </li>
-
-    <!-- Add more sidebar links -->
   </ul>
 </div>
