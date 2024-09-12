@@ -1,27 +1,61 @@
-.status-confirmed {
-    background: linear-gradient(45deg, #28a745, #218838); /* Gradient from green to dark green */
-    color: #fff;
-    border-radius: 12px;
-    padding: 0.5em 1em;
-    font-weight: bold;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+.custom-badge-success{
+  background-color: rgba(25, 135, 84, 0.3); /* Success green with 30% opacity */
+  color: #198754; /* Solid success green text */
+  font-weight: bold; /* Make the text bold */
+  border-radius: 0.5rem; /* More rounded corners for a smoother look */
+  padding: 0.35rem 0.65rem; /* Adjust padding for a better feel */
 }
 
-.status-pending {
-    background: linear-gradient(45deg, #ffc107, #e0a800); /* Gradient from yellow to dark yellow */
-    color: #000;
-    border-radius: 12px;
-    padding: 0.5em 1em;
-    font-weight: bold;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+/* Custom Danger Badge */
+.custom-badge-danger {
+  background-color: rgba(220, 53, 69, 0.3); /* Danger red with 30% opacity */
+  color: #fff; /* White text */
+  font-weight: bold;
+  border-radius: 0.5rem;
+  padding: 0.35rem 0.65rem;
 }
 
-.status-rejected {
-    background: linear-gradient(45deg, #dc3545, #c82333); /* Gradient from red to dark red */
-    color: #fff;
-    border-radius: 12px;
-    padding: 0.5em 1em;
-    font-weight: bold;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+/* Custom Warning Badge */
+.custom-badge-warning {
+  background-color: rgba(255, 193, 7, 0.3); /* Warning yellow with 30% opacity */
+  color: #9a8800; /* White text */
+  font-weight: bold;
+  border-radius: 0.5rem;
+  padding: 0.35rem 0.65rem;
 }
- 
+
+
+/* patient-management.component.css */
+.bi-pencil, .bi-trash {
+    cursor: pointer;
+  }
+  .bi-pencil:hover {
+    color: #007bff;
+  }
+  .bi-trash:hover {
+    color: #dc3545;
+  }
+  
+
+  /* Custom badge styles */
+
+/* Table hover effects */
+
+/* Add smooth transition for buttons */
+.btn {
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+
+.btn:active {
+  transform: scale(0.98); /* Slightly shrink button on click */
+}
+
+
+/* Hover expand effect */
+
+/* Optional: Add padding to form fields and table cells */
+input.form-control, select.form-control, .table td, .table th {
+  padding: 0.75rem; /* Default padding */
+}

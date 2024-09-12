@@ -1,0 +1,42 @@
+<!-- Total-->
+<div class="col-12 mb-3 mt-3">
+  <div class="card shadow-sm border-primary">
+    <div class="card-body">
+      <h5 class="card-title text-primary">Department & Doctor Count</h5>
+      <ul class="list-group list-group-flush">
+        @for(department of departments; track $index){
+        <li
+          class="list-group-item d-flex justify-content-between align-items-center"
+        >
+          <span class="font-weight-bold">{{ department.name }}:</span>
+          <span class="badge bg-primary text-white"
+            >{{ department.doctors.length }} doctors</span
+          >
+        </li>
+        }
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!--analysis card 1  -->
+<div class="row mb-4">
+  <div class="col-12 col-md-6 mb-3">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Doctor Distribution by Department</h5>
+        <canvas id="doctorDistributionChart" height="150"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!--analysis card 2  Pie Chart for Doctor Distribution-->
+  <div class="col-12 col-md-6 mb-4">
+    <div class="card shadow-sm">
+      <div class="card-body p-3">
+        <h5 class="card-title text-center">Department & Doctor Analysis</h5>
+        <canvas id="departmentDoctorChart" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
