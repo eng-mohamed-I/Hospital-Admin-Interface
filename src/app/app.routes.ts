@@ -15,6 +15,7 @@ import { DepartmentFormComponent } from './Components/department/department-form
 import { DepartmentUpdateComponent } from './Components/department/department-list/department-update/department-update.component';
 import { MainComponent } from './Components/layout/main/main.component';
 import { LoginComponent } from './Components/login/login.component';
+import { AppointmentsComponent } from './Components/appointments/appointments.component';
 
 export const routes: Routes = [  
         // Main now is the home component contain all copmonent 
@@ -39,6 +40,7 @@ export const routes: Routes = [
                 { path: 'blog-management', component: BlogManagementComponent },
                 { path: 'blog/create', component: CreateComponent },
                 { path: 'blog/edit/:id', component: EditComponent },
+                { path: 'appointment' , component: AppointmentsComponent}
         ]},
         { path: 'login' , component: LoginComponent }
     
