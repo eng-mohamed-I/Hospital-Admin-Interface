@@ -1,28 +1,23 @@
-import { CommonModule, NgFor, NgIf } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DepartmentService } from '../../../services/department/department.service';
 
 @Component({
   selector: 'app-department-form',
   standalone: true,
-  imports: [NgFor, NgIf,ReactiveFormsModule, CommonModule, FormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './department-form.component.html',
-  styleUrl: './department-form.component.css'
+  styleUrls: ['./department-form.component.css']
 })
-export class DepartmentFormComponent {
+export class DepartmentFormComponent implements OnInit {
 
   departmentForm: FormGroup;
   selectedDoctors: any[] = []; // Array to store selected doctors
+  doctors: any[] = []; // Array to store fetched doctors
+  departments: any[] = []; // Array to store fetched departments
 
-  doctors = [
-    { name: "Dr. Jane Doe", specialty: "Ophthalmologist" },
-    { name: "Dr. John Smith", specialty: "Optometrist" },
-    { name: "Dr. Anglina Julie", specialty: "Optometrist" },
-    { name: "Dr. Alan Green", specialty: "General Surgeon" },
-    { name: "Dr. Lisa White", specialty: "Orthopedic Surgeon" }
-  ];
-
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private departmentService: DepartmentService) {
     this.departmentForm = this.fb.group({
       departmentName: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
       departmentSpecialty: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
@@ -30,43 +25,81 @@ export class DepartmentFormComponent {
     });
   }
 
-  // Add selected doctor to the array
-  addDoctor() {
-      const selectedDoctorName = this.departmentForm.get('doctor')?.value;
-      if (selectedDoctorName) {
-        const selectedDoctor = this.doctors.find(doctor => doctor.name === selectedDoctorName);
-  
-        // Check if the doctor is already added
-        if (!this.selectedDoctors.includes(selectedDoctor)) {
-          this.selectedDoctors.push(selectedDoctor);
-        }
-  
-        // Clear the dropdown after adding
-        this.departmentForm.patchValue({ doctor: '' });
-      }
-    }
+  ngOnInit(): void {
+    this.loadDepartments();
+  }
 
-     // Remove a doctor by index
-  removeDoctor(index: number) {
+  // Fetch doctors from the API
+  // Fetch departments from the API
+  loadDepartments(): void {
+    this.departmentService.getDepartments().subscribe({
+      next: (data) => {
+        this.departments = data;
+      },
+      error: (err) => {
+        console.error('Error fetching departments:', err);
+      }
+    });
+  }
+
+  // Add selected doctor to the array
+  addDoctor(): void {
+    const selectedDoctorId = this.departmentForm.get('doctor')?.value;
+    if (selectedDoctorId) {
+      const selectedDoctor = this.doctors.find(doctor => doctor._id === selectedDoctorId);
+
+      // Check if the doctor is already added
+      if (selectedDoctor && !this.selectedDoctors.includes(selectedDoctor)) {
+        this.selectedDoctors.push(selectedDoctor);
+      }
+
+      // Clear the dropdown after adding
+      this.departmentForm.patchValue({ doctor: '' });
+    }
+  }
+
+  // Remove a doctor by index
+  removeDoctor(index: number): void {
     this.selectedDoctors.splice(index, 1);
   }
 
-
   // Handle form submission
-  onSubmit() {
+  onSubmit(): void {
     if (this.departmentForm.valid) {
       const departmentData = {
         departmentName: this.departmentForm.get('departmentName')?.value,
         departmentSpecialty: this.departmentForm.get('departmentSpecialty')?.value,
-        doctors: this.selectedDoctors
+        doctors: this.selectedDoctors.map(doc => doc._id) // Send only doctor IDs
       };
 
-      console.log('Department Data:', departmentData);
+      this.departmentService.addDepartment(departmentData).subscribe({
+        next: (response) => {
+          console.log('Department added successfully:', response);
 
-      // Clear form after submission
-      this.departmentForm.reset();
-      this.selectedDoctors = [];
+          // Clear form after submission
+          this.departmentForm.reset();
+          this.selectedDoctors = [];
+          this.loadDepartments(); // Refresh the department list
+        },
+        error: (err) => {
+          console.error('Error adding department:', err);
+        }
+      });
     }
   }
 
+  // Delete a department
+  deleteDepartment(departmentId: string): void {
+    if (confirm('Are you sure you want to delete this department?')) {
+      this.departmentService.deleteDepartment(departmentId).subscribe({
+        next: (response) => {
+          console.log('Department deleted successfully:', response);
+          this.loadDepartments(); // Refresh the department list
+        },
+        error: (err) => {
+          console.error('Error deleting department:', err);
+        }
+      });
+    }
+  }
 }
