@@ -1,22 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DoctorService } from '../../../services/doctor.service';
-import { Doctor } from '../../../models/doctor.model';
+import { Department, Doctor } from '../../../models/doctor.model';
 import { CommonModule } from '@angular/common';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { DepartmentService } from '../../../services/department/department.service';
 
 @Component({
   selector: 'app-doctor-form',
   standalone: true,
-  imports: [BsDatepickerModule, NgMultiSelectDropDownModule, CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [BsDatepickerModule, CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './doctor-form.component.html',
   styleUrls: ['./doctor-form.component.css']
 })
 export class DoctorFormComponent implements OnInit {
   doctorForm: FormGroup;
-  departments: string[] = ['Cardiology', 'Neurology', 'Orthopedics', 'Pediatrics', 'Dermatology'];
+  departments: Department[] = [];
   specialists: string[] = ['Heart Specialist', 'Neurologist', 'Orthopedic Surgeon', 'Pediatrician', 'Dermatologist'];
   availableAppointments: { date: string, time: string }[] = [];
   selectedDate: string = '';
@@ -26,29 +27,44 @@ export class DoctorFormComponent implements OnInit {
     showWeekNumbers: false,
     containerClass: 'theme-dark-blue'
   };
+  selectedImage: File | null = null;
+  loading = false;
+  error: string | null = null;
 
-  private doctorId: number | null = null;
+  private doctorId: string | null = null;
 
   constructor(
     private fb: FormBuilder,
     private doctorService: DoctorService,
+    private departmentService: DepartmentService, 
     private route: ActivatedRoute,
     private router: Router
   ) {
     this.doctorForm = this.fb.group({
       name: ['', Validators.required],
       department: ['', Validators.required],
-      specialist: ['', Validators.required],
-      gender: ['', Validators.required],
-      availableAppointments: this.fb.array([]) 
+      specialization: ['', Validators.required],
+      gender: ['', Validators.required],  // Add gender field
+      userName: ['', Validators.required],
+      nationalID: ['', Validators.required],
+      contactInfo: this.fb.group({ 
+        phone: ['', [Validators.required, Validators.pattern('^[0-9]{10,15}$')]], // phone control
+        email: ['', [Validators.required, Validators.email]], // email control
+      }),
+      dateOfBirth: ['', Validators.required],
+      experience: ['', Validators.required],
+      history: ['', Validators.required],
+      availableAppointments: this.fb.array([]), // For available appointments
+      image: ['']
     });
   }
 
   ngOnInit(): void {
+    this.fetchDepartments(); 
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
-        this.doctorId = +id;
+        this.doctorId = id;
         if (this.doctorId) {
           this.loadDoctor();
         }
@@ -61,57 +77,87 @@ export class DoctorFormComponent implements OnInit {
       if (doctor) {
         this.doctorForm.patchValue({
           name: doctor.name,
-          department: doctor.department,
-          specialist: doctor.specialist,
-          gender: doctor.gender
+          department: doctor.department._id, 
+          specialization: doctor.specialization,
+          gender: doctor.gender,
+          userName: doctor.userName,
+          nationalID: doctor.nationalID,
+          contactInfo: {
+            email: doctor.contactInfo.email,
+            phone: doctor.contactInfo.phone
+          },
+          dateOfBirth: doctor.dateOfBirth,
+          experience: doctor.experience,
+          history: doctor.history,
+          availableAppointments: doctor.availableAppointments
         });
-        this.availableAppointments = doctor.availableAppointments || [];
+        
+        if (doctor.image) {
+          this.selectedDate = doctor.image; // Set the image URL for display
+        }
+      }
+    });
+  }
+
+  fetchDepartments() {
+    this.departmentService.getDepartments().subscribe({
+      next: (response) => {
+        this.departments = response.departments;
+      },
+      error: (err) => {
+        this.error = 'Failed to load departments';
       }
     });
   }
 
   saveDoctor(): void {
     if (this.doctorForm.valid) {
-      const doctor: Doctor = this.doctorForm.value;
-      doctor.availableAppointments = this.availableAppointments;
-
-      const saveOperation = this.doctorId
-        ? this.doctorService.updateDoctor(this.doctorId, doctor)
-        : this.doctorService.addDoctor(doctor);
-
-      saveOperation.subscribe(() => {
-        this.router.navigate(['/doctor/doctor-list']);
-      });
-    } else {
-      // Mark all controls as touched to trigger validation messages
-      this.doctorForm.markAllAsTouched();
+      this.loading = true;
+      const doctorData = this.doctorForm.value;
+      if (this.doctorId) {
+        this.doctorService.updateDoctor(this.doctorId, doctorData).subscribe({
+          next: () => this.router.navigate(['/doctors']),
+          error: err => {
+            console.log(err);
+            this.loading = false;
+            this.error = err.message;
+          }
+        });
+      } else {
+        this.doctorService.addDoctor(doctorData).subscribe({
+          next: () => this.router.navigate(['/doctors']),
+          error: err => {
+            this.loading = false;
+            console.log(err);
+            this.error = err.message;
+          }
+        });
+      }
     }
   }
 
-  onDateTimeChange(date: any): void {
-    this.selectedDate = date;
+  onDateTimeChange(event: any): void {
+    this.selectedDate = event?.toISOString().split('T')[0];
   }
 
   onTimeChange(event: any): void {
     this.selectedTime = event.target.value;
-    if (this.selectedDate && this.selectedTime) {
-      this.addAppointment(this.selectedDate, this.selectedTime);
-      this.selectedDate = '';
-      this.selectedTime = '';
-    }
-  }
-
-  addAppointment(date: string, time: string): void {
-    if (date && time) {
-      this.availableAppointments.push({ date, time });
-      this.doctorForm.patchValue({ availableAppointments: this.availableAppointments });
-    }
   }
 
   removeAppointment(appointment: { date: string, time: string }): void {
-    this.availableAppointments = this.availableAppointments.filter(
-      app => app.date !== appointment.date || app.time !== appointment.time
-    );
-    this.doctorForm.patchValue({ availableAppointments: this.availableAppointments });
+    const appointments = this.doctorForm.get('availableAppointments') as FormArray;
+    const index = appointments.controls.findIndex(app => app.value.date === appointment.date && app.value.time === appointment.time);
+    if (index > -1) {
+      appointments.removeAt(index);
+    }
+  }
+
+  onFileChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input?.files?.length) {
+      this.selectedImage = input.files[0]; 
+    } else {
+      this.selectedImage = null;
+    }
   }
 }

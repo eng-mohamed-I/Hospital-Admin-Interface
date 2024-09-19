@@ -15,13 +15,11 @@ import { FormsModule } from '@angular/forms';
 export class DoctorListComponent implements OnInit {
   doctors: Doctor[] = [];
   filteredDoctors: Doctor[] = [];
-
   searchName: string = '';
   selectedDepartment: string = '';
   selectedSpecialist: string = '';
-
-  departments: string[] = ['Cardiology', 'Neurology', 'Orthopedics', 'Pediatrics', 'Dermatology'];
-  specialists: string[] = ['Heart Specialist', 'Neurologist', 'Orthopedic Surgeon', 'Pediatrician', 'Dermatologist'];
+  departments: string[] = []; 
+  specialists: string[] = []; 
 
   constructor(private doctorService: DoctorService, private router: Router) {}
 
@@ -32,36 +30,46 @@ export class DoctorListComponent implements OnInit {
   getDoctors(): void {
     this.doctorService.getDoctors().subscribe((doctors) => {
       this.doctors = doctors;
-      this.filteredDoctors = [...this.doctors]; // Initialize filteredDoctors with all doctors
+      this.filteredDoctors = doctors; 
+      this.populateFilters();
     });
   }
 
-  filterDoctors(): void {
-    this.filteredDoctors = this.doctors.filter(doctor =>
-      (!this.selectedDepartment || doctor.department === this.selectedDepartment) &&
-      (!this.selectedSpecialist || doctor.specialist === this.selectedSpecialist) &&
-      (!this.searchName || doctor.name.toLowerCase().includes(this.searchName.toLowerCase()))
-    );
+  populateFilters(): void {
+    this.departments = Array.from(new Set(this.doctors.map(doc => doc.department.name)));
+    this.specialists = Array.from(new Set(this.doctors.map(doc => doc.specialization)));
   }
 
+  // Filter doctors based on the search input
+  filterDoctors(): void {
+    this.filteredDoctors = this.doctors.filter(doctor => {
+      return (
+        (this.searchName === '' || doctor.name.toLowerCase().includes(this.searchName.toLowerCase())) &&
+        (this.selectedDepartment === '' || doctor.department.name === this.selectedDepartment) &&
+        (this.selectedSpecialist === '' || doctor.specialization === this.selectedSpecialist)
+      );
+    });
+  }
+
+  updateDoctor(doctorId:string): void {
+    this.router.navigate(['/update-doctor', doctorId]);
+  }
   clearFilters(): void {
     this.searchName = '';
     this.selectedDepartment = '';
     this.selectedSpecialist = '';
-    this.filteredDoctors = [...this.doctors]; // Reset the filtered list to show all doctors
+    this.filteredDoctors = this.doctors;
   }
-
-  updateDoctor(id: number): void {
-    this.router.navigate(['/doctor/doctor-form', id]);
-  }
-
-  deleteDoctor(id: number): void {
-    this.doctorService.deleteDoctor(id);
-    this.doctorService.getDoctors().subscribe(doctors => this.doctors = doctors);
-  }
-  confirmDeleteDoctor(id: number): void {
+  confirmDeleteDoctor(doctorId: string): void {
     if (confirm('Are you sure you want to delete this doctor?')) {
-      this.deleteDoctor(id);
+      this.doctorService.deleteDoctor(doctorId).subscribe(() => {
+        this.getDoctors();
+      });
     }
+  }
+
+  // Navigate to doctor details
+  viewDoctorDetails(id: string): void {
+    this.router.navigate(['/doctor-details', id]);
   }
 }
