@@ -4,13 +4,15 @@
       <div class="card shadow-sm">
         <div class="card-body">
           <h3 class="text-center mb-4">Login</h3>
-          <form>
+          <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
             <div class="form-group mb-3">
               <label for="email">Email address</label>
               <input
                 type="email"
                 class="form-control"
                 id="email"
+                name="email"
+                [(ngModel)]="email"
                 placeholder="Enter email"
                 required
               />
@@ -21,17 +23,20 @@
                 type="password"
                 class="form-control"
                 id="password"
+                name="password"
+                [(ngModel)]="password"
                 placeholder="Password"
                 required
               />
             </div>
             <div class="d-grid gap-2">
-              <button type="submit" class="btn">Login</button>
+              <button type="submit" class="btn btn-primary">Login</button>
             </div>
             <div class="text-center mt-3">
               <a href="#">Forgot your password?</a>
             </div>
           </form>
+          <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
         </div>
       </div>
     </div>

@@ -1,100 +1,48 @@
 <div class="container">
-  <nav
-    class="navbar navbar-expand-lg navbar-light"
-    style="background-color: #abc2f5"
-  >
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #abc2f5">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#"> Blogs</a>
-    </div>
-    <div class="d-flex me-3">
-      <button
-        class="btn btn-success"
-        routerLink="/blog/create"
-        style="background-color: #233763"
-      >
-        ADD+
-      </button>
+      <a class="navbar-brand" href="#">Blogs</a>
     </div>
   </nav>
 
   <h3 style="color: #233763">Create Blog</h3>
-  <form #myForm="ngForm" class="bg-light p-3 rounded">
+  <form #myForm="ngForm" (ngSubmit)="create()" class="bg-light p-3 rounded" enctype="multipart/form-data">
+    
     <div class="mb-3">
       <label for="txtTitle" class="form-label">Title</label>
       <input
         type="text"
         name="title"
         [(ngModel)]="formdata.title"
-        required
-        minlength="3"
-        #titleInput="ngModel"
-        [ngClass]="{
-          'is-invalid':
-            (titleInput.touched || titleInput.dirty) && titleInput.invalid
-        }"
         class="form-control"
         id="txtTitle"
       />
-      <span class=""
-        >@if(titleInput.errors?.['required']) {<span class="text-danger"
-          >title is required</span
-        >} @if(titleInput.errors?.['minlength']) {<span class="text-danger"
-          >title must be at least 3 char.</span
-        >}
-      </span>
     </div>
 
     <div class="mb-3">
       <label for="txtBody" class="form-label">Body</label>
-      <input
-        type="text"
+      <textarea
         name="body"
         [(ngModel)]="formdata.body"
-        required
-        minlength="10"
-        #bodyInput="ngModel"
-        [ngClass]="{
-          'is-invalid':
-            (bodyInput.touched || bodyInput.dirty) && bodyInput.invalid
-        }"
         class="form-control"
         id="txtBody"
-      />
-      <span class=""
-        >@if(bodyInput.errors?.['required']) {<span class="text-danger"
-          >body is required</span
-        >} @if(bodyInput.errors?.['minlength']) {<span class="text-danger"
-          >body must be at least 10 char.</span
-        >}
-      </span>
+      ></textarea>
     </div>
 
     <div class="mb-3">
-      <label for="image" class="form-label">Img</label>
+      <label for="image" class="form-label">Image</label>
       <input
         type="file"
-        name="img"
-        [(ngModel)]="formdata.url"
+        name="image"
+        (change)="onFileChange($event)"
         class="form-control"
         id="image"
-        required
-        #imgInput="ngModel"
-        [ngClass]="{
-          'is-invalid': (imgInput.touched || imgInput.dirty) && imgInput.invalid
-        }"
       />
-      <span class=""
-        >@if(imgInput.errors?.['required']) {<span class="text-danger"
-          >img is required</span
-        >}
-      </span>
     </div>
-
+    
     <button
-      type="button"
-      (click)="create()"
+      type="submit"
       class="btn btn-primary"
-      [disabled]="myForm.invalid"
     >
       Create
     </button>
