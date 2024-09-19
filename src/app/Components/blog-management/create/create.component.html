@@ -28,45 +28,34 @@
         required
         minlength="3"
         #titleInput="ngModel"
-        [ngClass]="{
-          'is-invalid':
-            (titleInput.touched || titleInput.dirty) && titleInput.invalid
-        }"
+        [ngClass]="{'is-invalid':(bodyInput.touched || bodyInput.dirty)  && titleInput.invalid}"
         class="form-control"
         id="txtTitle"
       />
-      <span class=""
-        >@if(titleInput.errors?.['required']) {<span class="text-danger"
-          >title is required</span
-        >} @if(titleInput.errors?.['minlength']) {<span class="text-danger"
-          >title must be at least 3 char.</span
-        >}
-      </span>
+      <div *ngIf="titleInput.touched && titleInput.invalid" class="text-danger">
+        <div *ngIf="titleInput.errors?.['required']">Title is required</div>
+        <div *ngIf="titleInput.errors?.['minlength']">Title must be at least 3 characters</div>
+      </div>
     </div>
 
     <div class="mb-3">
       <label for="txtBody" class="form-label">Body</label>
-      <input
+      <textarea
+      style="height: 100px;"
         type="text"
         name="body"
         [(ngModel)]="formdata.body"
         required
         minlength="10"
         #bodyInput="ngModel"
-        [ngClass]="{
-          'is-invalid':
-            (bodyInput.touched || bodyInput.dirty) && bodyInput.invalid
-        }"
+        [ngClass]="{'is-invalid': (bodyInput.touched || bodyInput.dirty) && bodyInput.invalid}"
         class="form-control"
         id="txtBody"
-      />
-      <span class=""
-        >@if(bodyInput.errors?.['required']) {<span class="text-danger"
-          >body is required</span
-        >} @if(bodyInput.errors?.['minlength']) {<span class="text-danger"
-          >body must be at least 10 char.</span
-        >}
-      </span>
+      ></textarea>
+      <div *ngIf="bodyInput.touched && bodyInput.invalid" class="text-danger">
+        <div *ngIf="bodyInput.errors?.['required']">Body is required</div>
+        <div *ngIf="bodyInput.errors?.['minlength']">Body must be at least 10 characters</div>
+      </div>
     </div>
 
     <div class="mb-3">
@@ -79,15 +68,11 @@
         id="image"
         required
         #imgInput="ngModel"
-        [ngClass]="{
-          'is-invalid': (imgInput.touched || imgInput.dirty) && imgInput.invalid
-        }"
+        [ngClass]="{'is-invalid': (imgInput.touched || imgInput.dirty) && imgInput.invalid}"
       />
-      <span class=""
-        >@if(imgInput.errors?.['required']) {<span class="text-danger"
-          >img is required</span
-        >}
-      </span>
+      <div *ngIf="imgInput.touched && imgInput.invalid" class="text-danger">
+        <div *ngIf="imgInput.errors?.['required']">Image is required</div>
+      </div>
     </div>
 
     <button
