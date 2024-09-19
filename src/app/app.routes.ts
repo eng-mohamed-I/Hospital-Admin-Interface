@@ -12,46 +12,48 @@ import { DepartmentDetailsComponent } from './Components/department/department-d
 import { DepartmentListComponent } from './Components/department/department-list/department-list.component';
 import { DepartmentFormComponent } from './Components/department/department-form/department-form.component';
 import { DepartmentUpdateComponent } from './Components/department/department-list/department-update/department-update.component';
+import { MainComponent } from './Components/layout/main/main.component';
+import { LoginComponent } from './Components/login/login.component';
+import { AppointmentsComponent } from './Components/appointments/appointments.component';
 
 import { SingleBlogComponent } from './Components/blog-management/single-blog/single-blog.component';
 import { BlogManagementComponent } from './Components/blog-management/blog-management.component';
 import { CreateComponent } from './Components/blog-management/create/create.component';
 import { EditComponent } from './Components/blog-management/edit/edit.component';
 import { EarningsComponent } from './Components/earnings/earnings.component';
-import { LoginComponent } from './Components/Pages/Doctors/login/login.component';
 
 export const routes: Routes = [  
-        { path: '', component: DashboardComponent },
-        { path: 'patients', component: PatientsTableComponent },
-        { path: 'patients-profile', component: PatientProfileComponent },
-        { path: 'department' , component: DepartmentComponent , children: [
-                { path: '' , redirectTo: "details" , pathMatch: "full"},
-                { path: "details" , component: DepartmentDetailsComponent }, 
-                { path: "list" , component: DepartmentListComponent },
-                { path: "form" , component: DepartmentFormComponent },
-                { path: 'update' , component: DepartmentUpdateComponent}
-              ]},
-        { path: 'doctor', component: DoctorsComponent, children: [
-                { path: 'doctor-list', component: DoctorListComponent },
-                { path: 'doctor-form', component: DoctorFormComponent },
-                { path: 'doctor-form/:id', component: DoctorFormComponent },
-                { path: '', redirectTo: 'doctor-list', pathMatch: 'full' }
-              ]},
-        { path: 'blog-management', component: BlogManagementComponent },
-        { path: 'blog/:id', component: SingleBlogComponent },
-        { path: 'blog-management/form', component: CreateComponent },
-        { path: 'blog/edit/:id', component: EditComponent },
-
-        { path: 'earnings', component: EarningsComponent },
-
-
+  
 
         
-        { path: 'login', component: LoginComponent },
 
-
-
-        
+        // Main now is the home component contain all copmonent 
+        { path: '', component: MainComponent ,children: [ 
+                { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+                { path: 'dashboard' , component: DashboardComponent},
+                { path: 'patients', component: PatientsTableComponent },
+                { path: 'patients-profile', component: PatientProfileComponent },
+                { path: 'department' , component: DepartmentComponent , children: [
+                        { path: '' , redirectTo: "details" , pathMatch: "full"},
+                        { path: "details" , component: DepartmentDetailsComponent }, 
+                        { path: "list" , component: DepartmentListComponent },
+                        { path: "form" , component: DepartmentFormComponent },
+                        { path: 'update' , component: DepartmentUpdateComponent}
+                      ]},
+                { path: 'doctor', component: DoctorsComponent, children: [
+                        { path: 'doctor-list', component: DoctorListComponent },
+                        { path: 'doctor-form', component: DoctorFormComponent },
+                        { path: 'doctor-form/:id', component: DoctorFormComponent },
+                        { path: '', redirectTo: 'doctor-list', pathMatch: 'full' }
+                      ]},
+                      { path: 'blog-management', component: BlogManagementComponent },
+                      { path: 'blog/:id', component: SingleBlogComponent },
+                      { path: 'blog-management/form', component: CreateComponent },
+                      { path: 'blog/edit/:id', component: EditComponent },
+                      { path: 'appointment' , component: AppointmentsComponent},
+                      { path: 'earnings', component: EarningsComponent },
+        ]},
+        { path: 'login' , component: LoginComponent },
 
  ];
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DoctorLoginService } from '../../../../services/doctor/doctor-login.service';
+import { DoctorLoginService } from '../../services/doctor/doctor-login.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
 @Component({
