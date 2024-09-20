@@ -1,4 +1,4 @@
-<div class="position-relative col-md-8 mt-5 p-4 bg-light shadow-sm rounded">
+<div class="position-relative col-md-8 mt-2 p-4 bg-light shadow-sm rounded">
   @if(message.includes("success")) {
   <div
     [class]="
@@ -16,8 +16,6 @@
     {{ message }}
   </div>
   }
-
-  <h4 class="text-center text-primary mb-4">New Department</h4>
   <form [formGroup]="departmentForm" (ngSubmit)="onSubmit()">
     <div class="row mb-4">
       <!-- Department Name Input -->
@@ -101,8 +99,10 @@
     </div>
 
     <!-- Selected Doctors Box -->
-    <div class="mb-4">
-      <label class="form-label text-secondary">Selected Doctors</label>
+    <div class="s-docters mb-4">
+      <label class="form-label text-secondary"
+        >Selected Doctors {{ selectedDoctors.length }}</label
+      >
       <div class="p-3 border rounded bg-white">
         <span *ngIf="selectedDoctors.length === 0" class="text-muted"
           >No doctors selected.</span

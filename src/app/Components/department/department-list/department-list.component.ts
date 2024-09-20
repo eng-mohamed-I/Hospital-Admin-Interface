@@ -17,6 +17,7 @@ export class DepartmentListComponent implements OnInit {
   departments: any[] = [];  // Set departments as an empty array
   showConfirmModal: boolean = false;
   selectedDepartment: any = null;
+  selectedDepartmentIndex: any
   loading: boolean = true;  // Track loading state
   error: string | null = null;  // Track errors
 
@@ -68,10 +69,10 @@ export class DepartmentListComponent implements OnInit {
     console.log(department);
   }
 
-openConfirmDialog(department: any) {
+openConfirmDialog(index: any,department: any) {
   if (department && department._id) {
-    console.log(department._id);
-    
+
+    this.selectedDepartmentIndex = index
     this.selectedDepartment = department;
     this.showConfirmModal = true;
   } else {
@@ -92,8 +93,11 @@ openConfirmDialog(department: any) {
   
       this.departmentService.deleteDepartment(this.selectedDepartment._id).subscribe({
         next: () => {
+
+          this.departments.splice(this.selectedDepartmentIndex, 1) //wala yhemk ya 3m :(
           // Remove the deleted department from the local list
-          this.departments = this.departments.filter(dep => dep._id !== this.selectedDepartment._id);
+          // console.log(this.selectedDepartment)
+          // this.departments = this.departments.filter(dep => dep._id !== this.selectedDepartment._id);
           console.log('Department successfully deleted:', this.selectedDepartment); // Debug log
         },
         error: (err) => {

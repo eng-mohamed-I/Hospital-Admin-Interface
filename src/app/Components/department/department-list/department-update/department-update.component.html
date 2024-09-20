@@ -75,8 +75,8 @@
     <!-- Doctor Selection Dropdown -->
     <div class="mb-4">
       <label for="doctor" class="form-label text-secondary"
-        >Select Doctor</label
-      >
+        >Select Doctor
+      </label>
       <select
         id="doctor"
         formControlName="doctor"
@@ -101,7 +101,9 @@
 
     <!-- Selected Doctors Box -->
     <div class="mb-4">
-      <label class="form-label text-secondary">Selected Doctors</label>
+      <label class="form-label text-secondary"
+        >Selected Doctors {{ selectedDoctors.length }}</label
+      >
       <div class="p-3 border rounded bg-white">
         <span *ngIf="selectedDoctors.length === 0" class="text-muted"
           >No doctors selected.</span
