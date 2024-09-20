@@ -37,8 +37,8 @@ export const routes: Routes = [
                         { path: '' , redirectTo: "details" , pathMatch: "full"},
                         { path: "details" , component: DepartmentDetailsComponent }, 
                         { path: "list" , component: DepartmentListComponent },
-                        { path: "form" , component: DepartmentFormComponent },
-                        { path: 'update' , component: DepartmentUpdateComponent}
+                        { path: "add" , component: DepartmentFormComponent },
+                        { path: 'update/:id' , component: DepartmentUpdateComponent}
                       ]},
                 { path: 'doctor', component: DoctorsComponent, children: [
                         { path: 'doctor-list', component: DoctorListComponent },

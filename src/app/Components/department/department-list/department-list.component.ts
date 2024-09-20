@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { DepartmentService } from '../../../services/department/department.service';
 import { CommonModule, NgClass, NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
  
 @Component({
   selector: 'app-department-list',
   standalone: true,
-  imports: [NgFor, FormsModule, NgClass, CommonModule],
+  imports: [NgFor, FormsModule, NgClass, CommonModule,RouterLink],
   templateUrl: './department-list.component.html',
   styleUrls: ['./department-list.component.css'],
 })
