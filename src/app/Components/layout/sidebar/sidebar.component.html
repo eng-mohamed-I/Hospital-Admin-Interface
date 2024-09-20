@@ -1,15 +1,19 @@
-<div class="d-flex flex-column p-3 pe-5 bg-light" style="width: fit-content">
+<div class="container-fluid p-2" style="width: 100%">
   <a
     [routerLink]="['']"
-    class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none"
+    class="text-center mb-3 text-light text-decoration-none"
   >
     <i class="fa-solid fa-hospital"></i>
     <span class="fs-4">-Hospital</span>
   </a>
-  <hr />
+  <hr class="bg-light" />
   <ul class="nav nav-pills flex-column mb-auto">
     <li class="nav-item">
-      <a routerLink="dashboard" class="nav-link" routerLinkActive="active">
+      <a
+        routerLink="dashboard"
+        class="nav-link text-custom"
+        routerLinkActive="active-r"
+      >
         <i class="fa-solid fa-chart-pie"></i>
         Dashboard
       </a>
@@ -17,74 +21,87 @@
     <li class="nav-item">
       <a
         [routerLink]="['/patients']"
-        routerLinkActive="active"
-        class="nav-link"
+        routerLinkActive="active-r"
+        class="nav-link text-custom"
       >
         <i class="fa-solid fa-users"></i>
         Patients
       </a>
     </li>
-
     <li class="nav-item">
       <a
         [routerLink]="['/appointment']"
-        routerLinkActive="active"
-        class="nav-link"
+        routerLinkActive="active-r"
+        class="nav-link text-custom"
       >
         <i class="fa-solid fa-calendar-check"></i>
         Appointments
       </a>
     </li>
     <li class="nav-item">
-      <a [routerLink]="['/doctor']" routerLinkActive="active" class="nav-link">
+      <a
+        [routerLink]="['/doctor']"
+        routerLinkActive="active-r"
+        class="nav-link text-custom"
+      >
         <i class="fa-solid fa-user-md"></i>
         Doctors
       </a>
     </li>
-
     <li class="nav-item">
       <a
         [routerLink]="['/department']"
-        routerLinkActive="active"
-        class="nav-link"
+        routerLinkActive="active-r"
+        class="nav-link text-custom"
       >
         <i class="fa-solid fa-building"></i>
-        <!-- Icon for Department -->
         Department
       </a>
     </li>
     <li class="nav-item">
       <a
-        class="nav-link"
+        class="nav-link text-custom"
         [routerLink]="['/blog-management']"
-        routerLinkActive="active"
+        routerLinkActive="active-r"
       >
         <i class="fa-solid fa-users"></i>
-        <!-- Icon for Blogs -->
         Blogs
       </a>
     </li>
     <li class="nav-item">
-      <a routerLink="earnings" class="nav-link" routerLinkActive="active">
+      <a
+        routerLink="earnings"
+        class="nav-link text-custom"
+        routerLinkActive="active-r"
+      >
         <i class="fa-solid fa-money-bill-wave"></i>
         Earnings
       </a>
     </li>
-    <hr />
-
+    <hr class="bg-light" />
     <li class="nav-item">
-      <a [routerLink]="['/login']" class="nav-link">
+      <a [routerLink]="['/login']" class="nav-link text-custom">
         <i class="fa-solid fa-right-to-bracket"></i>
-        <!-- Icon for Login -->
         Login
       </a>
     </li>
     <li class="nav-item">
-      <a href="#" class="nav-link">
+      <a href="#" class="nav-link text-custom">
         <i class="fa-solid fa-right-from-bracket"></i>
-        <!-- Icon for Logout -->
         Logout
       </a>
     </li>
   </ul>
 </div>
+
+<style>
+  /* Additional styles */
+  .nav-link {
+    transition: background-color 0.3s ease;
+    color: #606161; /* Set the text color to #232f66 */
+  }
+
+  .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Light hover effect */
+  }
+</style>
