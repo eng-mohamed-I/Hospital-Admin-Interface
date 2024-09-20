@@ -15,9 +15,9 @@ export class DepartmentService {
   }
 
   deleteDepartment(departmentId: string): Observable<any> {
-    return this.http.delete<any>(`${this.baseUrl}/${departmentId}`);
+    return this.http.delete<any>(`${this.baseUrl}/get-one/${departmentId}`);
   }
   getDepartments(): Observable<any> {
-    return this.http.get<any>(this.baseUrl);
+    return this.http.get<any>(`${this.baseUrl}/get-all`);
   }
 }
