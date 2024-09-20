@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DepartmentService } from '../../../services/department/department.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-department-form',
@@ -17,7 +19,7 @@ export class DepartmentFormComponent implements OnInit {
   doctors: any[] = []; // Array to store fetched doctors
   message: string = ""
 
-  constructor(private fb: FormBuilder, private departmentService: DepartmentService) {
+  constructor(private _router: Router, private fb: FormBuilder, private departmentService: DepartmentService) {
     this.departmentForm = this.fb.group({
       departmentName: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
       departmentDescription: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
@@ -87,6 +89,9 @@ export class DepartmentFormComponent implements OnInit {
 
           // clear message
           this.clearMessage(this.message)
+          setTimeout(() => {
+            this._router.navigate(["/department/list"])
+          },2000)
         },
         error: (err) => {
           // show error message

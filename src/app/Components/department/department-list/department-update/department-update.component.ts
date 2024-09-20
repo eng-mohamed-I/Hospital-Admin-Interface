@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DepartmentService } from '../../../../services/department/department.service';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
-import { Router } from 'express';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-department-update',
@@ -20,7 +19,7 @@ export class DepartmentUpdateComponent {
   departmentId : any
   department: any
 
-  constructor(private router: Router,private route:ActivatedRoute ,private fb: FormBuilder, private departmentService: DepartmentService) {
+  constructor(private router: Router ,private route:ActivatedRoute ,private fb: FormBuilder, private departmentService: DepartmentService) {
     this.departmentForm = this.fb.group({
       departmentName: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
       departmentDescription: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
@@ -78,12 +77,10 @@ export class DepartmentUpdateComponent {
     if (selectedDoctorId) {
       //get doctor
       const selectedDoctor = this.doctors.find(doctor => doctor._id === selectedDoctorId);
-
       //check if the doc is founded in array
-      let foundedDoc = this.doctors.find(doc => doc._id === selectedDoctor._id)
-
+      let foundedDoc = this.selectedDoctors.find(doc => doc._id === selectedDoctor._id)
       //if dosen't add him
-      if(selectedDoctor &&!foundedDoc){ 
+      if(!foundedDoc){ 
         this.selectedDoctors.push(selectedDoctor);
       }
 
@@ -122,9 +119,11 @@ export class DepartmentUpdateComponent {
           this.message = response.message
           this.departmentForm.reset();
           this.selectedDoctors = [];
-
           // clear message
           this.clearMessage(this.message)
+          setTimeout(() => { 
+            this.router.navigate(["/department/list"])
+          },2000)
         },
         error: (err) => {
           // show error message
