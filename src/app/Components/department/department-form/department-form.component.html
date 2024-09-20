@@ -1,9 +1,27 @@
-<div class="container mt-5 p-4 bg-light shadow-sm rounded">
-  <h2 class="text-center text-primary mb-4">New Department</h2>
+<div class="position-relative col-md-8 mt-5 p-4 bg-light shadow-sm rounded">
+  @if(message.includes("success")) {
+  <div
+    [class]="
+      'alert alert-success position-absolute start-50 mt-3 translate-middle'
+    "
+  >
+    {{ message }}
+  </div>
+  }@else if(message.includes("exist")) {
+  <div
+    [class]="
+      'alert alert-danger position-absolute start-50 mt-3 translate-middle'
+    "
+  >
+    {{ message }}
+  </div>
+  }
+
+  <h4 class="text-center text-primary mb-4">New Department</h4>
   <form [formGroup]="departmentForm" (ngSubmit)="onSubmit()">
     <div class="row mb-4">
       <!-- Department Name Input -->
-      <div class="col-md-6">
+      <div class="col-md-12">
         <label for="departmentName" class="form-label text-secondary"
           >Department Name</label
         >
@@ -29,27 +47,27 @@
       </div>
 
       <!-- Department Specialty Input -->
-      <div class="col-md-6">
-        <label for="departmentSpecialty" class="form-label text-secondary"
-          >Department Specialty</label
+      <div class="col-md-12">
+        <label for="departmentDescription" class="form-label text-secondary"
+          >Department Description</label
         >
-        <input
-          id="departmentSpecialty"
-          formControlName="departmentSpecialty"
-          type="text"
+        <textarea
+          id="departmentDescription"
+          formControlName="departmentDescription"
+          type="checkbox"
           class="form-control border-primary"
-          placeholder="Enter department specialty"
-        />
+          placeholder="Enter department desciption"
+        ></textarea>
         <div
           *ngIf="
-            departmentForm.get('departmentSpecialty')?.invalid &&
-            departmentForm.get('departmentSpecialty')?.touched
+            departmentForm.get('departmentDescription')?.invalid &&
+            departmentForm.get('departmentDescription')?.touched
           "
           class="text-danger mt-1"
         >
           <small
-            *ngIf="departmentForm.get('departmentSpecialty')?.errors?.['required']"
-            >Specialty is required.</small
+            *ngIf="departmentForm.get('departmentDescription')?.errors?.['required']"
+            >Description is required.</small
           >
         </div>
       </div>
@@ -68,10 +86,10 @@
       >
         <option value="">Select a doctor</option>
         <option *ngFor="let doctor of doctors" [value]="doctor.name">
-          {{ doctor.name }} ({{ doctor.specialty }})
+          {{ doctor.name }} ({{ doctor.specialization }})
         </option>
       </select>
-      <div
+      <!-- <div
         *ngIf="
           departmentForm.get('doctor')?.invalid &&
           departmentForm.get('doctor')?.touched
@@ -79,7 +97,7 @@
         class="text-danger mt-1"
       >
         <small>Doctor selection is required.</small>
-      </div>
+      </div> -->
     </div>
 
     <!-- Selected Doctors Box -->
@@ -93,7 +111,7 @@
           *ngFor="let doctor of selectedDoctors; let i = index"
           class="d-flex justify-content-between align-items-center mb-2"
         >
-          <span>{{ doctor.name }} ({{ doctor.specialty }})</span>
+          <span>{{ doctor.name }} ({{ doctor.specialization }})</span>
           <button
             type="button"
             class="btn btn-sm btn-danger"
@@ -107,11 +125,7 @@
 
     <!-- Submit Button -->
     <div class="text-center">
-      <button
-        type="submit"
-        class="btn btn-success px-4"
-        [disabled]=""
-      >
+      <button type="submit" class="btn btn-success px-4" [disabled]="">
         Add Department
       </button>
     </div>

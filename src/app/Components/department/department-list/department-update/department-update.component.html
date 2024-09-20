@@ -1,1 +1,132 @@
-<p>department-update works!</p>
+<div class="position-relative col-md-8 mt-5 p-4 bg-light shadow-sm rounded">
+  @if(message.includes("success")) {
+  <div
+    [class]="
+      'alert alert-success position-absolute start-50 mt-3 translate-middle'
+    "
+  >
+    {{ message }}
+  </div>
+  }@else if(message.includes("exist")) {
+  <div
+    [class]="
+      'alert alert-danger position-absolute start-50 mt-3 translate-middle'
+    "
+  >
+    {{ message }}
+  </div>
+  }
+
+  <form [formGroup]="departmentForm" (ngSubmit)="onSubmit()">
+    <div class="row mb-4">
+      <!-- Department Name Input -->
+      <div class="col-md-12">
+        <label for="departmentName" class="form-label text-secondary"
+          >Department Name</label
+        >
+        <input
+          id="departmentName"
+          formControlName="departmentName"
+          type="text"
+          class="form-control border-primary"
+          placeholder="Enter department name"
+        />
+        <div
+          *ngIf="
+            departmentForm.get('departmentName')?.invalid &&
+            departmentForm.get('departmentName')?.touched
+          "
+          class="text-danger mt-1"
+        >
+          <small
+            *ngIf="departmentForm.get('departmentName')?.errors?.['required']"
+            >Department name is required.</small
+          >
+        </div>
+      </div>
+
+      <!-- Department Specialty Input -->
+      <div class="col-md-12">
+        <label for="departmentDescription" class="form-label text-secondary"
+          >Department Description</label
+        >
+        <textarea
+          id="departmentDescription"
+          formControlName="departmentDescription"
+          type="checkbox"
+          class="form-control border-primary"
+          placeholder="Enter department desciption"
+        ></textarea>
+        <div
+          *ngIf="
+            departmentForm.get('departmentDescription')?.invalid &&
+            departmentForm.get('departmentDescription')?.touched
+          "
+          class="text-danger mt-1"
+        >
+          <small
+            *ngIf="departmentForm.get('departmentDescription')?.errors?.['required']"
+            >Description is required.</small
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Doctor Selection Dropdown -->
+    <div class="mb-4">
+      <label for="doctor" class="form-label text-secondary"
+        >Select Doctor</label
+      >
+      <select
+        id="doctor"
+        formControlName="doctor"
+        class="form-select border-primary"
+        (change)="addDoctor()"
+      >
+        <option value="">Select a doctor</option>
+        <option *ngFor="let doctor of doctors" [value]="doctor._id">
+          {{ doctor.name }} ({{ doctor.specialization }})
+        </option>
+      </select>
+      <!-- <div
+          *ngIf="
+            departmentForm.get('doctor')?.invalid &&
+            departmentForm.get('doctor')?.touched
+          "
+          class="text-danger mt-1"
+        >
+          <small>Doctor selection is required.</small>
+        </div> -->
+    </div>
+
+    <!-- Selected Doctors Box -->
+    <div class="mb-4">
+      <label class="form-label text-secondary">Selected Doctors</label>
+      <div class="p-3 border rounded bg-white">
+        <span *ngIf="selectedDoctors.length === 0" class="text-muted"
+          >No doctors selected.</span
+        >
+        <div
+          *ngFor="let doctor of selectedDoctors; let i = index"
+          class="d-flex justify-content-between align-items-center mb-2"
+        >
+          <span>{{ doctor.name }} ({{ doctor.specialization }})</span>
+          <button
+            type="button"
+            class="btn btn-sm btn-danger"
+            (click)="removeDoctor(i)"
+          >
+            x
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="text-center">
+      <button type="submit" class="btn btn-success px-4" [disabled]="">
+        update
+      </button>
+    </div>
+  </form>
+</div>
