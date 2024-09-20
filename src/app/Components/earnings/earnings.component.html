@@ -1,0 +1,23 @@
+<div class="container mt-4">
+    <h2>Earnings Overview</h2>
+    <div class="card">
+      <div class="card-body">
+        <h4>Total Earnings: ${{ totalEarnings }}</h4>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Month</th>
+              <th>Amount ($)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let earning of earningsData">
+              <td>{{ earning.month }}</td>
+              <td>{{ earning.amount }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  

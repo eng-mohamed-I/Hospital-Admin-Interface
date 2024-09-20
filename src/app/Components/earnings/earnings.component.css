@@ -1,0 +1,13 @@
+.container {
+    margin-top: 20px;
+  }
+  
+  .card {
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+  }
+  
+  .table th, .table td {
+    text-align: center;
+  }
+  
