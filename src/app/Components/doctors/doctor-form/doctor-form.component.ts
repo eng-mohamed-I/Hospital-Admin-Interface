@@ -5,7 +5,6 @@ import { DoctorService } from '../../../services/doctor.service';
 import { Department, Doctor } from '../../../models/doctor.model';
 import { CommonModule } from '@angular/common';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { DepartmentService } from '../../../services/department/department.service';
 
 @Component({
@@ -16,148 +15,152 @@ import { DepartmentService } from '../../../services/department/department.servi
   styleUrls: ['./doctor-form.component.css']
 })
 export class DoctorFormComponent implements OnInit {
-  doctorForm: FormGroup;
-  departments: Department[] = [];
-  specialists: string[] = ['Heart Specialist', 'Neurologist', 'Orthopedic Surgeon', 'Pediatrician', 'Dermatologist'];
-  availableAppointments: { date: string, time: string }[] = [];
-  selectedDate: string = '';
-  selectedTime: string = '';
-  datePickerConfig = {
-    dateInputFormat: 'YYYY-MM-DD',
-    showWeekNumbers: false,
-    containerClass: 'theme-dark-blue'
-  };
-  selectedImage: File | null = null;
-  loading = false;
-  error: string | null = null;
-
-  private doctorId: string | null = null;
+  doctorForm!: FormGroup;
+  doctorId: string | null = null; // Use for update functionality
 
   constructor(
     private fb: FormBuilder,
     private doctorService: DoctorService,
-    private departmentService: DepartmentService, 
-    private route: ActivatedRoute,
     private router: Router
-  ) {
-    this.doctorForm = this.fb.group({
-      name: ['', Validators.required],
-      department: ['', Validators.required],
-      specialization: ['', Validators.required],
-      gender: ['', Validators.required],  // Add gender field
-      userName: ['', Validators.required],
-      nationalID: ['', Validators.required],
-      contactInfo: this.fb.group({ 
-        phone: ['', [Validators.required, Validators.pattern('^[0-9]{10,15}$')]], // phone control
-        email: ['', [Validators.required, Validators.email]], // email control
-      }),
-      dateOfBirth: ['', Validators.required],
-      experience: ['', Validators.required],
-      history: ['', Validators.required],
-      availableAppointments: this.fb.array([]), // For available appointments
-      image: ['']
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
-    this.fetchDepartments(); 
-    this.route.paramMap.subscribe(params => {
-      const id = params.get('id');
-      if (id) {
-        this.doctorId = id;
-        if (this.doctorId) {
-          this.loadDoctor();
-        }
-      }
+    this.initializeForm();
+  }
+
+  initializeForm(): void {
+    this.doctorForm = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      specialization: ['', [Validators.required]],
+      userName: ['', [Validators.required, Validators.minLength(5)]],
+      image: this.fb.group({
+        secure_url: ['', Validators.required],
+        public_id: ['', Validators.required]
+      }),
+      nationalID: ['', [Validators.required, Validators.minLength(14), Validators.maxLength(14)]],
+      department: ['', [Validators.required]],
+      availableDates: this.fb.array([]),
+      contactInfo: this.fb.group({
+        phone: ['', [Validators.required, Validators.pattern(/^\d{10,11}$/)]],
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(8)]]
+      }),
+      gender: ['', [Validators.required]],
+      dateOfBirth: ['', [Validators.required]],
+      experience: ['', [Validators.required, Validators.min(0)]],
+      history: [''],
+      statistics: this.fb.group({
+        patientsTreated: [0],
+        successfulTreatments: [0],
+        failedTreatments: [0]
+      }),
+      appointments: this.fb.array([])
     });
   }
 
-  private loadDoctor(): void {
-    this.doctorService.getDoctorById(this.doctorId!).subscribe(doctor => {
-      if (doctor) {
-        this.doctorForm.patchValue({
-          name: doctor.name,
-          department: doctor.department._id, 
-          specialization: doctor.specialization,
-          gender: doctor.gender,
-          userName: doctor.userName,
-          nationalID: doctor.nationalID,
-          contactInfo: {
-            email: doctor.contactInfo.email,
-            phone: doctor.contactInfo.phone
-          },
-          dateOfBirth: doctor.dateOfBirth,
-          experience: doctor.experience,
-          history: doctor.history,
-          availableAppointments: doctor.availableAppointments
-        });
-        
-        if (doctor.image) {
-          this.selectedDate = doctor.image; // Set the image URL for display
-        }
-      }
-    });
+  // Getters for form arrays
+  get availableDates(): FormArray {
+    return this.doctorForm.get('availableDates') as FormArray;
   }
 
-  fetchDepartments() {
-    this.departmentService.getDepartments().subscribe({
-      next: (response) => {
-        this.departments = response.departments;
-      },
-      error: (err) => {
-        this.error = 'Failed to load departments';
-      }
-    });
+  get appointments(): FormArray {
+    return this.doctorForm.get('appointments') as FormArray;
   }
 
+  // Add a new available date
+  addAvailableDate(): void {
+    this.availableDates.push(this.fb.control('', Validators.required));
+  }
+
+  // Add a new appointment
+  addAppointment(): void {
+    const appointment = this.fb.group({
+      appointID: [''],
+      patientID: [''],
+      date: ['', Validators.required],
+      time: ['', Validators.required],
+      report: ['']
+    });
+    this.appointments.push(appointment);
+  }
+
+  // Remove available date by index
+  removeAvailableDate(index: number): void {
+    this.availableDates.removeAt(index);
+  }
+
+  // Remove appointment by index
+  removeAppointment(index: number): void {
+    this.appointments.removeAt(index);
+  }
+
+  // Submit the form
   saveDoctor(): void {
     if (this.doctorForm.valid) {
-      this.loading = true;
-      const doctorData = this.doctorForm.value;
-      if (this.doctorId) {
-        this.doctorService.updateDoctor(this.doctorId, doctorData).subscribe({
-          next: () => this.router.navigate(['/doctors']),
-          error: err => {
-            console.log(err);
-            this.loading = false;
-            this.error = err.message;
-          }
-        });
-      } else {
-        this.doctorService.addDoctor(doctorData).subscribe({
-          next: () => this.router.navigate(['/doctors']),
-          error: err => {
-            this.loading = false;
-            console.log(err);
-            this.error = err.message;
-          }
+      const formData = new FormData();
+
+      formData.append('name', this.doctorForm.get('name')?.value);
+      formData.append('specialization', this.doctorForm.get('specialization')?.value);
+      formData.append('userName', this.doctorForm.get('userName')?.value);
+
+      // Append image data
+      const imageGroup = this.doctorForm.get('image');
+      if (imageGroup) {
+        formData.append('image.secure_url', imageGroup.get('secure_url')?.value);
+        formData.append('image.public_id', imageGroup.get('public_id')?.value);
+      }
+
+      formData.append('nationalID', this.doctorForm.get('nationalID')?.value);
+      formData.append('department', this.doctorForm.get('department')?.value);
+
+      // Append available dates
+      this.availableDates.controls.forEach((control, index) => {
+        formData.append(`availableDates[${index}]`, control.value);
+      });
+
+      const contactInfoGroup = this.doctorForm.get('contactInfo');
+      if (contactInfoGroup) {
+        formData.append('contactInfo.phone', contactInfoGroup.get('phone')?.value);
+        formData.append('contactInfo.email', contactInfoGroup.get('email')?.value);
+        formData.append('contactInfo.password', contactInfoGroup.get('password')?.value);
+      }
+
+      formData.append('gender', this.doctorForm.get('gender')?.value);
+      formData.append('dateOfBirth', this.doctorForm.get('dateOfBirth')?.value);
+      formData.append('experience', this.doctorForm.get('experience')?.value);
+      formData.append('history', this.doctorForm.get('history')?.value);
+
+      // Append statistics data
+      const statisticsGroup = this.doctorForm.get('statistics');
+      if (statisticsGroup) {
+        Object.keys(statisticsGroup.addAsyncValidators).forEach(key => {
+          formData.append(`statistics.${key}`, statisticsGroup.get(key)?.value);
         });
       }
-    }
-  }
 
-  onDateTimeChange(event: any): void {
-    this.selectedDate = event?.toISOString().split('T')[0];
-  }
+      // Append appointments
+      this.appointments.controls.forEach((control, index) => {
+        formData.append(`appointments[${index}][appointID]`, control.get('appointID')?.value);
+        formData.append(`appointments[${index}][patientID]`, control.get('patientID')?.value);
+        formData.append(`appointments[${index}][date]`, control.get('date')?.value);
+        formData.append(`appointments[${index}][time]`, control.get('time')?.value);
+        formData.append(`appointments[${index}][report]`, control.get('report')?.value);
+      });
 
-  onTimeChange(event: any): void {
-    this.selectedTime = event.target.value;
-  }
-
-  removeAppointment(appointment: { date: string, time: string }): void {
-    const appointments = this.doctorForm.get('availableAppointments') as FormArray;
-    const index = appointments.controls.findIndex(app => app.value.date === appointment.date && app.value.time === appointment.time);
-    if (index > -1) {
-      appointments.removeAt(index);
-    }
-  }
-
-  onFileChange(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input?.files?.length) {
-      this.selectedImage = input.files[0]; 
-    } else {
-      this.selectedImage = null;
+      // Perform API call
+      if (this.doctorId) {
+        // Update doctor
+        this.doctorService.updateDoctor(this.doctorId, formData).subscribe({
+          next: () => this.router.navigate(['/doctors']),
+          error: err => console.error(err)
+        });
+      } else {
+        // Add new doctor
+        this.doctorService.addDoctor(formData).subscribe({
+          next: () => this.router.navigate(['/doctors']),
+          error: err => console.error(err)
+        });
+      }
     }
   }
 }

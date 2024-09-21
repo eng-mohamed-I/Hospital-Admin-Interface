@@ -19,12 +19,20 @@ export class DoctorService {
     return this.http.get<Doctor>(`${this.apiUrl}/${id}`);
   }
 
-  addDoctor(doctor: Doctor): Observable<Doctor> {
-    return this.http.post<Doctor>(this.apiUrl, doctor);
+  addDoctor(formData: FormData): Observable<any> {
+    return this.http.post('/api/doctors', formData, {
+      headers: {
+        // Do not set 'Content-Type', the browser will set it automatically to 'multipart/form-data'
+      }
+    });
   }
-
-  updateDoctor(_id: string, doctor: Doctor): Observable<Doctor> {
-    return this.http.put<Doctor>(`${this.apiUrl}/${_id}`, doctor);
+  
+  updateDoctor(id: string, formData: FormData): Observable<any> {
+    return this.http.put(`/api/doctors/${id}`, formData, {
+      headers: {
+        // Do not set 'Content-Type', the browser will set it automatically to 'multipart/form-data'
+      }
+    });
   }
 
   deleteDoctor(id: string): Observable<void> {
