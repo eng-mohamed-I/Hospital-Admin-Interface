@@ -37,7 +37,6 @@ export class DoctorListComponent implements OnInit {
   }
 
   populateFilters(): void {
-    // Populate unique department and specialist lists
     this.departments = Array.from(new Set(this.doctors.map(doc => doc.department?.name)));
     this.specialists = Array.from(new Set(this.doctors.map(doc => doc.specialization)));
   }

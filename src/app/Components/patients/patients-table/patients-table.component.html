@@ -1,6 +1,7 @@
 <div class="container mt-4">
   <h2 class="mb-4 text-center text-primary">Patient Management</h2>
 
+  <!-- Add Patient Button -->
   <button mat-raised-button color="primary" (click)="openPatientModal()">Add Patient</button>
 
   <!-- Patient Table -->
@@ -9,34 +10,29 @@
       <tr>
         <th>id</th>
         <th>Patient Name</th>
+        <th>Email</th>
         <th>Gender</th>
-        <th>Age</th>
-        <th>Admitted Date</th>
-        <th>Type</th>
         <th>Status</th>
         <th>Action</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let patient of patients">
-        <td>{{ patient.id }}</td>
+        <td>{{ patient._id }}</td>
         <td>{{ patient.name }}</td>
+        <td>{{ patient.email }}</td>
         <td>{{ patient.gender }}</td>
-        <td>{{ patient.age }}</td>
-        <td>{{ patient.admittedDate }}</td>
-        <td>{{ patient.type }}</td>
         <td>
           <span
             [ngClass]="{
-              'badge custom-badge-success': patient.status === 'confirmed',
-              'badge custom-badge-warning': patient.status === 'pending',
-              'badge custom-badge-danger': patient.status === 'rejected'
+              'badge custom-badge-success': patient.isConfirmed === true,
+              'badge custom-badge-danger': patient.isConfirmed === false
             }"
-          >{{ patient.status }}</span>
+          >{{ patient.isConfirmed ? 'Confirmed' : 'Rejected' }}</span>
         </td>
         <td class="hover-expand">
-           <i class="bi bi-pencil text-primary me-2"></i> <!--(click)="editPatient(patient) -->
-          <i class="bi bi-trash text-danger" (click)="deletePatient(patient.id)"></i>
+          <i class="bi bi-pencil text-primary me-2" (click)="openPatientModal(patient)"></i>
+          <i class="bi bi-trash text-danger" (click)="deletePatient(patient._id!)"></i>
         </td>
       </tr>
     </tbody>

@@ -1,8 +1,7 @@
-<h1 mat-dialog-title class="dialog-title">{{ data.id ? 'Edit Patient' : 'Add Patient' }}</h1>
+<h1 mat-dialog-title class="dialog-title">{{ data._id ? 'Edit Patient' : 'Add Patient' }}</h1>
 
 <div mat-dialog-content>
   <form [formGroup]="patientForm" (ngSubmit)="onSubmit()">
-    
     <mat-form-field appearance="fill" class="full-width-form-field">
       <mat-label class="form-label">Patient Name</mat-label>
       <input matInput formControlName="name" class="form-input" />
@@ -13,39 +12,57 @@
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="full-width-form-field">
-      <mat-label class="form-label">Gender</mat-label>
-      <mat-select formControlName="gender" class="form-select">
-        <mat-option value="Male">Male</mat-option>
-        <mat-option value="Female">Female</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill" class="full-width-form-field">
-      <mat-label class="form-label">Age</mat-label>
-      <input matInput type="number" formControlName="age" class="form-input" />
-      <mat-error *ngIf="patientForm.get('age')?.invalid && patientForm.get('age')?.touched">
-        <div *ngIf="patientForm.get('age')?.errors?.['required']">Age is required.</div>
-        <div *ngIf="patientForm.get('age')?.errors?.['min']">Age must be at least 1.</div>
-        <div *ngIf="patientForm.get('age')?.errors?.['max']">Age cannot be more than 120.</div>
+      <mat-label class="form-label">Email</mat-label>
+      <input matInput formControlName="email" class="form-input" type="email" />
+      <mat-error *ngIf="patientForm.get('email')?.invalid && patientForm.get('email')?.touched">
+        <div *ngIf="patientForm.get('email')?.errors?.['required']">Email is required.</div>
+        <div *ngIf="patientForm.get('email')?.errors?.['email']">Please enter a valid email.</div>
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="fill" class="full-width-form-field">
-      <mat-label class="form-label">Admitted Date</mat-label>
-      <input matInput type="date" formControlName="admittedDate" class="form-input" />
-    </mat-form-field>
+    <mat-form-field *ngIf="!data._id" appearance="fill" class="full-width-form-field">
+      <mat-label class="form-label">Password</mat-label>
+      <input matInput formControlName="password" class="form-input" type="password" />
+      <mat-error *ngIf="patientForm.get('password')?.invalid && patientForm.get('password')?.touched">
+        <div *ngIf="patientForm.get('password')?.errors?.['required']">Password is required.</div>
+        <div *ngIf="patientForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters long.</div>
+      </mat-error>
+    </mat-form-field> 
 
     <mat-form-field appearance="fill" class="full-width-form-field">
-      <mat-label class="form-label">Type</mat-label>
-      <mat-select formControlName="type" class="form-select">
-        <mat-option value="Inpatient">Inpatient</mat-option>
-        <mat-option value="Outpatient">Outpatient</mat-option>
+      <mat-label class="form-label">Gender</mat-label>
+      <mat-select formControlName="gender" class="form-select">
+        <mat-option value="male">Male</mat-option>
+        <mat-option value="female">Female</mat-option>
+        <mat-option value="is not selected">Not Selected</mat-option>
       </mat-select>
     </mat-form-field>
 
+    <mat-checkbox formControlName="isConfirmed">
+      Is Confirmed
+    </mat-checkbox>
+    
+
+    <div formArrayName="donations">
+      <div *ngFor="let donation of donations.controls; let i = index" [formGroupName]="i">
+        <mat-form-field appearance="fill" class="full-width-form-field">
+          <mat-label class="form-label">Donation Amount</mat-label>
+          <input matInput formControlName="amount" type="number" class="form-input" />
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="full-width-form-field">
+          <mat-label class="form-label">Donation Date</mat-label>
+          <input matInput formControlName="date" type="date" class="form-input" />
+        </mat-form-field>
+        <button mat-button color="warn" (click)="removeDonation(i)">Remove</button>
+      </div>
+    </div>
+    
+    <button mat-button (click)="addDonation()">Add Donation</button>
+
+    <!-- Submit and Cancel Buttons -->
     <div mat-dialog-actions>
       <button mat-button (click)="onNoClick()">Cancel</button>
-      <button mat-raised-button color="primary" type="submit">Submit</button>
+      <button mat-raised-button color="primary" type="submit">{{ data._id ? 'Update Patient' : 'Add Patient' }}</button>
     </div>
   </form>
 </div>
