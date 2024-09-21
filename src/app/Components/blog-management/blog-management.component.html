@@ -23,6 +23,7 @@
         <th scope="col">Img</th>
         <th scope="col">Title</th>
         <th scope="col">Body</th>
+        <th scope="col">Info</th>
         <th scope="col">Action</th>
       </tr>
     </thead>
@@ -41,6 +42,20 @@
           <td>{{ blog.body.substring(0,20) }}...</td>
           <td>
             <a [routerLink]="['/blog', blog._id]">Read more</a>
+          </td>
+          <td>
+            <a style="font-size: 13px" href="" class="btn btn-light border border-warning mb-2 updatebtn"
+               [routerLink]="['/blog/edit', blog._id]">
+              <i class="fa-solid fa-pen-to-square" style="font-size: 14px"></i>Update
+            </a>
+            <button
+              style="font-size: 15px"
+              type="button"
+              (click)="openDeleteConfirmation(blog._id)"
+              class="btn btn-light border border-danger deletebtn"
+            >
+              <i class="fa-solid fa-trash"></i>Delete
+            </button>
           </td>
         </tr>
       </ng-container>
