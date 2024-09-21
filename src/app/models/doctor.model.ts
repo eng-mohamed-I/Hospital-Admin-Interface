@@ -1,35 +1,35 @@
-export interface Department {
-    _id: any;
+interface Department {
+    _id: string;
     name: string;
-    id: number;
   }
   
-  export interface AvailableAppointment {
-    date: string;
-    time: string;
-  }
-  export interface ContactInfo {
-    email: string;
-    phone: string;
-  }
-  export interface Doctor {
-    _id?: string; // Optional for cases when the ID is not available (e.g., before saving)
+
+export interface Doctor {
+    _id:string;
     name: string;
-    department: Department; // Assuming this is a reference ID to a Department
     specialization: string;
-    availableDates:[]
-    gender: 'Male' | 'Female';
     userName: string;
+    Image: {
+        secure_url: string;
+        public_id: string;
+    };
     nationalID: string;
-    contactInfo: ContactInfo;
-    dateOfBirth: Date; // Ensure this is a Date object
-    experience: string;
-    history: string;
-    availableAppointments: {
-      date: string; // Ensure this matches the format used in the form
-      time: string; // Ensure this matches the format used in the form
+    department: Department; // ID of the department
+    availableDates: Date[];
+    phone: string;
+    email: string;
+    password: string;
+    gender: 'male' | 'female' | 'other';
+    dateOfBirth: Date;
+    experience: number;
+    history?: string;
+    statistics?: { [key: string]: number };
+    appointments?: {
+        appointID: string;
+        patientID: string;
+        date: Date;
+        time: string;
+        report?: string;
     }[];
-    image?: string; // Optional field for image URL or file path
-  }
-  
-  
+    availableAppointments?: Date[]; // <-- Add this line if it makes sense
+}

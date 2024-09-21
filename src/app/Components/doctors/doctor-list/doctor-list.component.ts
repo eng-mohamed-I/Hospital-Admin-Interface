@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Doctor } from '../../../models/doctor.model';
-import { DoctorService } from '../../../services/doctor.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { DoctorService } from '../../../services/doctor/add-doctor/doctor.service';
 
 @Component({
   selector: 'app-doctor-list',
@@ -28,15 +28,17 @@ export class DoctorListComponent implements OnInit {
   }
 
   getDoctors(): void {
-    this.doctorService.getDoctors().subscribe((doctors) => {
+    this.doctorService.getDoctor().subscribe((doctors) => {
       this.doctors = doctors;
       this.filteredDoctors = doctors; 
       this.populateFilters();
+      // console.log("ffff",doctors);
     });
   }
 
   populateFilters(): void {
-    this.departments = Array.from(new Set(this.doctors.map(doc => doc.department.name)));
+    // Populate unique department and specialist lists
+    this.departments = Array.from(new Set(this.doctors.map(doc => doc.department?.name)));
     this.specialists = Array.from(new Set(this.doctors.map(doc => doc.specialization)));
   }
 
@@ -45,25 +47,30 @@ export class DoctorListComponent implements OnInit {
     this.filteredDoctors = this.doctors.filter(doctor => {
       return (
         (this.searchName === '' || doctor.name.toLowerCase().includes(this.searchName.toLowerCase())) &&
-        (this.selectedDepartment === '' || doctor.department.name === this.selectedDepartment) &&
+        (this.selectedDepartment === '' || doctor.department?.name === this.selectedDepartment) &&
         (this.selectedSpecialist === '' || doctor.specialization === this.selectedSpecialist)
       );
     });
   }
 
-  updateDoctor(doctorId:string): void {
+  // Navigate to update doctor page
+  updateDoctor(doctorId: string): void {
     this.router.navigate(['/update-doctor', doctorId]);
   }
+
+  // Clear the search and filters
   clearFilters(): void {
     this.searchName = '';
     this.selectedDepartment = '';
     this.selectedSpecialist = '';
     this.filteredDoctors = this.doctors;
   }
+
+  // Confirm delete action
   confirmDeleteDoctor(doctorId: string): void {
     if (confirm('Are you sure you want to delete this doctor?')) {
       this.doctorService.deleteDoctor(doctorId).subscribe(() => {
-        this.getDoctors();
+        this.getDoctors();  // Refresh doctor list after deletion
       });
     }
   }

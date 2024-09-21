@@ -40,7 +40,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let doctor of filteredDoctors" class="table-row text-center" (click)="viewDoctorDetails(doctor._id!)">
+      <tr *ngFor="let doctor of filteredDoctors" class="table-row text-center" >
         <td class="table-primary">{{ doctor.name }}</td>
         <td>{{ doctor.department.name }}</td>
         <td>{{ doctor.specialization }}</td>
