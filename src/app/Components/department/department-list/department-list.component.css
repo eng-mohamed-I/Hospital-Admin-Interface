@@ -81,3 +81,10 @@
   .modal-footer {
     border-top: 1px solid #e9ecef;
   }
+
+
+  .table-style { 
+    height: 500px;
+    overflow: scroll;
+    margin: 0px;
+  }

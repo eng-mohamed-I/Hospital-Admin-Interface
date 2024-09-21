@@ -11,17 +11,23 @@ import { RouterLink } from '@angular/router';
   styleUrl: './blog-management.component.css',
 })
 export class BlogManagementComponent implements OnInit {
-  allblogs: Blog[] = [];
+  allblogs: any
 
   constructor(private blogService: BlogService) {}
 
   ngOnInit(): void {
     this.blogService.getAll().subscribe((data) => {
-      this.allblogs = data;
+      this.allblogs = data.blogs;
+      console.log(data)
       // console.log(this.allblogs);
       
     });
   }
+
+  openDeleteConfirmation(id : any) {
+    
+  }
+
 
   // deleteItem(id: number) {
   //   const confirmation = confirm('Are you sure you want to delete this blog?');
