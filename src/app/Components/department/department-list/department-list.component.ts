@@ -27,19 +27,19 @@ export class DepartmentListComponent implements OnInit {
     this.fetchDepartments();
   }
 
-  fetchDepartments() {
-    this.loading = true;
-    this.departmentService.getDepartments().subscribe({
-      next: (response) => {
-        this.departments = response.departments;
-        this.loading = false;
-      },
-      error: (err) => {
-        this.error = 'Failed to load departments';
-        this.loading = false;
-      }
-    });
-  }
+    fetchDepartments() {
+      this.loading = true;
+      this.departmentService.getDepartments().subscribe({
+        next: (response) => {
+          this.departments = response.departments;
+          this.loading = false;
+        },
+        error: (err) => {
+          this.error = 'Failed to load departments';
+          this.loading = false;
+        }
+      });
+    }
 
   filteredDepartments() {
     let filtered = this.departments.filter(department =>
