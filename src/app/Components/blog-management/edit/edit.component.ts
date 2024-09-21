@@ -18,35 +18,32 @@ export class EditComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
-  formdata: Blog = {
-    _id: 0,
+  formdata: any = {
+
     url: '',
-    Image: {
-      secure_url: '', // Set to an empty string or leave as undefined if not required
-      public_id: ''   // Set to an empty string or leave as undefined if not required
-    },    title: '',
+    title: '',
     body: '',
   };
   ngOnInit(): void {
-    // this.route.paramMap.subscribe((param) => {
-    //   let id = Number(param.get('id'));
-    //   // this.getById(id);
-    // });
+    this.route.paramMap.subscribe((param) => {
+      let id = Number(param.get('id'));
+      this.getById(id);
+    });
   }
-  // getById(id: number) {
-  //   this.blogService.edit(id).subscribe((data) => {
-  //     this.formdata = data;
-  //   });
-  // }
+  getById(id: number) {
+    this.blogService.getBlogsById(id).subscribe((data) => {
+      this.formdata = data;
+    });
+  }
 
-  // update() {
-  //   this.blogService.update(this.formdata).subscribe({
-  //     next: (data) => {
-  //       this.router.navigate(['/blog-management']);
-  //     },
-  //     error: (er) => {
-  //       console.log(er);
-  //     },
-  //   });
-  // }
+  update() {
+    this.blogService.update(this.formdata).subscribe({
+      next: (data) => {
+        this.router.navigate(['/blog-management']);
+      },
+      error: (er) => {
+        console.log(er);
+      },
+    });
+  }
 }
