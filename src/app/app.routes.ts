@@ -12,6 +12,7 @@ import { DepartmentDetailsComponent } from './Components/department/department-d
 import { DepartmentListComponent } from './Components/department/department-list/department-list.component';
 import { DepartmentFormComponent } from './Components/department/department-form/department-form.component';
 import { DepartmentUpdateComponent } from './Components/department/department-list/department-update/department-update.component';
+
 import { MainComponent } from './Components/layout/main/main.component';
 import { LoginComponent } from './Components/login/login.component';
 import { AppointmentsComponent } from './Components/appointments/appointments.component';
