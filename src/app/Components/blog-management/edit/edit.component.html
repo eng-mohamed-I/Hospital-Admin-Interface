@@ -9,7 +9,7 @@
     <div class="d-flex me-3">
       <button
         class="btn btn-success"
-        routerLink="/blog/create"
+        routerLink="/blog-management/form"
         style="background-color: #233763"
       >
         ADD+
@@ -28,47 +28,50 @@
         required
         minlength="3"
         #titleInput="ngModel"
-        [ngClass]="{'is-invalid': titleInput.touched && titleInput.invalid}"
+        [ngClass]="{ 'is-invalid': titleInput.touched && titleInput.invalid }"
         class="form-control"
         id="txtTitle"
       />
       <div *ngIf="titleInput.touched && titleInput.invalid" class="text-danger">
         <div *ngIf="titleInput.errors?.['required']">Title is required</div>
-        <div *ngIf="titleInput.errors?.['minlength']">Title must be at least 3 characters</div>
+        <div *ngIf="titleInput.errors?.['minlength']">
+          Title must be at least 3 characters
+        </div>
       </div>
     </div>
 
     <div class="mb-3">
       <label for="txtBody" class="form-label">Body</label>
       <textarea
-      style="height: 100px;"
+        style="height: 100px"
         type="text"
         name="body"
         [(ngModel)]="formdata.body"
         required
         minlength="10"
         #bodyInput="ngModel"
-        [ngClass]="{'is-invalid': bodyInput.touched && bodyInput.invalid}"
+        [ngClass]="{ 'is-invalid': bodyInput.touched && bodyInput.invalid }"
         class="form-control"
         id="txtBody"
       ></textarea>
       <div *ngIf="bodyInput.touched && bodyInput.invalid" class="text-danger">
         <div *ngIf="bodyInput.errors?.['required']">Body is required</div>
-        <div *ngIf="bodyInput.errors?.['minlength']">Body must be at least 10 characters</div>
+        <div *ngIf="bodyInput.errors?.['minlength']">
+          Body must be at least 10 characters
+        </div>
       </div>
     </div>
 
-    
     <div class="mb-3">
       <label for="image" class="form-label">Img</label>
       <input
-        type="file"
+        type="text"
         name="img"
         [(ngModel)]="formdata.url"
         class="form-control"
         id="image"
       />
-    </div> 
+    </div>
 
     <button
       type="button"

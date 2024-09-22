@@ -12,16 +12,39 @@ import { RouterLink } from '@angular/router';
 })
 export class BlogManagementComponent implements OnInit {
   allblogs: any
+  confirmDeleteId: string | null = null;
 
   constructor(private blogService: BlogService) {}
 
   ngOnInit(): void {
     this.blogService.getAll().subscribe((data) => {
       this.allblogs = data.blogs;
-      console.log(data)
-      // console.log(this.allblogs);
-      
     });
+  }
+
+
+  deleteBlog(id: string): void {
+    this.confirmDeleteId = id; 
+  }
+
+  cancelDelete(): void {
+    this.confirmDeleteId = null; 
+  }
+
+  confirmDelete(index:any) :void { 
+    
+    this.blogService.delete(this.confirmDeleteId).subscribe(
+      {
+        next : () => { 
+          this.allblogs.splice(index,1)
+        },
+        error: (err) => {
+          console.log("error", err)
+        }
+      }  
+
+    )
+    console.log(this.confirmDeleteId)
   }
 
   openDeleteConfirmation(id : any) {
