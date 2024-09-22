@@ -63,10 +63,13 @@ export class DoctorListComponent implements OnInit {
   }
 
   updateDoctor(_id: string): void {
+    console.log(_id,"from list doctor");
+    
     this.router.navigate(['/doctor/doctor-update', _id]);
   }
 
   deleteDoctor(_id: string): void {
+    console.log(_id);
     if (confirm('Are you sure you want to delete this doctor?')) {
       this.doctorService.deleteDoctor(_id).subscribe(() => {
         this.getDoctors(); // Refresh the doctor list after deletion

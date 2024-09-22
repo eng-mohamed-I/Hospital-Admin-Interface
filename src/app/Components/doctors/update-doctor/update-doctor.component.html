@@ -1,36 +1,27 @@
 <div class="container mt-4">
     <h2>Update Doctor</h2>
     <form [formGroup]="updateDoctorForm" (ngSubmit)="onSubmit()">
-      <div class="form-group mb-3">
-        <label for="name">Doctor Name</label>
-        <input id="name" formControlName="name" class="form-control" placeholder="Doctor Name" />
-      </div>
-  
-      <div class="form-group mb-3">
-        <label for="department">Department</label>
-        <input id="department" formControlName="department" class="form-control" placeholder="Department" />
-      </div>
-  
-      <div class="form-group mb-3">
-        <label for="specialization">Specialization</label>
-        <input id="specialization" formControlName="specialization" class="form-control" placeholder="Specialization" />
-      </div>
-  
-      <div class="form-group mb-3">
-        <label for="gender">Gender</label>
-        <select id="gender" formControlName="gender" class="form-control">
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-        </select>
-      </div>
-  
-      <div class="form-group mb-3">
-        <label for="availableDates">Available Dates</label>
-        <input id="availableDates" formControlName="availableDates" class="form-control" placeholder="Available Dates" />
-      </div>
-  
-      <button type="submit" class="btn btn-primary" [disabled]="updateDoctorForm.invalid">Update Doctor</button>
-      <!-- <button type="button" class="btn btn-secondary" (click)="router.navigate(['/doctors'])">Cancel</button> -->
+
+        <div class="form-group mb-3">
+            <label for="availableDates">Available Dates</label>
+            <input type="date" id="newDate" formControlName="newDate" class="form-control" placeholder="Add a new date" />
+            <button type="button" class="btn btn-primary mt-2" (click)="addDate()">Add Date</button>
+            <ul class="date-list">
+                <li *ngFor="let date of updateDoctorForm.get('availableDates')?.value; let i = index" class="date-item">
+                    {{ date | date: 'mediumDate' }}
+                    <button type="button" class="btn btn-danger btn-sm ml-2" (click)="removeDate(i)">Remove</button>
+                </li>
+            </ul>
+        </div>
+        <div *ngIf="showAlert" class="alert alert-warning">
+            Please select a date that is today or in the future.
+            <button type="button" class="close" (click)="closeAlert()">×</button>
+        </div>
+        
+
+        <div class="form-group mb-3">
+            <button type="submit" class="btn btn-primary">Update Doctor</button>
+            <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+        </div>
     </form>
-  </div>
-   
+</div>
