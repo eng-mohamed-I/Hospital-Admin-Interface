@@ -2,12 +2,12 @@
   <h2 class="mb-4 text-center text-primary">Patient Management</h2>
 
   <!-- Add Patient Button -->
-  <button mat-raised-button color="primary" (click)="openPatientModal()">Add Patient</button>
+  <button mat-raised-button class="btn btn-primary" color="primary" (click)="openPatientModal()">Add Patient</button>
 
   <!-- Patient Table -->
-  <table class="table table-bordered table-striped mt-4">
+  <table class="table table-bordered table-striped mt-4 ">
     <thead class="table-light">
-      <tr>
+      <tr class="table-warning">
         <th>id</th>
         <th>Patient Name</th>
         <th>Email</th>
@@ -18,11 +18,11 @@
     </thead>
     <tbody>
       <tr *ngFor="let patient of patients">
-        <td>{{ patient._id }}</td>
-        <td>{{ patient.name }}</td>
-        <td>{{ patient.email }}</td>
-        <td>{{ patient.gender }}</td>
-        <td>
+        <td class="text-center">{{ patient._id }}</td>
+        <td class="text-center">{{ patient.name }}</td>
+        <td class="table-info text-center">{{ patient.email }}</td>
+        <td class="text-center">{{ patient.gender }}</td>
+        <td class="text-center">
           <span
             [ngClass]="{
               'badge custom-badge-success': patient.isConfirmed === true,
@@ -30,9 +30,9 @@
             }"
           >{{ patient.isConfirmed ? 'Confirmed' : 'Rejected' }}</span>
         </td>
-        <td class="hover-expand">
-          <i class="bi bi-pencil text-primary me-2" (click)="openPatientModal(patient)"></i>
-          <i class="bi bi-trash text-danger" (click)="deletePatient(patient._id!)"></i>
+        <td class="hover-expand text-center d-flex justify-content-between">
+          <i style="font-size: 25px;" class="bi bi-pencil text-primary me-2" (click)="openPatientModal(patient)"></i>
+          <i style="font-size: 25px;" class="bi bi-trash text-danger" (click)="deletePatient(patient._id!)"></i>
         </td>
       </tr>
     </tbody>
