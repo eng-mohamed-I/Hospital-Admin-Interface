@@ -20,6 +20,7 @@ export class DoctorListComponent implements OnInit {
   selectedSpecialist: string = '';
   departments: string[] = []; 
   specialists: string[] = []; 
+  confirmDeleteId: string | null = null;
 
   constructor(private doctorService: DoctorService, private router: Router) {}
 
@@ -78,4 +79,18 @@ export class DoctorListComponent implements OnInit {
   viewDoctorDetails(id: string): void {
     this.router.navigate(['/doctor-details', id]);
   }
+
+  deleteDoctor(id: string): void {
+    this.confirmDeleteId = id; 
+  }
+
+  cancelDelete(): void {
+    this.confirmDeleteId = null; 
+  }
+
+  confirmDelete(id: any)  {
+    this.confirmDeleteDoctor(id)
+  }
+
+
 }

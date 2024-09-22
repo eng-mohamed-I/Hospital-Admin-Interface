@@ -11,19 +11,33 @@
       />
     </div>
     <div class="col-md-3">
-      <select class="form-control mb-3" [(ngModel)]="selectedDepartment" (change)="filterDoctors()">
+      <select
+        class="form-control mb-3"
+        [(ngModel)]="selectedDepartment"
+        (change)="filterDoctors()"
+      >
         <option value="">All Departments</option>
-        <option *ngFor="let department of departments" [value]="department">{{ department }}</option>
+        <option *ngFor="let department of departments" [value]="department">
+          {{ department }}
+        </option>
       </select>
     </div>
     <div class="col-md-3">
-      <select class="form-control mb-3" [(ngModel)]="selectedSpecialist" (change)="filterDoctors()">
+      <select
+        class="form-control mb-3"
+        [(ngModel)]="selectedSpecialist"
+        (change)="filterDoctors()"
+      >
         <option value="">All Specialists</option>
-        <option *ngFor="let specialist of specialists" [value]="specialist">{{ specialist }}</option>
+        <option *ngFor="let specialist of specialists" [value]="specialist">
+          {{ specialist }}
+        </option>
       </select>
     </div>
     <div class="col-md-3">
-      <button class="btn btn-secondary mb-3" (click)="clearFilters()">Clear Filters</button>
+      <button class="btn btn-secondary mb-3" (click)="clearFilters()">
+        Clear Filters
+      </button>
     </div>
   </div>
 
@@ -40,25 +54,53 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let doctor of filteredDoctors" class="table-row text-center" >
+      <tr *ngFor="let doctor of filteredDoctors" class="table-row text-center">
         <td class="table-primary">{{ doctor.name }}</td>
         <td>{{ doctor.department.name }}</td>
         <td>{{ doctor.specialization }}</td>
         <td>{{ doctor.gender }}</td>
         <td class="table-danger">
           <ul class="list-group">
-            <li *ngFor="let appointment of doctor.availableDates" class="list-group-item">
-              {{ appointment | date: 'longDate' }}
+            <li
+              *ngFor="let appointment of doctor.availableDates"
+              class="list-group-item"
+            >
+              {{ appointment | date : "longDate" }}
             </li>
           </ul>
         </td>
         <td>
-          <button class="btn btn-outline-warning btn-sm" (click)="updateDoctor(doctor._id!)">
+          <button
+            class="btn btn-outline-warning btn-sm"
+            (click)="updateDoctor(doctor._id!)"
+          >
             <i class="fas fa-edit"></i> Update
           </button>
-          <button class="btn btn-outline-danger btn-sm" (click)="confirmDeleteDoctor(doctor._id!)">
+          <!-- <button class="btn btn-outline-danger btn-sm" (click)="confirmDeleteDoctor(doctor._id!)">
             <i class="fas fa-trash"></i> Delete
-          </button>
+          </button> -->
+          <ng-container
+            *ngIf="confirmDeleteId === doctor._id; else deleteButton"
+          >
+            <span>Are you sure?</span>
+            <button
+              class="btn btn-success p-0"
+              (click)="confirmDelete(doctor._id!)"
+            >
+              Yes
+            </button>
+            <button class="btn btn-danger p-0" (click)="cancelDelete()">
+              No
+            </button>
+          </ng-container>
+          <ng-template #deleteButton>
+            <button
+              class="btn btn-outline-danger btn-sm"
+              (click)="deleteDoctor(doctor._id!)"
+            >
+              <i class="fas fa-trash"></i> Delete
+            </button>
+          </ng-template>
         </td>
       </tr>
     </tbody>
