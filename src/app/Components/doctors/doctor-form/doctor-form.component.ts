@@ -61,12 +61,14 @@ export class DoctorFormComponent implements OnInit {
         }
       }
     });
+
+    
   }
 
   // Load departments from API
   loadDepartments(): void {
-    this.doctorService.getDepartments().subscribe(departments => {
-      this.departments = departments;
+    this.doctorService.getDepartments().subscribe(departments=> {
+      this.departments = departments.departments;
     });
   }
 

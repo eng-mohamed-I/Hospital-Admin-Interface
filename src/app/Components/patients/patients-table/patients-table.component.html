@@ -1,40 +1,92 @@
 <div class="container mt-4">
-  <h2 class="mb-4 text-center text-primary">Patient Management</h2>
-
   <!-- Add Patient Button -->
-  <button mat-raised-button class="btn btn-primary" color="primary" (click)="openPatientModal()">Add Patient</button>
+  <button
+    mat-raised-button
+    color="primary"
+    class="btn btn-success"
+    (click)="openPatientModal()"
+  >
+    Add Patient
+  </button>
 
-  <!-- Patient Table -->
-  <table class="table table-bordered table-striped mt-4 ">
-    <thead class="table-light">
-      <tr class="table-warning">
-        <th>id</th>
-        <th>Patient Name</th>
-        <th>Email</th>
-        <th>Gender</th>
-        <th>Status</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let patient of patients">
-        <td class="text-center">{{ patient._id }}</td>
-        <td class="text-center">{{ patient.name }}</td>
-        <td class="table-info text-center">{{ patient.email }}</td>
-        <td class="text-center">{{ patient.gender }}</td>
-        <td class="text-center">
-          <span
-            [ngClass]="{
-              'badge custom-badge-success': patient.isConfirmed === true,
-              'badge custom-badge-danger': patient.isConfirmed === false
-            }"
-          >{{ patient.isConfirmed ? 'Confirmed' : 'Rejected' }}</span>
-        </td>
-        <td class="hover-expand text-center d-flex justify-content-between">
-          <i style="font-size: 25px;" class="bi bi-pencil text-primary me-2" (click)="openPatientModal(patient)"></i>
-          <i style="font-size: 25px;" class="bi bi-trash text-danger" (click)="deletePatient(patient._id!)"></i>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <!-- Responsive Patient Table -->
+  <div class="table-responsive mt-4">
+    <table class="table table-bordered table-striped">
+      <thead class="table-light">
+        <tr>
+          <th>ID</th>
+          <th>Patient Name</th>
+          <th>Email</th>
+          <th>Gender</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let patient of patients">
+          <td>{{ patient._id }}</td>
+          <td>{{ patient.name }}</td>
+          <td>{{ patient.email }}</td>
+          <td>{{ patient.gender }}</td>
+          <td>
+            <span
+              class="badge"
+              [ngClass]="{
+                'bg-success': patient.isConfirmed,
+                'bg-danger': !patient.isConfirmed
+              }"
+            >
+              {{ patient.isConfirmed ? "Confirmed" : "Not Confirmed" }}
+            </span>
+          </td>
+          <td>
+            <div class="d-flex justify-content-center">
+              <i
+                class="bi bi-pencil text-primary me-2"
+                (click)="openPatientModal(patient)"
+                role="button"
+              ></i>
+              <ng-container
+                *ngIf="confirmDeleteId === patient._id; else deleteButton"
+              >
+                <span>Are you sure?</span>
+                <button class="btn btn-success p-0" (click)="confirmDelete()">
+                  Yes
+                </button>
+                <button class="btn btn-danger p-0" (click)="cancelDelete()">
+                  No
+                </button>
+              </ng-container>
+              <ng-template #deleteButton>
+                <i
+                  class="bi bi-trash text-danger"
+                  (click)="deletePatient(patient._id!)"
+                  role="button"
+                ></i>
+              </ng-template>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- confirmation delete -->
 </div>
+
+<!-- Optional Custom Styling (if needed) -->
+<style>
+  .badge {
+    padding: 0.5em;
+    font-size: 0.875rem;
+  }
+
+  @media (max-width: 768px) {
+    .table {
+      font-size: 0.9rem;
+    }
+    .bi {
+      font-size: 1.2rem;
+    }
+  }
+</style>

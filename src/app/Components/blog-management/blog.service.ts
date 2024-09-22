@@ -23,13 +23,14 @@ export class BlogService {
 
 
  
-  update(data: any) {
+  update(data: any,id:any): Observable<any> {
     return this.httpClient.put<any>(
-      `http://localhost:5000/api/blogs/${data.id}`,
+      `http://localhost:5000/api/blogs/${id}`,
       data
     );
   }
-  delete(id: number) {
+  
+  delete(id: any): Observable<any> {
     return this.httpClient.delete<any>(`http://localhost:5000/api/blogs/${id}`);
   }
 }

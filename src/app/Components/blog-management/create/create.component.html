@@ -28,7 +28,7 @@
         required
         minlength="3"
         #titleInput="ngModel"
-        [ngClass]="{'is-invalid':(bodyInput.touched || bodyInput.dirty)  && titleInput.invalid}"
+        [ngClass]="{'is-invalid':(titleInput.touched || titleInput.dirty)  && titleInput.invalid}"
         class="form-control"
         id="txtTitle"
       />
@@ -61,7 +61,7 @@
     <div class="mb-3">
       <label for="image" class="form-label">Img</label>
       <input
-        type="file"
+        type="text"
         name="img"
         [(ngModel)]="formdata.url"
         class="form-control"

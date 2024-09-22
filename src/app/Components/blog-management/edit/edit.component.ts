@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './edit.component.css',
 })
 export class EditComponent implements OnInit {
+  id :any 
   constructor(
     private blogService: BlogService,
     private router: Router,
@@ -19,25 +20,30 @@ export class EditComponent implements OnInit {
   ) {}
 
   formdata: any = {
-
     url: '',
     title: '',
     body: '',
   };
   ngOnInit(): void {
     this.route.paramMap.subscribe((param) => {
-      let id = Number(param.get('id'));
+      let id = param.get('id');
       this.getById(id);
     });
   }
-  getById(id: number) {
+  getById(id: any) {
     this.blogService.getBlogsById(id).subscribe((data) => {
-      this.formdata = data;
+      this.id = id
+      this.formdata.url = data.blog.url;
+      this.formdata.title = data.blog.title;
+      this.formdata.body = data.blog.body;
     });
   }
 
   update() {
-    this.blogService.update(this.formdata).subscribe({
+    let data = this.formdata
+    let id = this.id
+   
+    this.blogService.update(data, id).subscribe({
       next: (data) => {
         this.router.navigate(['/blog-management']);
       },

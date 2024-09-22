@@ -83,20 +83,29 @@ export class PatientModalComponent {
       });
     }
 
-    this.patientForm.removeControl('password');
+    if(this.data && this.data._id){ // :')
+      this.patientForm.removeControl('password');
+    }
   }
 
   onSubmit(): void {
     if (this.patientForm.valid) {
       const patient: Patient = this.patientForm.value;
-
+  
       if (this.data && this.data._id) {
+        // update
         this.patientService.updatePatient(this.data._id, patient).subscribe(() => {
-          this.dialogRef.close(true);
+          this.dialogRef.close(true);  
+        }, error => {
+          console.error('Error updating patient:', error);
         });
-      } else { 
+
+      } else {
+        // new
         this.patientService.addPatient(patient).subscribe(() => {
-          this.dialogRef.close(true);
+          this.dialogRef.close(true);  
+        }, error => {
+          console.error('Error adding patient:', error);
         });
       }
     }

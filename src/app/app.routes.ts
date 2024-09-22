@@ -22,6 +22,7 @@ import { BlogManagementComponent } from './Components/blog-management/blog-manag
 import { CreateComponent } from './Components/blog-management/create/create.component';
 import { EditComponent } from './Components/blog-management/edit/edit.component';
 import { EarningsComponent } from './Components/earnings/earnings.component';
+import { AdminLoginComponent } from './Components/admin-login/admin-login.component';
 
 export const routes: Routes = [  
   
@@ -53,8 +54,10 @@ export const routes: Routes = [
                       { path: 'blog/edit/:id', component: EditComponent },
                       { path: 'appointment' , component: AppointmentsComponent},
                       { path: 'earnings', component: EarningsComponent },
+                     
         ]},
         { path: 'login' , component: LoginComponent },
+        {path:'adminlogin',component:AdminLoginComponent}
 
  ];
 

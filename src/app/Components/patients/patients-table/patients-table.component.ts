@@ -14,7 +14,11 @@ import { PatientModalComponent } from '../patient-modal/patient-modal.component'
 })
 export class PatientsTableComponent implements OnInit {
 
+
+  showConfirmModal: boolean = false;
+
   patients: Patient[] = [];
+  confirmDeleteId: string | null = null;
 
   constructor(private patientService: PatientService, public dialog: MatDialog) { }
 
@@ -42,18 +46,28 @@ export class PatientsTableComponent implements OnInit {
     });
   }
   
-
   deletePatient(id: string): void {
-    if (confirm('Are you sure you want to delete this patient?')) {
-      this.patientService.deletePatient(id).subscribe({
+    this.confirmDeleteId = id; // Set the ID to confirm deletion
+  }
+
+  confirmDelete(): void {
+    if (this.confirmDeleteId) {
+      this.patientService.deletePatient(this.confirmDeleteId).subscribe({
         next: () => {
-          this.patients = this.patients.filter((p) => p._id !== id); // Remove patient from the list
+          this.patients = this.patients.filter((p) => p._id !== this.confirmDeleteId);
+          this.confirmDeleteId = null; // Reset confirmation state
         },
         error: (err) => {
-          console.error('Error deleting patient:', err); // Log any errors
+          console.error('Error deleting patient:', err);
         }
       });
     }
   }
+
+  cancelDelete(): void {
+    this.confirmDeleteId = null; // Reset confirmation state
+  }
+
+  
   
 }
