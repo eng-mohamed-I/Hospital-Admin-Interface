@@ -9,8 +9,8 @@ import { PatientModalComponent } from '../patient-modal/patient-modal.component'
   selector: 'app-patients-table',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './patients-table.component.html',
-  styleUrls: ['./patients-table.component.css']
+   templateUrl: './patients-table.component.html',
+  styleUrl: './patients-table.component.css'
 })
 export class PatientsTableComponent implements OnInit {
 
@@ -28,7 +28,8 @@ export class PatientsTableComponent implements OnInit {
 
   fetchPatients(): void {
     this.patientService.getAllPatients().subscribe((response) => {
-      this.patients = response.data; // Accessing the 'data' field from the response
+      this.patients = response.data;
+       // Accessing the 'data' field from the response
     });
   }
 
