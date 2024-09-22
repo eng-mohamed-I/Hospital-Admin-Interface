@@ -24,7 +24,13 @@
       </thead>
       <tbody>
         <tr *ngFor="let patient of patients">
-          <td>{{ patient._id }}</td>
+          <td>
+            <ul>
+              @for (donation of patient.donations; track $index) {
+               <li> {{ donation.amount }} EGP - {{ donation.date | date: 'dd/MM/yy h:mm a' }}</li>
+              }
+            </ul>
+          </td>
           <td>{{ patient.name }}</td>
           <td>{{ patient.email }}</td>
           <td>{{ patient.gender }}</td>

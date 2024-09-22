@@ -28,7 +28,8 @@ export class PatientsTableComponent implements OnInit {
 
   fetchPatients(): void {
     this.patientService.getAllPatients().subscribe((response) => {
-      this.patients = response.data; // Accessing the 'data' field from the response
+      this.patients = response.data;
+       // Accessing the 'data' field from the response
     });
   }
 

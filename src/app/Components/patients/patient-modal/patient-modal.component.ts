@@ -1,16 +1,22 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { FormArray, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ReactiveFormsModule } from '@angular/forms';
+import { PatientService } from '../../../services/patient.service';
+import { Patient } from '../../../models/patient.model';
+import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
-import { CommonModule } from '@angular/common';
-import { PatientService } from '../../../services/patient.service';
-import { Patient } from '../../../models/patient.model';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
+function noNumbersValidator(control: AbstractControl): ValidationErrors | null {
+  const value = control.value;
+  if (value && !isNaN(Number(value))) {
+    return { noNumbers: true };  // If value is only numbers, return error
+  }
+  return null;
+}
 @Component({
   selector: 'app-patient-modal',
   standalone: true,
@@ -37,7 +43,7 @@ export class PatientModalComponent {
     @Inject(MAT_DIALOG_DATA) public data: Patient 
   ) {
     this.patientForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
+      name: ['', [Validators.required, Validators.minLength(3), noNumbersValidator]], 
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       gender: ['is not selected', Validators.required],
@@ -56,8 +62,8 @@ export class PatientModalComponent {
 
   addDonation(): void {
     this.donations.push(this.fb.group({
-      amount: [null, Validators.required],
-      date: [null, Validators.required],
+      amount: [null, [Validators.required, Validators.min(1)]], // Amount must be positive
+      date: [new Date()]
     }));
   }
 
@@ -74,16 +80,16 @@ export class PatientModalComponent {
     });
 
     if (patient.donations) {
-      this.donations.clear(); 
+      this.donations.clear();
       patient.donations.forEach(donation => {
         this.donations.push(this.fb.group({
-          amount: donation.amount,
-          date: donation.date,
+          amount: [donation.amount, [Validators.required, Validators.min(1)]], // Positive donation
+          date: [donation.date] 
         }));
       });
     }
 
-    if(this.data && this.data._id){ // :')
+    if (this.data && this.data._id) {
       this.patientForm.removeControl('password');
     }
   }
@@ -91,19 +97,18 @@ export class PatientModalComponent {
   onSubmit(): void {
     if (this.patientForm.valid) {
       const patient: Patient = this.patientForm.value;
-  
+
       if (this.data && this.data._id) {
-        // update
+        // Update existing patient
         this.patientService.updatePatient(this.data._id, patient).subscribe(() => {
-          this.dialogRef.close(true);  
+          this.dialogRef.close(true);
         }, error => {
           console.error('Error updating patient:', error);
         });
-
       } else {
-        // new
+        // Add new patient
         this.patientService.addPatient(patient).subscribe(() => {
-          this.dialogRef.close(true);  
+          this.dialogRef.close(true);
         }, error => {
           console.error('Error adding patient:', error);
         });
