@@ -28,7 +28,7 @@
         required
         minlength="3"
         #titleInput="ngModel"
-        [ngClass]="{'is-invalid':(bodyInput.touched || bodyInput.dirty)  && titleInput.invalid}"
+        [ngClass]="{'is-invalid':(titleInput.touched || titleInput.dirty)  && titleInput.invalid}"
         class="form-control"
         id="txtTitle"
       />

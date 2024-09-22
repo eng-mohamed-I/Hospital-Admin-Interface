@@ -26,13 +26,14 @@ export class EditComponent implements OnInit {
   };
   ngOnInit(): void {
     this.route.paramMap.subscribe((param) => {
-      let id = Number(param.get('id'));
+      let id = param.get('id');
       this.getById(id);
     });
   }
-  getById(id: number) {
+  getById(id: any) {
     this.blogService.getBlogsById(id).subscribe((data) => {
-      this.formdata = data;
+      console.log(data)
+      this.formdata = data.blog;
     });
   }
 
