@@ -55,12 +55,20 @@
         </td>
         <!-- Uncomment the Actions column when needed -->
         <td>
-          <!-- <button class="btn btn-outline-warning btn-sm" title="Update Doctor">
-            <i class="fas fa-edit"></i> Update
-          </button> -->
-          <button class="btn btn-outline-danger btn-sm" title="Delete Doctor">
-            <i class="fas fa-trash"></i> Delete
-          </button>
+          <button
+          class="btn btn-outline-warning btn-sm"
+          title="Update Doctor"
+          (click)="updateDoctor(doctor._id)"
+        >
+          <i class="fas fa-edit"></i> Update
+        </button>
+          <button
+          class="btn btn-outline-danger btn-sm"
+          title="Delete Doctor"
+          (click)="deleteDoctor(doctor._id)"  
+        >
+          <i class="fas fa-trash"></i> Delete
+        </button>
         </td>
       </tr>
     </tbody>

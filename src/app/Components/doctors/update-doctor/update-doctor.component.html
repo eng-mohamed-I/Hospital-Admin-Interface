@@ -1,0 +1,36 @@
+<div class="container mt-4">
+    <h2>Update Doctor</h2>
+    <form [formGroup]="updateDoctorForm" (ngSubmit)="onSubmit()">
+      <div class="form-group mb-3">
+        <label for="name">Doctor Name</label>
+        <input id="name" formControlName="name" class="form-control" placeholder="Doctor Name" />
+      </div>
+  
+      <div class="form-group mb-3">
+        <label for="department">Department</label>
+        <input id="department" formControlName="department" class="form-control" placeholder="Department" />
+      </div>
+  
+      <div class="form-group mb-3">
+        <label for="specialization">Specialization</label>
+        <input id="specialization" formControlName="specialization" class="form-control" placeholder="Specialization" />
+      </div>
+  
+      <div class="form-group mb-3">
+        <label for="gender">Gender</label>
+        <select id="gender" formControlName="gender" class="form-control">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
+  
+      <div class="form-group mb-3">
+        <label for="availableDates">Available Dates</label>
+        <input id="availableDates" formControlName="availableDates" class="form-control" placeholder="Available Dates" />
+      </div>
+  
+      <button type="submit" class="btn btn-primary" [disabled]="updateDoctorForm.invalid">Update Doctor</button>
+      <!-- <button type="button" class="btn btn-secondary" (click)="router.navigate(['/doctors'])">Cancel</button> -->
+    </form>
+  </div>
+   

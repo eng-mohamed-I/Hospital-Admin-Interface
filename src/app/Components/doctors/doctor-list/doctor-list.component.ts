@@ -62,9 +62,15 @@ export class DoctorListComponent implements OnInit {
     this.filteredDoctors = [...this.doctors]; // Reset the filtered list to show all doctors
   }
 
-  // deleteDoctor(id: string): void {
-  //   this.doctorService.deleteDoctor(id).subscribe(() => {
-  //     this.getDoctors(); // Refresh the doctor list after deletion
-  //   });
-  // }
+  updateDoctor(_id: string): void {
+    this.router.navigate(['/doctor/doctor-update', _id]);
+  }
+
+  deleteDoctor(_id: string): void {
+    if (confirm('Are you sure you want to delete this doctor?')) {
+      this.doctorService.deleteDoctor(_id).subscribe(() => {
+        this.getDoctors(); // Refresh the doctor list after deletion
+      });
+    }
+  }
 }
