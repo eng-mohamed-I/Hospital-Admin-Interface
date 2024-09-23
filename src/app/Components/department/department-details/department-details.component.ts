@@ -1,6 +1,7 @@
 import { NgFor } from '@angular/common';
 import { Component } from '@angular/core';
 import { Chart } from 'chart.js/auto';
+import { DepartmentService } from '../../../services/department/department.service';
 @Component({
   selector: 'app-department-details',
   standalone: true,
@@ -9,42 +10,25 @@ import { Chart } from 'chart.js/auto';
   styleUrl: './department-details.component.css'
 })
 export class DepartmentDetailsComponent {
-  departments = [
-    {
-      name: "Ophthalmology",
-      doctors: [
-        { name: "Dr. Jane Doe", specialty: "Ophthalmologist" },
-        { name: "Dr. John Smith", specialty: "Optometrist" },
-        { name: "Dr. Anglina julie", specialty: "Optometrist" }
-      ]
-    },
-    {
-      name: "Surgery",
-      doctors: [
-        { name: "Dr. Alan Green", specialty: "General Surgeon" },
-        { name: "Dr. Lisa White", specialty: "Orthopedic Surgeon" }
-      ]
-    },
-    {
-      name: "Obstetrics",
-      doctors: [
-        { name: "Dr. Sarah Blue", specialty: "Obstetrician" },
-        { name: "Dr. Maria Red", specialty: "Gynecologist" }
-      ]
-    },
-    {
-      name: "Pediatrics",
-      doctors: [
-        { name: "Dr. Max Brown", specialty: "Pediatrician" },
-        { name: "Dr. Emma Purple", specialty: "Neonatologist" }
-      ]
-    }
-  ];
+  departments :any[] = []
 
+  constructor(private _departmentService: DepartmentService) {}
   ngOnInit(): void {
+    this._departmentService.getDepartments().subscribe(
+      {
+        next: (data) => { 
+          this.departments = data.departments
+        },
+        error: (err) =>{ 
+          console.log(err)
+        }
+      }
+    )
+
     this.initDoctorDistributionChart();
     this.initDepartmentDoctorChart();
   }
+
 
   initDoctorDistributionChart() {
     const doctorDistributionCtx = document.getElementById('doctorDistributionChart') as HTMLCanvasElement;

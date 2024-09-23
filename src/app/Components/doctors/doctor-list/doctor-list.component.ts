@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DoctorService } from '../../../services/doctor/add-doctor/doctor.service';
-import { DepartmentService } from '../../../services/department/department.service'; // Import the service for departments
 
 @Component({
   selector: 'app-doctor-list',
@@ -16,50 +15,52 @@ import { DepartmentService } from '../../../services/department/department.servi
 export class DoctorListComponent implements OnInit {
   doctors: Doctor[] = [];
   filteredDoctors: Doctor[] = [];
-  departments: { _id: string; name: string }[] = []; // Define department type explicitly
-
   searchName: string = '';
   selectedDepartment: string = '';
-  specialization: string = '';
+  selectedSpecialist: string = '';
+  departments: string[] = []; 
+  specialists: string[] = []; 
+  confirmDeleteId: string | null = null;
 
-  constructor(
-    private doctorService: DoctorService, 
-    private departmentService: DepartmentService, // Inject department service
-    private router: Router
-  ) {}
+  constructor(private doctorService: DoctorService, private router: Router) {}
 
   ngOnInit(): void {
     this.getDoctors();
-    this.getDepartments(); // Load departments on initialization
   }
 
   getDoctors(): void {
     this.doctorService.getDoctor().subscribe((doctors) => {
       this.doctors = doctors;
-      this.filteredDoctors = [...this.doctors]; // Initialize filteredDoctors with all doctors
-      console.log(this.doctors);
+      this.filteredDoctors = doctors; 
+      this.populateFilters();
+      // console.log("ffff",doctors);
     });
   }
 
-  getDepartments(): void {
-    this.departmentService.getDepartments().subscribe((departments) => {
-      this.departments = departments;
-    });
+  populateFilters(): void {
+    this.departments = Array.from(new Set(this.doctors.map(doc => doc.department?.name)));
+    this.specialists = Array.from(new Set(this.doctors.map(doc => doc.specialization)));
   }
 
+  // Filter doctors based on the search input
   filterDoctors(): void {
-    this.filteredDoctors = this.doctors.filter(doctor =>
-      (!this.selectedDepartment || doctor.department._id === this.selectedDepartment) && // Compare with department ID
-      // (!this.specialization || doctor.specialization === this.specialization) &&
-      (!this.searchName || doctor.name.toLowerCase().includes(this.searchName.toLowerCase()))
-    );
+    this.filteredDoctors = this.doctors.filter(doctor => {
+      return (
+        (this.searchName === '' || doctor.name.toLowerCase().includes(this.searchName.toLowerCase())) &&
+        (this.selectedDepartment === '' || doctor.department?.name === this.selectedDepartment) &&
+        (this.selectedSpecialist === '' || doctor.specialization === this.selectedSpecialist)
+      );
+    });
   }
 
+  // Navigate to update doctor page
+
+  // Clear the search and filters
   clearFilters(): void {
     this.searchName = '';
     this.selectedDepartment = '';
-    this.specialization = '';
-    this.filteredDoctors = [...this.doctors]; // Reset the filtered list to show all doctors
+    this.selectedSpecialist = '';
+    this.filteredDoctors = this.doctors;
   }
 
   updateDoctor(_id: string): void {

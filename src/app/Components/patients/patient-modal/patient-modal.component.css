@@ -5,6 +5,18 @@
   .full-width-form-field {
     width: 100%; /* Make form fields full-width */
   }
+  .mat-dialog-content {
+    max-height: 400px; /* Adjust this value based on your design */
+    overflow-y: auto;
+  }
+  
+  .mat-form-field {
+    width: 100%;
+  }
+  
+  .full-width-form-field {
+    width: 100%;
+  }
   
   .form-label {
     font-size: 16px; /* Increase label font size */

@@ -1,0 +1,11 @@
+.s-bar {
+    position: fixed;
+    left: 0px;
+    height: 100vh;
+    background-color: #101010;
+}
+
+.r-main{
+    position: absolute;
+    right: 0px;
+}

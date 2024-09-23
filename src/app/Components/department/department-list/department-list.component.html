@@ -1,7 +1,7 @@
 <div class="container mt-4">
   <!-- Search and Sort Section -->
   <div class="row mb-4 align-items-center">
-    <div class="col-md-4">
+    <div class="col-md-3">
       <input
         type="text"
         class="form-control"
@@ -9,7 +9,7 @@
         [(ngModel)]="searchTerm"
       />
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
       <select
         id="sortOrder"
         class="form-select"
@@ -20,47 +20,57 @@
         <option value="desc">Sort by number of doctors (Descending)</option>
       </select>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
       <button class="btn btn-info" (click)="resetFilters()">Default</button>
+    </div>
+    <div class="col-md-3">
+      <button class="btn btn-success" routerLink="/department/add">
+        Add Dapartment+
+      </button>
     </div>
   </div>
 
   <!-- Department Table -->
-  <table class="table table-bordered table-hover">
-    <thead>
-      <tr>
-        <th>Department</th>
-        <th>Doctors</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let department of filteredDepartments()">
-        <td>{{ department.name }}</td>
-        <td>
-          <ul>
-            <li *ngFor="let doctor of department.doctors">
-              {{ doctor.name }} - {{ doctor.specialty }}
-            </li>
-          </ul>
-        </td>
-        <td>
-          <button
-            class="btn btn-warning m-1"
-            (click)="updateDepartment(department)"
-          >
-            <i class="fas fa-edit"></i> Update
-          </button>
-          <button
-            class="btn btn-danger m-1"
-            (click)="openConfirmDialog(department)"
-          >
-            <i class="fas fa-trash"></i> Delete
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-style container-fulid bg-dange">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Department</th>
+          <th>Doctors</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for(department of filteredDepartments(); track $index){
+        <tr>
+          <td>{{ department.name }}</td>
+          <td>
+            <ul>
+              <li *ngFor="let doctor of department.doctors">
+                {{ doctor.name }} - {{ doctor.specialization }}
+              </li>
+            </ul>
+          </td>
+          <td>
+            <button
+              class="btn btn-warning m-1"
+              [routerLink]="['/department/update/', department._id]"
+            >
+              <i class="fas fa-edit"></i> Update
+            </button>
+            <button
+              class="btn btn-danger m-1"
+              (click)="openConfirmDialog($index, department)"
+            >
+              <i class="fas fa-trash"></i> Delete
+            </button>
+          </td>
+        </tr>
+
+        }
+      </tbody>
+    </table>
+  </div>
 
   <!-- Confirmation Modal -->
   <div

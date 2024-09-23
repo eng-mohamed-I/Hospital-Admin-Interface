@@ -5,7 +5,17 @@
     <div *ngIf="doctorForm.get('name')?.invalid && doctorForm.get('name')?.touched" class="text-danger">
       <small *ngIf="doctorForm.get('name')?.errors?.['required']">Name is required.</small>
     </div>
+
+    <!-- <div class="form-group">
+      <label for="public_id">Image Public ID</label>
+      <input id="public_id" type="text" class="form-control" formControlName="public_id">
+    </div> -->
   </div>
+
+  <!-- <div class="form-group">
+    <label for="nationalID">National ID</label>
+    <input id="nationalID" type="text" class="form-control" formControlName="nationalID">
+  </div> -->
 
   <div class="form-group">
     <label>User Name</label>

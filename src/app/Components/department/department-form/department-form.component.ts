@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DepartmentService } from '../../../services/department/department.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-department-form',
@@ -15,38 +17,37 @@ export class DepartmentFormComponent implements OnInit {
   departmentForm: FormGroup;
   selectedDoctors: any[] = []; // Array to store selected doctors
   doctors: any[] = []; // Array to store fetched doctors
-  departments: any[] = []; // Array to store fetched departments
+  message: string = ""
 
-  constructor(private fb: FormBuilder, private departmentService: DepartmentService) {
+  constructor(private _router: Router, private fb: FormBuilder, private departmentService: DepartmentService) {
     this.departmentForm = this.fb.group({
       departmentName: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
-      departmentSpecialty: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
-      doctor: ['', Validators.required]
+      departmentDescription: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
+      doctor: ['']
     });
   }
 
   ngOnInit(): void {
-    this.loadDepartments();
+    this.getDoctors()
   }
-
-  // Fetch doctors from the API
-  // Fetch departments from the API
-  loadDepartments(): void {
-    this.departmentService.getDepartments().subscribe({
+  
+  // get all doctors
+  getDoctors(): void {
+    this.departmentService.getDoctors().subscribe({
       next: (data) => {
-        this.departments = data;
+        this.doctors = data;
       },
       error: (err) => {
-        console.error('Error fetching departments:', err);
+        console.error('err fetch doctors:', err);
       }
     });
   }
 
-  // Add selected doctor to the array
+  // add selected doctor
   addDoctor(): void {
-    const selectedDoctorId = this.departmentForm.get('doctor')?.value;
+    const selectedDoctorId = this.departmentForm.get('doctor')?.value
     if (selectedDoctorId) {
-      const selectedDoctor = this.doctors.find(doctor => doctor._id === selectedDoctorId);
+      const selectedDoctor = this.doctors.find(doctor => doctor.name === selectedDoctorId);
 
       // Check if the doctor is already added
       if (selectedDoctor && !this.selectedDoctors.includes(selectedDoctor)) {
@@ -54,7 +55,7 @@ export class DepartmentFormComponent implements OnInit {
       }
 
       // Clear the dropdown after adding
-      this.departmentForm.patchValue({ doctor: '' });
+      // this.departmentForm.patchValue({ doctor: '' });
     }
   }
 
@@ -63,43 +64,45 @@ export class DepartmentFormComponent implements OnInit {
     this.selectedDoctors.splice(index, 1);
   }
 
+  // this for clear message
+  clearMessage(messaeg: string) { 
+    setTimeout(() => {
+      this.message = ""
+    },2000)
+  }
+
   // Handle form submission
   onSubmit(): void {
     if (this.departmentForm.valid) {
       const departmentData = {
-        departmentName: this.departmentForm.get('departmentName')?.value,
-        departmentSpecialty: this.departmentForm.get('departmentSpecialty')?.value,
-        doctors: this.selectedDoctors.map(doc => doc._id) // Send only doctor IDs
+        name: this.departmentForm.get('departmentName')?.value,
+        description: this.departmentForm.get('departmentDescription')?.value,
+        doctors: this.selectedDoctors.map(doc => doc._id)
       };
-
+      console.log(departmentData)
       this.departmentService.addDepartment(departmentData).subscribe({
         next: (response) => {
-          console.log('Department added successfully:', response);
-
-          // Clear form after submission
+          // show success message
+          this.message = response.message
           this.departmentForm.reset();
           this.selectedDoctors = [];
-          this.loadDepartments(); // Refresh the department list
+
+          // clear message
+          this.clearMessage(this.message)
+          setTimeout(() => {
+            this._router.navigate(["/department/list"])
+          },2000)
         },
         error: (err) => {
-          console.error('Error adding department:', err);
+          // show error message
+          this.message = err.error.message
+          
+          // clear message
+          this.clearMessage(this.message)
+        
         }
       });
     }
   }
 
-  // Delete a department
-  deleteDepartment(departmentId: string): void {
-    if (confirm('Are you sure you want to delete this department?')) {
-      this.departmentService.deleteDepartment(departmentId).subscribe({
-        next: (response) => {
-          console.log('Department deleted successfully:', response);
-          this.loadDepartments(); // Refresh the department list
-        },
-        error: (err) => {
-          console.error('Error deleting department:', err);
-        }
-      });
-    }
-  }
 }

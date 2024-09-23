@@ -23,6 +23,7 @@ import { CreateComponent } from './Components/blog-management/create/create.comp
 import { EditComponent } from './Components/blog-management/edit/edit.component';
 import { EarningsComponent } from './Components/earnings/earnings.component';
 import { UpdateDoctorComponent } from './Components/doctors/update-doctor/update-doctor.component';
+import { AdminLoginComponent } from './Components/admin-login/admin-login.component';
 
 export const routes: Routes = [  
   
@@ -39,8 +40,8 @@ export const routes: Routes = [
                         { path: '' , redirectTo: "details" , pathMatch: "full"},
                         { path: "details" , component: DepartmentDetailsComponent }, 
                         { path: "list" , component: DepartmentListComponent },
-                        { path: "form" , component: DepartmentFormComponent },
-                        { path: 'update' , component: DepartmentUpdateComponent}
+                        { path: "add" , component: DepartmentFormComponent },
+                        { path: 'update/:id' , component: DepartmentUpdateComponent}
                       ]},
                 { path: 'doctor', component: DoctorsComponent, children: [
                         { path: 'doctor-list', component: DoctorListComponent },
@@ -56,8 +57,10 @@ export const routes: Routes = [
                       { path: 'blog/edit/:id', component: EditComponent },
                       { path: 'appointment' , component: AppointmentsComponent},
                       { path: 'earnings', component: EarningsComponent },
+                     
         ]},
         { path: 'login' , component: LoginComponent },
+        {path:'adminlogin',component:AdminLoginComponent}
 
  ];
 

@@ -5,7 +5,7 @@ interface Department {
   
 
 export interface Doctor {
-    _id: string;
+    _id:string;
     name: string;
     specialization: string;
     userName: string;

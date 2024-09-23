@@ -1,44 +1,98 @@
 <div class="container mt-4">
-  <h2 class="mb-4 text-center text-primary">Patient Management</h2>
+  <!-- Add Patient Button -->
+  <button
+    mat-raised-button
+    color="primary"
+    class="btn btn-success"
+    (click)="openPatientModal()"
+  >
+    Add Patient
+  </button>
 
-  <button mat-raised-button color="primary" (click)="openPatientModal()">Add Patient</button>
+  <!-- Responsive Patient Table -->
+  <div class="table-responsive mt-4">
+    <table class="table table-bordered table-striped">
+      <thead class="table-light">
+        <tr>
+          <th>ID</th>
+          <th>Patient Name</th>
+          <th>Email</th>
+          <th>Gender</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let patient of patients">
+          <td>
+            <ul>
+              @for (donation of patient.donations; track $index) {
+               <li> {{ donation.amount }} EGP - {{ donation.date | date: 'dd/MM/yy h:mm a' }}</li>
+              }
+            </ul>
+          </td>
+          <td>{{ patient.name }}</td>
+          <td>{{ patient.email }}</td>
+          <td>{{ patient.gender }}</td>
+          <td>
+            <span
+              class="badge"
+              [ngClass]="{
+                'bg-success': patient.isConfirmed,
+                'bg-danger': !patient.isConfirmed
+              }"
+            >
+              {{ patient.isConfirmed ? "Confirmed" : "Not Confirmed" }}
+            </span>
+          </td>
+          <td>
+            <div class="d-flex justify-content-center">
+              <i
+                class="bi bi-pencil text-primary me-2"
+                (click)="openPatientModal(patient)"
+                role="button"
+              ></i>
+              <ng-container
+                *ngIf="confirmDeleteId === patient._id; else deleteButton"
+              >
+                <span>Are you sure?</span>
+                <button class="btn btn-success p-0" (click)="confirmDelete()">
+                  Yes
+                </button>
+                <button class="btn btn-danger p-0" (click)="cancelDelete()">
+                  No
+                </button>
+              </ng-container>
+              <ng-template #deleteButton>
+                <i
+                  class="bi bi-trash text-danger"
+                  (click)="deletePatient(patient._id!)"
+                  role="button"
+                ></i>
+              </ng-template>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-  <!-- Patient Table -->
-  <table class="table table-bordered table-striped mt-4">
-    <thead class="table-light">
-      <tr>
-        <th>id</th>
-        <th>Patient Name</th>
-        <th>Gender</th>
-        <th>Age</th>
-        <th>Admitted Date</th>
-        <th>Type</th>
-        <th>Status</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let patient of patients">
-        <td>{{ patient.id }}</td>
-        <td>{{ patient.name }}</td>
-        <td>{{ patient.gender }}</td>
-        <td>{{ patient.age }}</td>
-        <td>{{ patient.admittedDate }}</td>
-        <td>{{ patient.type }}</td>
-        <td>
-          <span
-            [ngClass]="{
-              'badge custom-badge-success': patient.status === 'confirmed',
-              'badge custom-badge-warning': patient.status === 'pending',
-              'badge custom-badge-danger': patient.status === 'rejected'
-            }"
-          >{{ patient.status }}</span>
-        </td>
-        <td class="hover-expand">
-           <i class="bi bi-pencil text-primary me-2"></i> <!--(click)="editPatient(patient) -->
-          <i class="bi bi-trash text-danger" (click)="deletePatient(patient.id)"></i>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <!-- confirmation delete -->
 </div>
+
+<!-- Optional Custom Styling (if needed) -->
+<style>
+  .badge {
+    padding: 0.5em;
+    font-size: 0.875rem;
+  }
+
+  @media (max-width: 768px) {
+    .table {
+      font-size: 0.9rem;
+    }
+    .bi {
+      font-size: 1.2rem;
+    }
+  }
+</style>

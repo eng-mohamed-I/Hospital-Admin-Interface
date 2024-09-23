@@ -23,28 +23,75 @@
         <th scope="col">Img</th>
         <th scope="col">Title</th>
         <th scope="col">Body</th>
+        <th scope="col">Info</th>
         <th scope="col">Action</th>
       </tr>
     </thead>
     <tbody class="tbodyText">
       <!-- Use ng-container to apply *ngIf without interfering with the table rows -->
       <ng-container *ngIf="allblogs.length > 0; else noBlogs">
-        <tr *ngFor="let blog of allblogs">
+        <tr *ngFor="let blog of allblogs; index as i">
           <td>{{ blog._id }}</td>
           <td>
-            <img *ngIf="blog.url; else fallbackImage" [src]="blog.url" alt="{{ blog.title }}" width="50" height="50" />
+            <img
+              *ngIf="blog.url; else fallbackImage"
+              [src]="blog.url"
+              alt="{{ blog.title }}"
+              width="50"
+              height="50"
+            />
             <ng-template #fallbackImage>
-              <img *ngIf="blog.Image" [src]="blog.Image.secure_url" alt="{{ blog.title }}" width="50" height="50" />
+              <img
+                *ngIf="blog.Image"
+                [src]="blog.Image.secure_url"
+                alt="{{ blog.title }}"
+                width="50"
+                height="50"
+              />
             </ng-template>
-                    </td>
-          <td>{{ blog.title.substring(0,10) }}...</td>
-          <td>{{ blog.body.substring(0,20) }}...</td>
+          </td>
+          <td>{{ blog.title.substring(0, 10) }}...</td>
+          <td>{{ blog.body.substring(0, 20) }}...</td>
           <td>
             <a [routerLink]="['/blog', blog._id]">Read more</a>
           </td>
+          <td>
+            <a
+              style="font-size: 13px"
+              href=""
+              class="btn btn-light border border-warning mb-2 updatebtn"
+              [routerLink]="['/blog/edit', blog._id]"
+            >
+              <i class="fa-solid fa-pen-to-square" style="font-size: 14px"></i
+              >Update
+            </a>
+            <!-- this container show if you want delete or not -->
+            <ng-container
+              *ngIf="confirmDeleteId === blog._id; else deleteButton"
+            >
+              <span>Are you sure?</span>
+              <button class="btn btn-success p-0" (click)="confirmDelete(i)">
+                Yes
+              </button>
+              <button class="btn btn-danger p-0" (click)="cancelDelete()">
+                No
+              </button>
+            </ng-container>
+            <!-- button of delete -->
+            <ng-template #deleteButton>
+              <button
+                style="font-size: 15px"
+                type="button"
+                (click)="deleteBlog(blog._id!)"
+                class="btn btn-light border border-danger deletebtn"
+              >
+                <i class="fa-solid fa-trash"></i>Delete
+              </button>
+            </ng-template>
+          </td>
         </tr>
       </ng-container>
-  
+
       <!-- Fallback when no blogs are available -->
       <ng-template #noBlogs>
         <tr>
@@ -54,3 +101,13 @@
     </tbody>
   </table>
 </div>
+
+<!-- 
+<button
+              style="font-size: 15px"
+              type="button"
+              (click)="openDeleteConfirmation(blog._id)"
+              class="btn btn-light border border-danger deletebtn"
+            >
+              <i class="fa-solid fa-trash"></i>Delete
+            </button> -->

@@ -10,11 +10,11 @@ export class BlogService {
   constructor(private httpClient: HttpClient) {}
 
   getAll() {
-    return this.httpClient.get<Blog[]>('http://localhost:5000/api/blogs');
+    return this.httpClient.get<any>('http://localhost:5000/api/blogs/');
   }
 
-  create(blogData: FormData): Observable<any> {
-    return this.httpClient.post<any>('http://localhost:5000/api/blogs', blogData);
+  create(blogData: any): Observable<any> {
+    return this.httpClient.post<any>('http://localhost:5000/api/blogs/', blogData);
   }
 
   getBlogsById(id:any):Observable<any>{
@@ -22,17 +22,15 @@ export class BlogService {
   }
 
 
-  // edit(id: number) {
-  //   return this.httpClient.get<Blog>(`http://localhost:5000/api/blogs/${id}`);
-  // }
-
-  // update(data: Blog) {
-  //   return this.httpClient.put<Blog>(
-  //     `http://localhost:5000/api/blogs/${data.id}`,
-  //     data
-  //   );
-  // }
-  // delete(id: number) {
-  //   return this.httpClient.delete<Blog>(`http://localhost:5000/api/blogs/${id}`);
-  // }
+ 
+  update(data: any,id:any): Observable<any> {
+    return this.httpClient.put<any>(
+      `http://localhost:5000/api/blogs/${id}`,
+      data
+    );
+  }
+  
+  delete(id: any): Observable<any> {
+    return this.httpClient.delete<any>(`http://localhost:5000/api/blogs/${id}`);
+  }
 }
