@@ -1,0 +1,27 @@
+<div class="container mt-4">
+    <h2>Update Doctor</h2>
+    <form [formGroup]="updateDoctorForm" (ngSubmit)="onSubmit()">
+
+        <div class="form-group mb-3">
+            <label for="availableDates">Available Dates</label>
+            <input type="date" id="newDate" formControlName="newDate" class="form-control" placeholder="Add a new date" />
+            <button type="button" class="btn btn-primary mt-2" (click)="addDate()">Add Date</button>
+            <ul class="date-list">
+                <li *ngFor="let date of updateDoctorForm.get('availableDates')?.value; let i = index" class="date-item">
+                    {{ date | date: 'mediumDate' }}
+                    <button type="button" class="btn btn-danger btn-sm ml-2" (click)="removeDate(i)">Remove</button>
+                </li>
+            </ul>
+        </div>
+        <div *ngIf="showAlert" class="alert alert-warning">
+            Please select a date that is today or in the future.
+            <button type="button" class="close" (click)="closeAlert()">×</button>
+        </div>
+        
+
+        <div class="form-group mb-3">
+            <button type="submit" class="btn btn-primary">Update Doctor</button>
+            <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+        </div>
+    </form>
+</div>

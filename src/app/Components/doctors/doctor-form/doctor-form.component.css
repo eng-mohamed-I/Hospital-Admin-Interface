@@ -23,4 +23,74 @@
     justify-content: space-between;
     align-items: center;
   }
+  .custom-alert {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Transparent dark background */
+    z-index: 1000; /* Ensures it appears on top */
+  }
   
+  .custom-alert-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  .custom-alert-content p {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .alert-close-btn {
+    padding: 8px 16px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .alert-close-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Fade-in effect for the alert */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  .date-list {
+    list-style-type: none; /* Remove default bullet points */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margin */
+    display: flex;
+}
+
+.date-item {
+    background-color: #28a745; /* Green background */
+    color: white; /* White text color */
+    padding: 10px; /* Add some padding */
+    margin: 5px 0; /* Space between items */
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s; /* Smooth background change */
+}
+
+.date-item:hover {
+    background-color: #218838; /* Darker green on hover */
+}

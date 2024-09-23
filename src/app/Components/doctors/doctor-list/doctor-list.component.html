@@ -86,36 +86,19 @@
         </td>
         <td>
           <button
-            class="btn btn-outline-warning btn-sm"
-            (click)="updateDoctor(doctor._id!)"
-          >
-            <i class="fas fa-edit"></i> Update
-          </button>
-          <!-- <button class="btn btn-outline-danger btn-sm" (click)="confirmDeleteDoctor(doctor._id!)">
-            <i class="fas fa-trash"></i> Delete
-          </button> -->
-          <ng-container
-            *ngIf="confirmDeleteId === doctor._id; else deleteButton"
-          >
-            <span>Are you sure?</span>
-            <button
-              class="btn btn-success p-0"
-              (click)="confirmDelete(doctor._id!)"
-            >
-              Yes
-            </button>
-            <button class="btn btn-danger p-0" (click)="cancelDelete()">
-              No
-            </button>
-          </ng-container>
-          <ng-template #deleteButton>
-            <button
-              class="btn btn-outline-danger btn-sm"
-              (click)="deleteDoctor(doctor._id!)"
-            >
-              <i class="fas fa-trash"></i> Delete
-            </button>
-          </ng-template>
+          class="btn btn-outline-warning btn-sm"
+          title="Update Doctor"
+          (click)="updateDoctor(doctor._id)"
+        >
+          <i class="fas fa-edit"></i> Update
+        </button>
+          <button
+          class="btn btn-outline-danger btn-sm"
+          title="Delete Doctor"
+          (click)="deleteDoctor(doctor._id)"  
+        >
+          <i class="fas fa-trash"></i> Delete
+        </button>
         </td>
       </tr>
     </tbody>

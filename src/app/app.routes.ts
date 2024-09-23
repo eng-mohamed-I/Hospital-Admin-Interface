@@ -22,6 +22,7 @@ import { BlogManagementComponent } from './Components/blog-management/blog-manag
 import { CreateComponent } from './Components/blog-management/create/create.component';
 import { EditComponent } from './Components/blog-management/edit/edit.component';
 import { EarningsComponent } from './Components/earnings/earnings.component';
+import { UpdateDoctorComponent } from './Components/doctors/update-doctor/update-doctor.component';
 import { AdminLoginComponent } from './Components/admin-login/admin-login.component';
 
 export const routes: Routes = [  
@@ -46,6 +47,8 @@ export const routes: Routes = [
                         { path: 'doctor-list', component: DoctorListComponent },
                         { path: 'doctor-form', component: DoctorFormComponent },
                         { path: 'doctor-form/:id', component: DoctorFormComponent },
+                        { path: 'doctor-update/:id', component: UpdateDoctorComponent },
+
                         { path: '', redirectTo: 'doctor-list', pathMatch: 'full' }
                       ]},
                       { path: 'blog-management', component: BlogManagementComponent },

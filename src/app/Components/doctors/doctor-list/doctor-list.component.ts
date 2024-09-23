@@ -54,9 +54,6 @@ export class DoctorListComponent implements OnInit {
   }
 
   // Navigate to update doctor page
-  updateDoctor(doctorId: string): void {
-    this.router.navigate(['/update-doctor', doctorId]);
-  }
 
   // Clear the search and filters
   clearFilters(): void {
@@ -66,31 +63,18 @@ export class DoctorListComponent implements OnInit {
     this.filteredDoctors = this.doctors;
   }
 
-  // Confirm delete action
-  confirmDeleteDoctor(doctorId: string): void {
+  updateDoctor(_id: string): void {
+    console.log(_id,"from list doctor");
+    
+    this.router.navigate(['/doctor/doctor-update', _id]);
+  }
+
+  deleteDoctor(_id: string): void {
+    console.log(_id);
     if (confirm('Are you sure you want to delete this doctor?')) {
-      this.doctorService.deleteDoctor(doctorId).subscribe(() => {
-        this.getDoctors();  // Refresh doctor list after deletion
+      this.doctorService.deleteDoctor(_id).subscribe(() => {
+        this.getDoctors(); // Refresh the doctor list after deletion
       });
     }
   }
-
-  // Navigate to doctor details
-  viewDoctorDetails(id: string): void {
-    this.router.navigate(['/doctor-details', id]);
-  }
-
-  deleteDoctor(id: string): void {
-    this.confirmDeleteId = id; 
-  }
-
-  cancelDelete(): void {
-    this.confirmDeleteId = null; 
-  }
-
-  confirmDelete(id: any)  {
-    this.confirmDeleteDoctor(id)
-  }
-
-
 }
