@@ -13,7 +13,7 @@
           *ngFor="let date of availableDatesForm.get('availableDates')?.value; let i = index"
           class="list-group-item d-flex justify-content-between align-items-center"
         >
-          {{ date | date: 'fullDate' }}
+          {{ date.date | date: 'fullDate' }} ({{ date.fromTime }} - {{ date.toTime }})
           <button type="button" class="btn btn-danger btn-sm" (click)="removeDate(i)">Remove</button>
         </li>
       </ul>
@@ -35,22 +35,45 @@
           formControlName="newDate"
           [ngClass]="{'is-invalid': availableDatesForm.get('newDate')?.invalid && availableDatesForm.get('newDate')?.touched}"
         />
-        <div class="input-group-append">
-          <button type="button" class="btn btn-primary" (click)="addDate()">Add Date</button>
-        </div>
+      </div>
+      <!-- Time Inputs -->
+      <div class="input-group mt-2">
+        <label for="startTime" class="mr-2">Start Time</label>
+        <input
+          id="startTime"
+          type="time"
+          class="form-control"
+          formControlName="startTime"
+          [ngClass]="{'is-invalid': availableDatesForm.get('startTime')?.invalid && availableDatesForm.get('startTime')?.touched}"
+        />
+        <label for="endTime" class="ml-3 mr-2">End Time</label>
+        <input
+          id="endTime"
+          type="time"
+          class="form-control"
+          formControlName="endTime"
+          [ngClass]="{'is-invalid': availableDatesForm.get('endTime')?.invalid && availableDatesForm.get('endTime')?.touched}"
+        />
       </div>
       <!-- Validation Message -->
       <div class="invalid-feedback" *ngIf="availableDatesForm.get('newDate')?.invalid && availableDatesForm.get('newDate')?.touched">
         Please enter a valid date.
       </div>
+      <div class="invalid-feedback" *ngIf="availableDatesForm.get('startTime')?.invalid && availableDatesForm.get('startTime')?.touched">
+        Please enter a valid start time.
+      </div>
+      <div class="invalid-feedback" *ngIf="availableDatesForm.get('endTime')?.invalid && availableDatesForm.get('endTime')?.touched">
+        Please enter a valid end time.
+      </div>
     </div>
 
-    <!-- Alert for Invalid Date -->
+    <!-- Alert for Invalid Date or Time -->
     <div class="alert alert-danger mt-2" *ngIf="showAlert">
-      Invalid date. Please select a future date.
+      Invalid date or time. Please select valid options.
     </div>
 
-    <!-- Update Button -->
-    <button type="submit" class="btn btn-success mt-3" [disabled]="availableDatesForm.invalid">Update Available Dates</button>
+    <!-- Add Date Button -->
+    <button type="button" class="btn btn-primary mt-3" (click)="addDate()" [disabled]="availableDatesForm.invalid">Add New Date</button>
+
   </form>
 </div>

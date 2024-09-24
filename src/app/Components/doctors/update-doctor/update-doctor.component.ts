@@ -6,6 +6,7 @@ import { DoctorService } from '../../../services/doctor/add-doctor/doctor.servic
 import { CommonModule } from '@angular/common';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { Doctor } from '../../../models/doctor.model';
 
 @Component({
   selector: 'app-update-doctor',
@@ -18,7 +19,7 @@ export class UpdateDoctorComponent implements OnInit {
   updateDoctorForm!: FormGroup;
   departments: any[] = [];
   selectedDoctorId: any;
-  showAlert: boolean = false; // Control alert visibility
+  showAlert: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -29,7 +30,6 @@ export class UpdateDoctorComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Initialize the form
     this.updateDoctorForm = this.fb.group({
       name: ['', Validators.required],
       specialization: ['', Validators.required],
@@ -45,17 +45,11 @@ export class UpdateDoctorComponent implements OnInit {
       newDate: ['']
     });
 
-    // Load all departments
     this.loadDepartments();
-
-    // Get the doctor ID from route params
     this.selectedDoctorId = this.route.snapshot.paramMap.get('id');
-    
-    // Load doctor details and populate the form
     this.loadDoctorDetails();
   }
 
-  // Load departments from the service
   loadDepartments(): void {
     this.departmentService.getDepartments().subscribe(
       (data) => {
@@ -67,22 +61,21 @@ export class UpdateDoctorComponent implements OnInit {
     );
   }
 
-  // Load the doctor's details to populate the form
   loadDoctorDetails(): void {
     this.doctorService.getDoctorById(this.selectedDoctorId).subscribe(
-      (doctor) => {
+      (doctor: Doctor) => {
         this.updateDoctorForm.patchValue({
           name: doctor.name,
           specialization: doctor.specialization,
           userName: doctor.userName,
           nationalID: doctor.nationalID,
-          department: doctor.department?._id || '', // Assuming department has an _id field
+          department: doctor.department?._id || '',
           phone: doctor.phone,
           email: doctor.email,
           gender: doctor.gender,
           dateOfBirth: doctor.dateOfBirth,
           experience: doctor.experience,
-          availableDates: doctor.availableDates || []
+          availableDates: doctor.availableDates.map(date => date.date) || []
         });
       },
       (error) => {
@@ -91,57 +84,57 @@ export class UpdateDoctorComponent implements OnInit {
     );
   }
 
-  // Submit updated doctor information
-  onSubmit(): void {
-    if (this.updateDoctorForm.valid) {
-      this.doctorService.updateDoctor(this.selectedDoctorId, this.updateDoctorForm.value).subscribe(
-        () => {
-          this.router.navigate(['/doctor']);
-        },
-        (error) => {
-          console.error('Error updating doctor', error);
-        }
-      );
-    }
+onSubmit(): void {
+  if (this.updateDoctorForm.valid) {
+    const updatedDoctor: Doctor = {
+      _id: this.selectedDoctorId,
+      ...this.updateDoctorForm.value,
+      availableDates: this.updateDoctorForm.value.availableDates.map((date: string) => ({ date, fromTime: '', toTime: '' })), // Explicitly typing 'date'
+    };
+
+    this.doctorService.updateDoctor(this.selectedDoctorId, updatedDoctor).subscribe(
+      () => {
+        this.router.navigate(['/doctor']);
+      },
+      (error) => {
+        console.error('Error updating doctor', error);
+      }
+    );
   }
+}
+
 
   closeAlert(): void {
     this.showAlert = false;
   }
 
-  // Add new available date
   addDate(): void {
     const newDate = this.updateDoctorForm.get('newDate')?.value;
-  
+
     if (newDate) {
       const availableDatesControl = this.updateDoctorForm.get('availableDates');
       const availableDates = availableDatesControl?.value || [];
-  
-      // Check if the new date is valid and not already included
-      const currentDate = new Date().setHours(0, 0, 0, 0); // Today's date
-      const selectedDate = new Date(newDate).setHours(0, 0, 0, 0); // Selected date
-  
+      const currentDate = new Date().setHours(0, 0, 0, 0);
+      const selectedDate = new Date(newDate).setHours(0, 0, 0, 0);
+
       if (selectedDate >= currentDate) {
         if (!availableDates.includes(newDate)) {
-          availableDates.push(newDate); // Add the new date
-          availableDatesControl?.setValue(availableDates); // Update form
+          availableDates.push(newDate);
+          availableDatesControl?.setValue(availableDates);
         }
-        this.updateDoctorForm.get('newDate')?.reset(); // Clear input
+        this.updateDoctorForm.get('newDate')?.reset();
       } else {
-        this.showAlert = true; // Show alert for past dates
+        this.showAlert = true;
       }
     }
   }
-  
 
-  // Remove a specific date
   removeDate(index: number): void {
     const availableDates = this.updateDoctorForm.get('availableDates')?.value || [];
     availableDates.splice(index, 1);
     this.updateDoctorForm.get('availableDates')?.setValue(availableDates);
   }
 
-  // Cancel and navigate back
   cancel(): void {
     this.router.navigate(['/doctor']);
   }
