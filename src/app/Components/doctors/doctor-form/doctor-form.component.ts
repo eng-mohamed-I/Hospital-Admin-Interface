@@ -159,6 +159,8 @@ export class DoctorFormComponent implements OnInit {
       formData.append('phone', this.doctorForm.get('phone')?.value);
       formData.append('email', this.doctorForm.get('email')?.value);
       formData.append('password', this.doctorForm.get('password')?.value);
+      formData.append('role', 'doctor'); // Set role to 'doctor'
+
 
       // Append image if selected
       if (this.selectedImage) {
