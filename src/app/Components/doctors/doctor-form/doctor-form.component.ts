@@ -166,6 +166,7 @@ export class DoctorFormComponent implements OnInit {
       if (this.selectedImage) {
         formData.append('image', this.selectedImage);
       }
+      
       // Call service to save or update the doctor
       this.doctorService.addDoctor(formData).subscribe(() => {
         this.router.navigate(['/doctor/doctor-list']);
