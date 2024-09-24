@@ -1,37 +1,38 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'; // Import FormBuilder and FormGroup
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DoctorService } from '../../../services/doctor/add-doctor/doctor.service';
 import { DoctorLoginService } from '../../../services/doctor/doctor-login.service';
-import { Doctor } from '../../../models/doctor.model'; // Import Doctor model
+import { Doctor } from '../../../models/doctor.model';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-available-date',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule], // Import ReactiveFormsModule
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './available-date.component.html',
   styleUrls: ['./available-date.component.css']
 })
 export class AvailableDateComponent implements OnInit {
   doctorId: string | null = null;
-  availableDatesForm!: FormGroup; // Form group for available dates
-  showAlert: boolean = false; // Control alert visibility
+  availableDatesForm!: FormGroup;
+  showAlert: boolean = false;
 
   constructor(
-    private fb: FormBuilder, // FormBuilder injection
+    private fb: FormBuilder,
     private doctorService: DoctorService,
-    private doctorLoginService: DoctorLoginService // Inject the DoctorLoginService
+    private doctorLoginService: DoctorLoginService
   ) {}
 
   ngOnInit() {
-    // Initialize the form group with form controls
     this.availableDatesForm = this.fb.group({
-      availableDates: [[]], // Array of available dates
-      newDate: [''] // New date input
+      availableDates: [[]],
+      newDate: ['', Validators.required],
+      startTime: ['', Validators.required],
+      endTime: ['', Validators.required]
     });
 
     if (this.doctorLoginService.isUserLogedIn) {
-      this.doctorId = this.getDoctorIdFromToken(); // Get the doctor ID from the token
+      this.doctorId = this.getDoctorIdFromToken();
       if (this.doctorId) {
         this.getDoctorAvailableDates(this.doctorId);
       }
@@ -39,10 +40,10 @@ export class AvailableDateComponent implements OnInit {
   }
 
   getDoctorIdFromToken(): string | null {
-    const token = localStorage.getItem('userToken'); // Use the saved token
+    const token = localStorage.getItem('userToken');
     if (token) {
-      const decodedToken = this.doctorLoginService.decodeToken(token); // Use the decodeToken method
-      return decodedToken ? decodedToken.id : null; // Get the 'id' property from the decoded token
+      const decodedToken = this.doctorLoginService.decodeToken(token);
+      return decodedToken ? decodedToken.id : null;
     }
     return null;
   }
@@ -50,7 +51,6 @@ export class AvailableDateComponent implements OnInit {
   getDoctorAvailableDates(id: string) {
     this.doctorService.getDoctorByIdForUpdate(id).subscribe(
       (doctor: Doctor) => {
-        // Update the form control with available dates
         this.availableDatesForm.patchValue({
           availableDates: doctor.availableDates || []
         });
@@ -61,21 +61,15 @@ export class AvailableDateComponent implements OnInit {
     );
   }
 
-  // Update available dates
   async updateDoctorAvailableDates() {
     if (this.doctorId) {
       try {
-        // Fetch the existing doctor details
         const doctor = await this.doctorService.getDoctorByIdForUpdate(this.doctorId).toPromise();
-  
         if (doctor) {
-          // Create a new object with the existing doctor details and updated available dates
           const updatedDoctor: Doctor = {
-            ...doctor, // Spread existing doctor details
-            availableDates: this.availableDatesForm.value.availableDates // Update available dates
+            ...doctor,
+            availableDates: this.availableDatesForm.value.availableDates
           };
-  
-          // Call the service method to update the doctor's available dates
           this.doctorService.updateDoctorAvailableDate(this.doctorId, updatedDoctor).subscribe(
             (updatedDoctor: Doctor) => {
               console.log('Doctor available dates updated successfully', updatedDoctor);
@@ -92,26 +86,49 @@ export class AvailableDateComponent implements OnInit {
       }
     }
   }
-  
-  closeAlert(): void {
-    this.showAlert = false;
-  }
 
-  // Add a new date
+  // Add a new date with start and end times
   addDate(): void {
     const newDate = this.availableDatesForm.get('newDate')?.value;
+    const startTime = this.availableDatesForm.get('startTime')?.value;
+    const endTime = this.availableDatesForm.get('endTime')?.value;
     const availableDates = this.availableDatesForm.get('availableDates')?.value || [];
 
-    // Check if the date is not already included and it's not in the past
     const selectedDate = new Date(newDate).setHours(0, 0, 0, 0);
-    if (newDate && !availableDates.includes(newDate) && selectedDate >= new Date().setHours(0, 0, 0, 0)) {
-      availableDates.push(newDate);
-      this.availableDatesForm.patchValue({ availableDates: availableDates });
-      this.availableDatesForm.get('newDate')?.reset(); // Clear input
-    }else {
-      this.showAlert = true; // Show alert for past dates
+
+    // Validate the date and time
+    if (newDate && startTime && endTime && selectedDate >= new Date().setHours(0, 0, 0, 0)) {
+        // Check if the date already exists in the available dates
+        const existingDateIndex = availableDates.findIndex(
+            (date: any) => new Date(date.date).setHours(0, 0, 0, 0) === selectedDate
+        );
+
+        if (existingDateIndex !== -1) {
+            // If the date already exists, update its start and end times
+            availableDates[existingDateIndex].fromTime = startTime;
+            availableDates[existingDateIndex].toTime = endTime;
+        } else {
+            // If it doesn't exist, push the new date along with startTime and endTime
+            availableDates.push({
+                date: newDate,
+                fromTime: startTime,
+                toTime: endTime
+            });
+        }
+
+        // Update the form control with the new array of dates
+        this.availableDatesForm.patchValue({ availableDates });
+
+        // Clear the inputs after adding or updating the date and time
+        this.availableDatesForm.get('newDate')?.reset();
+        this.availableDatesForm.get('startTime')?.reset();
+        this.availableDatesForm.get('endTime')?.reset();
+
+        this.showAlert = false; // Hide alert if all inputs are valid
+    } else {
+        this.showAlert = true; // Show alert if the date or time is invalid
     }
-  }
+}
 
   // Remove a date
   removeDate(index: number): void {
