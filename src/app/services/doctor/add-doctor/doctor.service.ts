@@ -7,7 +7,7 @@ import { Doctor } from '../../../models/doctor.model';
   providedIn: 'root',
 })
 export class DoctorService {
-  private apiUrl = 'http://localhost:5000/api/doctors';
+  private apiUrl = 'http://localhost:5000/api/doctors/';
 
   constructor(private http: HttpClient) {}
 
@@ -40,5 +40,7 @@ export class DoctorService {
     return this.http.delete<Doctor>(`${this.apiUrl}/${id}`);
   }
 
-
+  updateDoctorAvailableDate(id: string, doctor: Doctor | FormData): Observable<Doctor> {
+    return this.http.put<Doctor>(`${this.apiUrl}/A/${id}`, doctor);
+  }
 }

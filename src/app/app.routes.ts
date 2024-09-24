@@ -24,6 +24,7 @@ import { EditComponent } from './Components/blog-management/edit/edit.component'
 import { EarningsComponent } from './Components/earnings/earnings.component';
 import { UpdateDoctorComponent } from './Components/doctors/update-doctor/update-doctor.component';
 import { AdminLoginComponent } from './Components/admin-login/admin-login.component';
+import { AvailableDateComponent } from './Components/logined-doctor/available-date/available-date.component';
 
 export const routes: Routes = [  
   
@@ -60,7 +61,14 @@ export const routes: Routes = [
                      
         ]},
         { path: 'login' , component: LoginComponent },
-        {path:'adminlogin',component:AdminLoginComponent}
+        {path:'adminlogin',component:AdminLoginComponent},
+
+
+
+        {path:'eslam',component:AvailableDateComponent}, // logged in doctor update his Available date with his own api 
+        
+
+
 
  ];
 

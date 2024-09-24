@@ -3,6 +3,7 @@ import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { Doctor } from '../../models/doctor.model';
 
 @Injectable({
   providedIn: 'root'
@@ -66,7 +67,7 @@ export class DoctorLoginService {
   }
 
   // Helper function to decode a JWT token
-  private decodeToken(token: string): any {
+  public decodeToken(token: string): any {
     try {
       const payload = token.split('.')[1];
       return JSON.parse(atob(payload));
