@@ -7,6 +7,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 import { DoctorService } from '../../../services/doctor/add-doctor/doctor.service';
 import { Doctor } from '../../../models/doctor.model';
+import { DepartmentService } from '../../../services/department/department.service'; // Import the service for departments
 
 @Component({
   selector: 'app-doctor-form',
@@ -23,22 +24,29 @@ export class DoctorFormComponent implements OnInit {
   doctorId: number | null = null;
   imagePreview: string | ArrayBuffer | null = null;
   imageError: boolean = false;
+  showAlert: boolean = false; // Control alert visibility
 
   constructor(
     private fb: FormBuilder,
     private doctorService: DoctorService,
     private route: ActivatedRoute,
+    private departmentService: DepartmentService, // Inject department service
     private router: Router
   ) {
     this.doctorForm = this.fb.group({
       name: ['', Validators.required],
-      userName: ['', Validators.required],
+      userName: ['', [
+        Validators.required,
+        Validators.pattern('^[a-z]+$'), // Only lowercase letters allowed
+        Validators.minLength(15), Validators.maxLength(20) // Only lowercase letters, no spaces or special characters
+        // Only lowercase letters, no spaces or special characters
+      ]],
       department: ['', Validators.required],
       specialization: ['', Validators.required],
       gender: ['', Validators.required],
-      nationalID: ['', [Validators.required, Validators.minLength(14), Validators.maxLength(14)]],
+      nationalID: ['', [Validators.required, Validators.minLength(14), Validators.maxLength(14),  Validators.pattern('^[0-9]+$'),]],
       availableDates: [[], Validators.required],  // Array to hold multiple dates
-      phone: ['', [Validators.required, Validators.pattern(/^\d{10,11}$/)]],
+      phone: ['', [Validators.required, Validators.pattern(/^\+?\d{11,12}$/)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       experience: [0, [Validators.required, Validators.min(0)]],
@@ -67,7 +75,7 @@ export class DoctorFormComponent implements OnInit {
 
   // Load departments from API
   loadDepartments(): void {
-    this.doctorService.getDepartments().subscribe(departments=> {
+    this.departmentService.getDepartments().subscribe(departments=> {
       this.departments = departments.departments;
     });
   }
@@ -75,7 +83,11 @@ export class DoctorFormComponent implements OnInit {
   // Load doctor data
   private loadDoctor(): void {
     this.doctorService.getDoctorById(this.doctorId!).subscribe((doctor: Doctor) => {
+      
       if (doctor) {
+        console.log(this.doctorId)
+        console.log(doctor._id)
+        
         this.doctorForm.patchValue({
           name: doctor.name,
           userName: doctor.userName,
@@ -99,21 +111,34 @@ export class DoctorFormComponent implements OnInit {
   // Add new date to availableDates array
   addDate(): void {
     const availableDates = this.doctorForm.get('availableDates')?.value;
+
     if (this.newDate && availableDates) {
-      availableDates.push(this.newDate);  // Add the new date to the array
-      this.doctorForm.get('availableDates')?.setValue(availableDates);  // Update the form control
-      this.newDate = '';  // Clear the input field
+      const currentDate = new Date().setHours(0, 0, 0, 0); // Today's date
+      const selectedDate = new Date(this.newDate).setHours(0, 0, 0, 0); // Selected date
+
+      if (selectedDate >= currentDate) {
+        availableDates.push(this.newDate);  // Add valid date
+        this.doctorForm.get('availableDates')?.setValue(availableDates);  // Update form
+        this.newDate = '';  // Clear input
+      } else {
+        this.showAlert = true;  // Show custom alert
+      }
     }
   }
 
-  // Remove a date from the array
+  // Close the custom alert
+  closeAlert(): void {
+    this.showAlert = false;
+  }
+
   removeDate(index: number): void {
     const availableDates = this.doctorForm.get('availableDates')?.value;
     if (availableDates) {
-      availableDates.splice(index, 1);  // Remove the selected date
-      this.doctorForm.get('availableDates')?.setValue(availableDates);  // Update the form control
+      availableDates.splice(index, 1);  // Remove selected date
+      this.doctorForm.get('availableDates')?.setValue(availableDates);  // Update form
     }
   }
+
 
   // Save or update doctor
   saveDoctor(): void {
@@ -134,16 +159,21 @@ export class DoctorFormComponent implements OnInit {
       formData.append('phone', this.doctorForm.get('phone')?.value);
       formData.append('email', this.doctorForm.get('email')?.value);
       formData.append('password', this.doctorForm.get('password')?.value);
+      formData.append('role', 'doctor'); // Set role to 'doctor'
+
 
       // Append image if selected
       if (this.selectedImage) {
         formData.append('image', this.selectedImage);
       }
+      
       // Call service to save or update the doctor
       this.doctorService.addDoctor(formData).subscribe(() => {
         this.router.navigate(['/doctor/doctor-list']);
       });
     } else {
+      console.log(this.doctorForm.markAllAsTouched(),'error');
+      
       this.doctorForm.markAllAsTouched();
     }
   }

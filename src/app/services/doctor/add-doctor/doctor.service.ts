@@ -7,15 +7,9 @@ import { Doctor } from '../../../models/doctor.model';
   providedIn: 'root',
 })
 export class DoctorService {
-  private apiUrl = 'http://localhost:5000/api/doctors';
-  private departmentUrl = 'http://localhost:5000/api/departments';
+  private apiUrl = 'http://localhost:5000/api/doctors/';
 
   constructor(private http: HttpClient) {}
-
-  // Fetch all departments
-  getDepartments(): Observable<any> {
-    return this.http.get<any>(this.departmentUrl);
-  }
 
   // Get all doctors
   getDoctor(): Observable<any> {
@@ -33,13 +27,20 @@ export class DoctorService {
   }
 
   // Update existing doctor
-  // updateDoctor(id: number, doctor: Doctor): Observable<Doctor> {
-  //   return this.http.put<Doctor>(`${this.apiUrl}/${id}`, doctor);
-  // }
+  updateDoctor(id: string, doctor: Doctor | FormData): Observable<Doctor> {
+    return this.http.put<Doctor>(`${this.apiUrl}/${id}`, doctor);
+  }
+  
+  getDoctorByIdForUpdate(id: string): Observable<Doctor> {
+    return this.http.get<Doctor>(`${this.apiUrl}/${id}`);
+  }
 
+  // delete existing doctor
   deleteDoctor(id: string): Observable<Doctor> {
     return this.http.delete<Doctor>(`${this.apiUrl}/${id}`);
   }
 
-
+  updateDoctorAvailableDate(id: string, doctor: Doctor | FormData): Observable<Doctor> {
+    return this.http.put<Doctor>(`${this.apiUrl}/A/${id}`, doctor);
+  }
 }

@@ -1,0 +1,19 @@
+.date-list {
+    list-style-type: none; /* Remove default bullet points */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margin */
+    display: flex;
+}
+
+.date-item {
+    background-color: #28a745; /* Green background */
+    color: white; /* White text color */
+    padding: 10px; /* Add some padding */
+    margin: 5px 0; /* Space between items */
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s; /* Smooth background change */
+}
+
+.date-item:hover {
+    background-color: #218838; /* Darker green on hover */
+}

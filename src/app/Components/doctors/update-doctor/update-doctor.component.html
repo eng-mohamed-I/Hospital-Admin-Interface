@@ -1,0 +1,202 @@
+<div class="container mt-4">
+    <h2>Update Doctor</h2>
+  
+    <!-- Form Start -->
+    <form [formGroup]="updateDoctorForm" (ngSubmit)="onSubmit()">
+  
+      <!-- Name Field -->
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input
+          id="name"
+          type="text"
+          class="form-control"
+          formControlName="name"
+          [ngClass]="{'is-invalid': updateDoctorForm.get('name')?.invalid && updateDoctorForm.get('name')?.touched}"
+        />
+        <div class="invalid-feedback" *ngIf="updateDoctorForm.get('name')?.invalid && updateDoctorForm.get('name')?.touched">
+          Name is required.
+        </div>
+      </div>
+  
+      <!-- Specialization Field -->
+      <div class="form-group">
+        <label for="specialization">Specialization</label>
+        <input
+          id="specialization"
+          type="text"
+          class="form-control"
+          formControlName="specialization"
+          [ngClass]="{'is-invalid': updateDoctorForm.get('specialization')?.invalid && updateDoctorForm.get('specialization')?.touched}"
+        />
+        <div class="invalid-feedback" *ngIf="updateDoctorForm.get('specialization')?.invalid && updateDoctorForm.get('specialization')?.touched">
+          Specialization is required.
+        </div>
+      </div>
+  
+      <!-- Username Field -->
+      <div class="form-group">
+        <label for="userName">Username</label>
+        <input
+          id="userName"
+          type="text"
+          class="form-control"
+          formControlName="userName"
+          [ngClass]="{'is-invalid': updateDoctorForm.get('userName')?.invalid && updateDoctorForm.get('userName')?.touched}"
+        />
+        <div class="invalid-feedback" *ngIf="updateDoctorForm.get('userName')?.invalid && updateDoctorForm.get('userName')?.touched">
+          Username is required.
+        </div>
+      </div>
+  
+      <!-- National ID Field -->
+      <div class="form-group">
+        <label for="nationalID">National ID</label>
+        <input
+          id="nationalID"
+          type="text"
+          class="form-control"
+          formControlName="nationalID"
+          [ngClass]="{'is-invalid': updateDoctorForm.get('nationalID')?.invalid && updateDoctorForm.get('nationalID')?.touched}"
+        />
+        <div class="invalid-feedback" *ngIf="updateDoctorForm.get('nationalID')?.invalid && updateDoctorForm.get('nationalID')?.touched">
+          National ID must be 14 characters long.
+        </div>
+      </div>
+  
+<!-- Department Field -->
+<div class="form-group">
+    <label for="department">Department</label>
+    <select
+      id="department"
+      class="form-control"
+      formControlName="department"
+      [ngClass]="{'is-invalid': updateDoctorForm.get('department')?.invalid && updateDoctorForm.get('department')?.touched}"
+    >
+      <option value="">Select Department</option>
+      <!-- Loop through loaded departments and display each one -->
+      <option *ngFor="let department of departments" [value]="department._id">{{ department.name }}</option>
+    </select>
+    <div class="invalid-feedback" *ngIf="updateDoctorForm.get('department')?.invalid && updateDoctorForm.get('department')?.touched">
+      Department is required.
+    </div>
+  </div>
+  
+  
+      <!-- Phone Field -->
+      <div class="form-group">
+        <label for="phone">Phone</label>
+        <input
+          id="phone"
+          type="text"
+          class="form-control"
+          formControlName="phone"
+          [ngClass]="{'is-invalid': updateDoctorForm.get('phone')?.invalid && updateDoctorForm.get('phone')?.touched}"
+        />
+        <div class="invalid-feedback" *ngIf="updateDoctorForm.get('phone')?.invalid && updateDoctorForm.get('phone')?.touched">
+          Phone number must be 10-11 digits.
+        </div>
+      </div>
+  
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          class="form-control"
+          formControlName="email"
+          [ngClass]="{'is-invalid': updateDoctorForm.get('email')?.invalid && updateDoctorForm.get('email')?.touched}"
+        />
+        <div class="invalid-feedback" *ngIf="updateDoctorForm.get('email')?.invalid && updateDoctorForm.get('email')?.touched">
+          Please enter a valid email.
+        </div>
+      </div>
+  
+      <!-- Gender Field -->
+      <div class="form-group">
+        <label for="gender">Gender</label>
+        <select
+          id="gender"
+          class="form-control"
+          formControlName="gender"
+          [ngClass]="{'is-invalid': updateDoctorForm.get('gender')?.invalid && updateDoctorForm.get('gender')?.touched}"
+        >
+          <option value="">Select Gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+        <div class="invalid-feedback" *ngIf="updateDoctorForm.get('gender')?.invalid && updateDoctorForm.get('gender')?.touched">
+          Please select a valid gender.
+        </div>
+      </div>
+  
+      <!-- Date of Birth Field -->
+      <div class="form-group">
+        <label for="dateOfBirth">Date of Birth</label>
+        <input
+          id="dateOfBirth"
+          type="date"
+          class="form-control"
+          formControlName="dateOfBirth"
+          [ngClass]="{'is-invalid': updateDoctorForm.get('dateOfBirth')?.invalid && updateDoctorForm.get('dateOfBirth')?.touched}"
+        />
+        <div class="invalid-feedback" *ngIf="updateDoctorForm.get('dateOfBirth')?.invalid && updateDoctorForm.get('dateOfBirth')?.touched">
+          Please enter a valid date of birth.
+        </div>
+      </div>
+  
+      <!-- Experience Field -->
+      <div class="form-group">
+        <label for="experience">Years of Experience</label>
+        <input
+          id="experience"
+          type="number"
+          class="form-control"
+          formControlName="experience"
+          [ngClass]="{'is-invalid': updateDoctorForm.get('experience')?.invalid && updateDoctorForm.get('experience')?.touched}"
+        />
+        <div class="invalid-feedback" *ngIf="updateDoctorForm.get('experience')?.invalid && updateDoctorForm.get('experience')?.touched">
+          Experience must be a positive number.
+        </div>
+      </div>
+  
+      <!-- Available Dates -->
+      <div class="form-group">
+        <label>Available Dates</label>
+        <ul class="list-group">
+          <li
+            *ngFor="let date of updateDoctorForm.get('availableDates')?.value; let i = index"
+            class="list-group-item d-flex justify-content-between align-items-center"
+          >
+            {{ date  |  date: 'shortDate' }}
+            <button type="button" class="btn btn-danger btn-sm" (click)="removeDate(i)">Remove</button>
+          </li>
+        </ul>
+  
+        <!-- Add Date Picker -->
+        <div class="input-group mt-2">
+          <input
+            type="date"
+            class="form-control"
+            formControlName="newDate"
+          />
+          <div class="input-group-append">
+            <button type="button" class="btn btn-primary" (click)="addDate()">Add Date</button>
+          </div>
+        </div>
+  
+        <!-- Alert for Invalid Date -->
+        <div class="alert alert-danger mt-2" *ngIf="showAlert">
+          Invalid date. Please select a future date.
+        </div>
+      </div>
+  
+      <!-- Submit and Cancel Buttons -->
+      <button type="submit" class="btn btn-success mt-3" [disabled]="updateDoctorForm.invalid">Update Doctor</button>
+      <button type="button" class="btn btn-secondary mt-3 ml-2" (click)="cancel()">Cancel</button>
+  
+    </form>
+  </div>
+  

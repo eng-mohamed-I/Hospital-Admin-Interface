@@ -1,0 +1,56 @@
+<div class="container mt-4">
+  <h2>Manage Available Dates</h2>
+
+  <!-- Form Start -->
+  <form [formGroup]="availableDatesForm" (ngSubmit)="updateDoctorAvailableDates()">
+
+    <!-- Available Dates List -->
+    <div class="form-group">
+      <label>Available Dates</label>
+      <ul class="list-group">
+        <!-- Loop through available dates and display them -->
+        <li
+          *ngFor="let date of availableDatesForm.get('availableDates')?.value; let i = index"
+          class="list-group-item d-flex justify-content-between align-items-center"
+        >
+          {{ date | date: 'fullDate' }}
+          <button type="button" class="btn btn-danger btn-sm" (click)="removeDate(i)">Remove</button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- No Available Dates Message -->
+    <div class="alert alert-info" *ngIf="!availableDatesForm.get('availableDates')?.value.length">
+      No available dates found for this doctor.
+    </div>
+
+    <!-- New Date Input -->
+    <div class="form-group">
+      <label for="newDate">Add New Date</label>
+      <div class="input-group">
+        <input
+          id="newDate"
+          type="date"
+          class="form-control"
+          formControlName="newDate"
+          [ngClass]="{'is-invalid': availableDatesForm.get('newDate')?.invalid && availableDatesForm.get('newDate')?.touched}"
+        />
+        <div class="input-group-append">
+          <button type="button" class="btn btn-primary" (click)="addDate()">Add Date</button>
+        </div>
+      </div>
+      <!-- Validation Message -->
+      <div class="invalid-feedback" *ngIf="availableDatesForm.get('newDate')?.invalid && availableDatesForm.get('newDate')?.touched">
+        Please enter a valid date.
+      </div>
+    </div>
+
+    <!-- Alert for Invalid Date -->
+    <div class="alert alert-danger mt-2" *ngIf="showAlert">
+      Invalid date. Please select a future date.
+    </div>
+
+    <!-- Update Button -->
+    <button type="submit" class="btn btn-success mt-3" [disabled]="availableDatesForm.invalid">Update Available Dates</button>
+  </form>
+</div>
