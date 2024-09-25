@@ -99,3 +99,25 @@
 .date-item:hover {
     background-color: #218838; /* Darker green on hover */
 }
+.image-preview {
+  display: flex;
+  justify-content: start; /* Center the image */
+  margin-top: 10px; /* Add some space above the image */
+}
+
+.circle-image-container {
+  width: 200px; /* Set the width of the circle */
+  height: 200px; /* Set the height of the circle */
+  border-radius: 50%; /* Make it circular */
+  overflow: hidden; /* Ensure the image fits within the circle */
+  border: 1px solid #9ecdff; /* Optional: add a border */
+  display: flex; /* Use flexbox for centering */
+  justify-content: center; /* Center the image */
+  align-items: center; /* Center the image */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: add a shadow */
+}
+
+.circle-image-container img {
+  width: 100%; /* Make the image fill the container */
+  height: auto; /* Maintain the aspect ratio */
+}

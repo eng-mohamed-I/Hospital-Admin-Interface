@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Doctor } from '../../../models/doctor.model';
-
+interface PartialDoctorUpdate {
+  availableDates: any;
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -44,4 +46,11 @@ export class DoctorService {
     return this.http.put<Doctor>(`${this.apiUrl}/A/${id}`, doctor);
   }
   
+
+
+  
+  // Adjust the method to accept PartialDoctorUpdate
+  updateDoctorAvailableDatE(id: string, availableDates: PartialDoctorUpdate): Observable<Doctor> {
+    return this.http.put<Doctor>(`${this.apiUrl}/A/${id}`, availableDates);
+  }
 }

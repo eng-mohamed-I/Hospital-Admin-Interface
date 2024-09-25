@@ -20,6 +20,7 @@ export class UpdateDoctorComponent implements OnInit {
   departments: any[] = [];
   selectedDoctorId: any;
   showAlert: boolean = false;
+  imageUrl: string | ArrayBuffer | null = null; // For previewing the uploaded image
 
   constructor(
     private fb: FormBuilder,
@@ -74,7 +75,12 @@ export class UpdateDoctorComponent implements OnInit {
           gender: doctor.gender,
           dateOfBirth: doctor.dateOfBirth,
           experience: doctor.experience,
+          image: doctor.Image || null  // Ensure this aligns with your Doctor model
+
         });
+
+
+        this.imageUrl = doctor.Image?.secure_url || null; // Use optional chaining
 
         // Load available dates into the FormArray
         doctor.availableDates.forEach(date => {
@@ -103,6 +109,18 @@ export class UpdateDoctorComponent implements OnInit {
 
   removeDate(index: number): void {
     this.availableDates.removeAt(index);
+  }
+
+  onImageSelected(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imageUrl = reader.result; // Set imageUrl for preview
+      };
+      reader.readAsDataURL(file);
+      this.updateDoctorForm.patchValue({ image: file }); // Update the form control
+    }
   }
 
   onSubmit(): void {

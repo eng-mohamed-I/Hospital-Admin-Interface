@@ -44,7 +44,6 @@ export class DoctorFormComponent implements OnInit {
       userName: ['', [
         Validators.required,
         Validators.minLength(10),
-        Validators.maxLength(15),
         Validators.pattern('^[a-z0-9._-]+$')  // allows lowercase letters, digits, and special characters (-, _, .)
       ]],
       image: [''],

@@ -31,6 +31,7 @@ export class AvailableDateComponent implements OnInit {
       endTime: ['', Validators.required]
     });
 
+    // Check if user is logged in and get the doctor's ID
     if (this.doctorLoginService.isUserLogedIn) {
       this.doctorId = this.getDoctorIdFromToken();
       if (this.doctorId) {
@@ -39,6 +40,7 @@ export class AvailableDateComponent implements OnInit {
     }
   }
 
+  // Extract the doctor ID from the token
   getDoctorIdFromToken(): string | null {
     const token = localStorage.getItem('userToken');
     if (token) {
@@ -48,6 +50,7 @@ export class AvailableDateComponent implements OnInit {
     return null;
   }
 
+  // Fetch available dates for the doctor and populate the form
   getDoctorAvailableDates(id: string) {
     this.doctorService.getDoctorByIdForUpdate(id).subscribe(
       (doctor: Doctor) => {
@@ -60,58 +63,50 @@ export class AvailableDateComponent implements OnInit {
       }
     );
   }
+
+  // Send updated available dates to the API
   updateDoctorAvailableDates() {
     if (this.doctorId) {
-      // Fetch the existing doctor data
-      this.doctorService.getDoctorByIdForUpdate(this.doctorId).subscribe(
-        (doctor: Doctor) => {
-          // Construct the updatedDoctor object with all necessary fields
-          const updatedDoctor: Doctor = {
-            ...doctor, // Spread the existing doctor data
-            availableDates: this.availableDatesForm.value.availableDates // Update the availableDates
-          };
-  
-          // Use type assertion to tell TypeScript that doctorId is definitely a string
-          this.doctorService.updateDoctorAvailableDate(this.doctorId as string, updatedDoctor).subscribe(
-            (updatedDoctor: Doctor) => {
-              console.log('Doctor available dates updated successfully', updatedDoctor);
-            },
-            (error) => {
-              console.error('Error updating available dates', error);
-            }
-          );
-        },
-        (error) => {
-          console.error('Error fetching doctor data for update', error);
-        }
-      );
+      const availableDates = this.availableDatesForm.get('availableDates')?.value;
+      
+      if (availableDates && availableDates.length > 0) {
+        this.doctorService.updateDoctorAvailableDatE(this.doctorId, { availableDates }).subscribe(
+          (updatedDoctor: Doctor) => {
+            console.log('Doctor available dates updated successfully', updatedDoctor);
+          },
+          (error) => {
+            console.error('Error updating available dates', error);
+          }
+        );
+      } else {
+        console.error('No available dates to update');
+      }
     } else {
       console.error('Doctor ID is not available');
     }
   }
-  
-  
 
+  // Add a new available date or update an existing one
   addDate(): void {
     const newDate = this.availableDatesForm.get('newDate')?.value;
     const startTime = this.availableDatesForm.get('startTime')?.value;
     const endTime = this.availableDatesForm.get('endTime')?.value;
     const availableDates = this.availableDatesForm.get('availableDates')?.value || [];
-
+  
     const selectedDate = new Date(newDate).setHours(0, 0, 0, 0);
 
-    // Validate the date and time
+    // Validate date and time inputs
     if (newDate && startTime && endTime && selectedDate >= new Date().setHours(0, 0, 0, 0)) {
       const existingDateIndex = availableDates.findIndex(
         (date: any) => new Date(date.date).setHours(0, 0, 0, 0) === selectedDate
       );
-
+  
       if (existingDateIndex !== -1) {
-        // If the date already exists, update its start and end times
+        // Update start and end times if the date already exists
         availableDates[existingDateIndex].fromTime = startTime;
         availableDates[existingDateIndex].toTime = endTime;
       } else {
-        // If it doesn't exist, push the new date along with startTime and endTime
+        // Add a new date entry
         availableDates.push({
           date: newDate,
           fromTime: startTime,
@@ -119,21 +114,24 @@ export class AvailableDateComponent implements OnInit {
         });
       }
 
-      // Update the form control with the new array of dates
+      // Update the form control with the new list of dates
       this.availableDatesForm.patchValue({ availableDates });
-
-      // Clear the inputs after adding or updating the date and time
+      
+      // Call the update function to send data to the API
+      this.updateDoctorAvailableDates();
+      
+      // Reset form inputs after adding or updating
       this.availableDatesForm.get('newDate')?.reset();
       this.availableDatesForm.get('startTime')?.reset();
       this.availableDatesForm.get('endTime')?.reset();
-
-      this.showAlert = false; // Hide alert if all inputs are valid
+      
+      this.showAlert = false; // Hide alert if inputs are valid
     } else {
-      this.showAlert = true; // Show alert if the date or time is invalid
+      this.showAlert = true; // Show alert if date or time is invalid
     }
   }
 
-  // Remove a date
+  // Remove an available date
   removeDate(index: number): void {
     const availableDates = this.availableDatesForm.get('availableDates')?.value || [];
     availableDates.splice(index, 1);
