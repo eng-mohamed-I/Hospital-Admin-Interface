@@ -41,15 +41,22 @@ export class DoctorFormComponent implements OnInit {
   initForm() {
     this.doctorForm = this.fb.group({
       name: ['', Validators.required],
-      userName: ['', [Validators.required, Validators.minLength(15), Validators.maxLength(20), Validators.pattern('^[a-z]+$')]],
-      specialization: ['', Validators.required],
+      userName: ['', [
+        Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(15),
+        Validators.pattern('^[a-z0-9._-]+$')  // allows lowercase letters, digits, and special characters (-, _, .)
+      ]],
       image: [''],
       price:['',Validators.required],
       nationalID: ['', [Validators.required, Validators.minLength(14), Validators.maxLength(14), Validators.pattern('^[0-9]+$')]],
       department: ['', Validators.required],
       availableDates: this.fb.array([]), // Initializes as an empty FormArray
-      phone: ['', [Validators.required, Validators.pattern('^(\\d{10}|\\d{11})$')]],
-      email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.required, Validators.pattern(/^(011|010|015|012)\d{8}$/)]],  // Updated pattern
+      email: ['', [
+        Validators.required,
+        Validators.pattern('^[a-zA-Z0-9._%+-]+@gmail\\.com$')  // Regex pattern for Gmail validation
+      ]],      
       password: ['', [Validators.required, Validators.minLength(6)]],
       gender: ['', Validators.required],
       dateOfBirth: ['', Validators.required],
@@ -92,10 +99,14 @@ export class DoctorFormComponent implements OnInit {
     return this.doctorForm.get('availableDates') as FormArray;
   }
 
-  closeAlert() {
-    this.showAlert = false;
-  }
 
+  closeAlert() {
+    this.showAlert = true; // Ensure the alert is shown when triggered
+    setTimeout(() => {
+      this.showAlert = false; // Hide the alert after 2 seconds
+      console.log("Alert closed automatically"); // Optional: for debugging
+    }, 500);  
+  }
   onImageSelected(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0]; // Get the selected file
     if (file) {
@@ -116,10 +127,23 @@ export class DoctorFormComponent implements OnInit {
   }
 
   saveDoctor() {
-    if (this.doctorForm.valid) {
+    const today = new Date(); // Get today's date
+    let hasPastDate = false;
+  
+    // Check if any selected date is in the past
+    this.availableDates.controls.forEach((dateGroup) => {
+      const selectedDate = new Date(dateGroup.get('date')?.value);
+      if (selectedDate < today) {
+        hasPastDate = true;
+      }
+    });
+  
+    if (hasPastDate) {
+      this.showAlert = true; // Show the alert if there's a past date
+    } else if (this.doctorForm.valid) {
       const formData = new FormData();
       console.log('Doctor form is valid:', this.doctorForm.value);
-
+  
       // Append all fields to formData except availableDates
       for (const key in this.doctorForm.value) {
         if (key !== 'availableDates') {
@@ -135,7 +159,7 @@ export class DoctorFormComponent implements OnInit {
       this.doctorService.addDoctor(formData).subscribe(
         () => {
           console.log('Doctor added successfully');
-          this.router.navigate(['/doctor']);
+          this.router.navigate(['/doctor/doctor-list']);
         },
         (error) => console.error(error)
       );
@@ -144,4 +168,5 @@ export class DoctorFormComponent implements OnInit {
       this.doctorForm.markAllAsTouched();
     }
   }
+  
 }

@@ -3,7 +3,8 @@ interface Department {
     name: string;
   }
   
-  export interface Appointment {
+  export interface AvailableDate {
+    _id?: string;
     date: string;     // ISO string or any date format you expect
     fromTime: string; // HH:mm format
     toTime: string;   // HH:mm format
@@ -20,7 +21,7 @@ export interface Doctor {
     };
     nationalID: string;
     department: Department; // ID of the department
-    availableDates: Appointment[];
+    availableDates: AvailableDate[];
     phone: string;
     price: Number,
     email: string;

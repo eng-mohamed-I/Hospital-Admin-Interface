@@ -43,4 +43,5 @@ export class DoctorService {
   updateDoctorAvailableDate(id: string, doctor: Doctor | FormData): Observable<Doctor> {
     return this.http.put<Doctor>(`${this.apiUrl}/A/${id}`, doctor);
   }
+  
 }

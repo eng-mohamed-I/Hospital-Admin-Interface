@@ -23,6 +23,11 @@
     justify-content: space-between;
     align-items: center;
   }
+
+
+  .custom-alert {
+    display: block; /* Temporarily set to block for testing */
+  }
   .custom-alert {
     position: fixed;
     top: 0;

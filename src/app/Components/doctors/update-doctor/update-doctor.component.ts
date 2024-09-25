@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DepartmentService } from '../../../services/department/department.service';
 import { DoctorService } from '../../../services/doctor/add-doctor/doctor.service';
@@ -41,8 +41,7 @@ export class UpdateDoctorComponent implements OnInit {
       gender: ['', Validators.required],
       dateOfBirth: ['', Validators.required],
       experience: ['', [Validators.required, Validators.min(0)]],
-      availableDates: [[]],
-      newDate: ['']
+      availableDates: this.fb.array([]), // Initialize as a FormArray
     });
 
     this.loadDepartments();
@@ -75,7 +74,11 @@ export class UpdateDoctorComponent implements OnInit {
           gender: doctor.gender,
           dateOfBirth: doctor.dateOfBirth,
           experience: doctor.experience,
-          availableDates: doctor.availableDates.map(date => date.date) || []
+        });
+
+        // Load available dates into the FormArray
+        doctor.availableDates.forEach(date => {
+          this.addDate(date.date, date.fromTime, date.toTime);
         });
       },
       (error) => {
@@ -84,55 +87,51 @@ export class UpdateDoctorComponent implements OnInit {
     );
   }
 
-onSubmit(): void {
-  if (this.updateDoctorForm.valid) {
-    const updatedDoctor: Doctor = {
-      _id: this.selectedDoctorId,
-      ...this.updateDoctorForm.value,
-      availableDates: this.updateDoctorForm.value.availableDates.map((date: string) => ({ date, fromTime: '', toTime: '' })), // Explicitly typing 'date'
-    };
-
-    this.doctorService.updateDoctor(this.selectedDoctorId, updatedDoctor).subscribe(
-      () => {
-        this.router.navigate(['/doctor']);
-      },
-      (error) => {
-        console.error('Error updating doctor', error);
-      }
-    );
-  }
-}
-
-
-  closeAlert(): void {
-    this.showAlert = false;
+  get availableDates(): FormArray {
+    return this.updateDoctorForm.get('availableDates') as FormArray;
   }
 
-  addDate(): void {
-    const newDate = this.updateDoctorForm.get('newDate')?.value;
+  addDate(date: string = '', fromTime: string = '', toTime: string = ''): void {
+    const newDateGroup = this.fb.group({
+      date: [date, Validators.required],
+      fromTime: [fromTime, Validators.required],
+      toTime: [toTime, Validators.required],
+    });
 
-    if (newDate) {
-      const availableDatesControl = this.updateDoctorForm.get('availableDates');
-      const availableDates = availableDatesControl?.value || [];
-      const currentDate = new Date().setHours(0, 0, 0, 0);
-      const selectedDate = new Date(newDate).setHours(0, 0, 0, 0);
-
-      if (selectedDate >= currentDate) {
-        if (!availableDates.includes(newDate)) {
-          availableDates.push(newDate);
-          availableDatesControl?.setValue(availableDates);
-        }
-        this.updateDoctorForm.get('newDate')?.reset();
-      } else {
-        this.showAlert = true;
-      }
-    }
+    this.availableDates.push(newDateGroup);
   }
 
   removeDate(index: number): void {
-    const availableDates = this.updateDoctorForm.get('availableDates')?.value || [];
-    availableDates.splice(index, 1);
-    this.updateDoctorForm.get('availableDates')?.setValue(availableDates);
+    this.availableDates.removeAt(index);
+  }
+
+  onSubmit(): void {
+    if (this.updateDoctorForm.valid) {
+      const updatedDoctor: Doctor = {
+        _id: this.selectedDoctorId,
+        ...this.updateDoctorForm.value,
+        availableDates: this.updateDoctorForm.value.availableDates.map((dateGroup: any) => ({
+          date: dateGroup.date,
+          fromTime: dateGroup.fromTime,
+          toTime: dateGroup.toTime,
+        })),
+      };
+
+      this.doctorService.updateDoctor(this.selectedDoctorId, updatedDoctor).subscribe(
+        () => {
+          this.router.navigate(['/doctor']);
+        },
+        (error) => {
+          console.error('Error updating doctor', error);
+        }
+      );
+    } else {
+      console.log('Form is invalid, please check the entered values');
+    }
+  }
+
+  closeAlert(): void {
+    this.showAlert = false;
   }
 
   cancel(): void {
