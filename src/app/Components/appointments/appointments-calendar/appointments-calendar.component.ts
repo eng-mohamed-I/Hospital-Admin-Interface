@@ -2,17 +2,24 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms'; // Required for ngModel
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap'; // Required for ngb-datepicker
 import { CommonModule } from '@angular/common';
- 
 
 @Component({
   selector: 'app-appointments-calendar',
   standalone: true,
-  imports: [CommonModule,
-    NgbDatepickerModule,
-    FormsModule,],
+  imports: [CommonModule, NgbDatepickerModule, FormsModule],
   templateUrl: './appointments-calendar.component.html',
-  styleUrl: './appointments-calendar.component.css'
+  styleUrls: ['./appointments-calendar.component.css'] // Correct the name to styleUrls
 })
 export class AppointmentsCalendarComponent {
-  model: { year: number, month: number, day: number } = { year: 2024, month: 9, day: 5 };
+
+  model: { year: number, month: number, day: number };
+
+  constructor() {
+    const today = new Date();
+    this.model = {
+      year: today.getFullYear(),
+      month: today.getMonth() + 1, // Months are 0-based, so add 1
+      day: today.getDate()
+    };
+  }
 }

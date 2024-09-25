@@ -1,0 +1,35 @@
+.dialog-title {
+    text-align: center; /* Center the title */
+    font-size: 24px; /* Adjust title font size */
+    color: #3f51b5; /* Use Material primary color */
+    margin-bottom: 15px; /* Add spacing below title */
+  }
+  
+  .dialog-content {
+    display: flex; /* Use flex for better alignment */
+    justify-content: center; /* Center the content */
+    align-items: center; /* Center vertically */
+    text-align: center; /* Center text */
+    margin: 20px 0; /* Add margin around content */
+    font-size: 16px; /* Adjust content font size */
+    color: #555; /* Set a subtle text color */
+  }
+  
+  .dialog-actions {
+    display: flex; /* Use flex for action buttons */
+    justify-content: space-around; /* Distribute buttons evenly */
+    margin-top: 20px; /* Add spacing above actions */
+  }
+  
+  .cancel-button {
+    background-color: #e0e0e0; /* Light grey background for cancel */
+    color: #000; /* Black text color */
+    padding: 10px 20px; /* Add padding for better button size */
+    border-radius: 5px; /* Slightly round the corners */
+  }
+  
+  .delete-button {
+    padding: 10px 20px; /* Add padding for better button size */
+    border-radius: 5px; /* Slightly round the corners */
+  }
+  

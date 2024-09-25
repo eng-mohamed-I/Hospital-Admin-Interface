@@ -1,30 +1,104 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { AppointmentsService } from '../../services/appointments/appointment.service';
+import { Appointment } from '../../models/appointment.model';
 
 @Component({
   selector: 'app-appointments',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './appointments.component.html',
-  styleUrl: './appointments.component.css'
+  styleUrls: ['./appointments.component.css']
 })
-export class AppointmentsComponent {
-  appointments: any[] = [
-    { id: 1, patientName: 'John Doe', doctorName: 'Dr. Smith', time: '10:00 AM', status: 'Confirmed', day: 'Monday', date: '2024-09-09' },
-    { id: 2, patientName: 'Jane Doe', doctorName: 'Dr. Adams', time: '11:00 AM', status: 'Pending', day: 'Tuesday', date: '2024-09-10' },
-  ];
+export class AppointmentsComponent implements OnInit {
 
-  ngOnInit(): void {}
+  todayAppointments: Appointment[] = [];
+  appointments: Appointment[] = []; // Ensure this is an array
+  filteredAppointments: Appointment[] = [];
+  searchTerm: string = '';
+  departments: any[] = [];
+  selectedDepartment: string = '';
+  addReportEnabled: boolean = false;
 
-  addAppointment() {
-    alert('Add Appointment functionality to be implemented');
-  }
-  editAppointment(appointment: any ) {
-    alert('Edit Appointment functionality to be implemented');
-  }
-  deleteAppointment(id: number) {
-    // this.appointments = this.appointments.filter(app => app.id !== id);
-    alert('Appointment deleted');
+  constructor(private appointmentService: AppointmentsService, public dialog: MatDialog) { }
+
+  ngOnInit(): void {
+    this.getAllAppointments();
+    this.getTodaysAppointments();
   }
 
+  getTodaysAppointments(): void {
+    this.appointmentService.getAllAppointments().subscribe((data: { appointments: Appointment[] }) => {
+      const today = new Date();
+      this.todayAppointments = data.appointments.filter((appointment: Appointment) => {
+        const appointmentDate = new Date(appointment.date);
+        return (
+          appointmentDate.getFullYear() === today.getFullYear() &&
+          appointmentDate.getMonth() === today.getMonth() &&
+          appointmentDate.getDate() === today.getDate()
+        );
+      });
+    }, (error) => {
+      console.error('Error fetching today\'s appointments:', error);
+    });
+  }
+
+  getAllAppointments(): void {
+    this.appointmentService.getAllAppointments().subscribe((data: { appointments: Appointment[] }) => {
+      this.appointments = data.appointments;
+      this.filteredAppointments = this.appointments;
+      this.getDepartments();
+    }, (error) => {
+      console.error('Error fetching all appointments:', error);
+    });
+  }
+
+  getDepartments(): void {
+    const uniqueDepartments = new Set(this.appointments.map(a => a.department));
+    this.departments = Array.from(uniqueDepartments);
+  }
+
+  filterAppointments(): void {
+    this.filteredAppointments = this.appointments.filter(appointment => {
+      const matchesDepartment = this.selectedDepartment ?
+        appointment.department === this.selectedDepartment : true;
+
+      const matchesSearchTerm = this.searchTerm ?
+        (appointment?.patientID?.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+          appointment.doctorID.name.toLowerCase().includes(this.searchTerm.toLowerCase())) : true;
+
+      return matchesDepartment && matchesSearchTerm;
+    });
+  }
+
+  editAppointment(appointment: any): void {
+    this.appointmentService.updateAppointmentStatus(appointment._id, 'completed').subscribe(
+      (response) => {
+        console.log('Appointment updated:', response);
+        this.addReportEnabled = true;
+        appointment.status = 'completed';
+        this.getAllAppointments();
+      },
+      (error) => {
+        console.error('Error updating appointment:', error);
+      }
+    );
+  }
+
+  deleteAppointment(id: string): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.appointmentService.cancelAppointment(id).subscribe(() => {
+          this.getAllAppointments(); // Refresh appointments list after deletion
+        }, (error) => {
+          console.error('Failed to delete appointment', error);
+        });
+      }
+    });
+  }
 }
