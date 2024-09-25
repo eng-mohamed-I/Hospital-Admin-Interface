@@ -22,7 +22,6 @@
         <th scope="col">Img</th>
         <th scope="col">Title</th>
         <th scope="col">Body</th>
-        <th scope="col">Info</th>
         <th scope="col">Action</th>
       </tr>
     </thead>
@@ -49,10 +48,8 @@
             </ng-template>
           </td>
           <td>{{ blog.title.substring(0, 10) }}...</td>
-          <td>{{ blog.body.substring(0, 20) }}...</td>
-          <td>
-            <a [routerLink]="['/blog', blog._id]">Read more</a>
-          </td>
+          <td>{{ blog.body.substring(0, 20) }}... <a [routerLink]="['/blog', blog._id]">Read more</a></td>
+         
           <td>
             <a
               style="font-size: 15px"
