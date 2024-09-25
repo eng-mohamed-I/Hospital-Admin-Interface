@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { DoctorLoginService } from '../../services/doctor/doctor-login.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
-import { Router } from '@angular/router'; // Import the Router
+import { Router, RouterLink } from '@angular/router'; // Import the Router
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'] // Fix typo: styleUrl -> styleUrls
 })
@@ -15,6 +15,7 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
   errorMessage: string = '';
+  successMessage: string = "";
 
   constructor(
     private doctorLoginService: DoctorLoginService,
@@ -33,11 +34,14 @@ export class LoginComponent {
           // Optionally store user info in localStorage
           localStorage.setItem('userName', response.user.name);
           localStorage.setItem('userId', response.user._id);
-          
-          console.log('Login successful:', response);
-          
+          // save auth contain doctor info to localstorage
+          localStorage.setItem("auth", JSON.stringify({token: response.token, user: {role: response.user.role } }) )
+          this.successMessage = "Login Successfully"
+          this.errorMessage = '';
           // Redirect to the patients page (or any other page)
-          this.router.navigate(['/patients']);
+          setTimeout(()=> { 
+            this.router.navigate(['/patients']);
+          },2000)
         }
       },
       error: (error) => {

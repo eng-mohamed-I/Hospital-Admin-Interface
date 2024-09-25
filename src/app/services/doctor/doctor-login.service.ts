@@ -57,11 +57,18 @@ export class DoctorLoginService {
   // Get the user's role by decoding the token
   getUserRole(): string | null {
     if (isPlatformBrowser(this.platformId)) {
-      const token = localStorage.getItem('userToken');
-      if (token) {
-        const decodedToken = this.decodeToken(token);
-        return decodedToken?.role || null;
-      }
+      // const token = localStorage.getItem('userToken');
+      // if (token) {
+      //   const decodedToken = this.decodeToken(token);
+      //   return decodedToken?.role || null;
+      // }
+    let role : any 
+    const isAuth = localStorage.getItem("auth") ? true : false 
+    if(isAuth){ 
+    role = localStorage.getItem("auth"); 
+    role = JSON.parse(role) 
+    return role.user.role 
+    }
     }
     return null;
   }
