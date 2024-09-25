@@ -4,6 +4,20 @@
     <!-- Form Start -->
     <form [formGroup]="updateDoctorForm" (ngSubmit)="onSubmit()">
   
+
+      <div class="form-group">
+        <label for="image">Profile Image</label>
+        <input type="file" id="image" (change)="onImageSelected($event)" accept="image/*" class="form-control-file" />
+      </div>
+  
+      <div *ngIf="imageUrl" class="image-preview">
+        <div class="circle-image-container">
+          <img [src]="imageUrl" alt="Image Preview" />
+        </div>
+      </div>
+  
+
+
       <!-- Name Field -->
       <div class="form-group">
         <label for="name">Name</label>
@@ -18,21 +32,7 @@
           Name is required.
         </div>
       </div>
-  
-      <!-- Specialization Field -->
-      <div class="form-group">
-        <label for="specialization">Specialization</label>
-        <input
-          id="specialization"
-          type="text"
-          class="form-control"
-          formControlName="specialization"
-          [ngClass]="{'is-invalid': updateDoctorForm.get('specialization')?.invalid && updateDoctorForm.get('specialization')?.touched}"
-        />
-        <div class="invalid-feedback" *ngIf="updateDoctorForm.get('specialization')?.invalid && updateDoctorForm.get('specialization')?.touched">
-          Specialization is required.
-        </div>
-      </div>
+ 
   
       <!-- Username Field -->
       <div class="form-group">
@@ -163,36 +163,42 @@
       </div>
   
       <!-- Available Dates -->
-      <div class="form-group">
-        <label>Available Dates</label>
-        <ul class="list-group">
-          <li
-            *ngFor="let date of updateDoctorForm.get('availableDates')?.value; let i = index"
-            class="list-group-item d-flex justify-content-between align-items-center"
-          >
-            {{ date  |  date: 'shortDate' }}
-            <button type="button" class="btn btn-danger btn-sm" (click)="removeDate(i)">Remove</button>
-          </li>
-        </ul>
-  
-        <!-- Add Date Picker -->
-        <div class="input-group mt-2">
-          <input
-            type="date"
-            class="form-control"
-            formControlName="newDate"
-          />
-          <div class="input-group-append">
-            <button type="button" class="btn btn-primary" (click)="addDate()">Add Date</button>
+      <div formArrayName="availableDates">
+        <div *ngFor="let dateGroup of availableDates.controls; let i = index" [formGroupName]="i">
+          <div>
+            <label for="date">Date:</label>
+            <input type="date" formControlName="date" class="form-control" required />
+            <!-- Displaying the current date value -->
+            <div *ngIf="dateGroup.get('date')?.value">{{ dateGroup.get('date')?.value | date }}</div>
           </div>
-        </div>
-  
-        <!-- Alert for Invalid Date -->
-        <div class="alert alert-danger mt-2" *ngIf="showAlert">
-          Invalid date. Please select a future date.
+          <div>
+            <label for="fromTime">From Time:</label>
+            <input type="time" formControlName="fromTime" class="form-control" required />
+            <!-- Displaying the current From Time value -->
+          </div>
+          <div>
+            <label for="toTime">To Time:</label>
+            <input type="time" formControlName="toTime" class="form-control" required />
+            <!-- Displaying the current To Time value -->
+          </div>
+          <button type="button" class="btn btn-danger" (click)="removeDate(i)">Remove Date</button>
         </div>
       </div>
-  
+      
+      
+      
+      <!-- Button to add a new date entry -->
+      <button type="button" class="btn btn-primary" (click)="addDate()">Add New Date</button>
+    
+      <div class="custom-alert" *ngIf="showAlert">
+        <div class="custom-alert-content">
+          <p>Please select a date that is today or in the future.</p>
+          <button class="alert-close-btn" (click)="closeAlert()">OK</button>
+        </div>
+      </div>
+    
+
+
       <!-- Submit and Cancel Buttons -->
       <button type="submit" class="btn btn-success mt-3" [disabled]="updateDoctorForm.invalid">Update Doctor</button>
       <button type="button" class="btn btn-secondary mt-3 ml-2" (click)="cancel()">Cancel</button>

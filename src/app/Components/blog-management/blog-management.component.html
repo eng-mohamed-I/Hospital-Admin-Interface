@@ -27,7 +27,7 @@
     </thead>
     <tbody class="tbodyText">
       <!-- Use ng-container to apply *ngIf without interfering with the table rows -->
-      <ng-container *ngIf="allblogs.length > 0; else noBlogs">
+      <ng-container *ngIf="allblogs?.length > 0; else noBlogs">
         <tr *ngFor="let blog of allblogs; index as i">
           <td>
             <img

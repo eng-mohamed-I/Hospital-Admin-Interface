@@ -1,5 +1,6 @@
 <form [formGroup]="doctorForm" (ngSubmit)="saveDoctor()">
   <div class="form-group">
+    
     <label>Name</label>
     <input formControlName="name" class="form-control" />
     <div *ngIf="doctorForm.get('name')?.invalid && doctorForm.get('name')?.touched" class="text-danger">
@@ -12,20 +13,16 @@
     <input formControlName="userName" class="form-control" />
     <div *ngIf="doctorForm.get('userName')?.invalid && doctorForm.get('userName')?.touched" class="text-danger">
       <small *ngIf="doctorForm.get('userName')?.errors?.['required']">User Name is required.</small>
-      <small *ngIf="doctorForm.get('userName')?.errors?.['pattern']">User Name must be lowercase letters only.</small>
-      <small *ngIf="doctorForm.get('userName')?.errors?.['minlength']">User Name must be at least 15 characters long.</small>
-      <small *ngIf="doctorForm.get('userName')?.errors?.['maxlength']">User Name cannot exceed 20 characters.</small>
+      <small *ngIf="doctorForm.get('userName')?.errors?.['pattern']">
+        User Name must be lowercase letters, numbers, or special characters (-, _, .) only.
+      </small>
+      <small *ngIf="doctorForm.get('userName')?.errors?.['minlength']">User Name must be at least 10 characters long.</small>
+      <small *ngIf="doctorForm.get('userName')?.errors?.['maxlength']">User Name cannot exceed 15 characters.</small>
     </div>
   </div>
+  
 
-  <div class="form-group">
-    <label>Specialization</label>
-    <input formControlName="specialization" class="form-control" />
-    <div *ngIf="doctorForm.get('specialization')?.invalid && doctorForm.get('specialization')?.touched" class="text-danger">
-      <small *ngIf="doctorForm.get('specialization')?.errors?.['required']">Specialization is required.</small>
-    </div>
-  </div>
-
+ 
   <div class="form-group">
     <label>Upload Image</label>
     <input
@@ -39,9 +36,12 @@
     </div>
   </div>
 
-  <div *ngIf="imagePreview" class="mt-2">
-    <img [src]="imagePreview" alt="Image Preview" class="img-thumbnail" style="max-width: 200px;" />
-  </div>
+
+        <div *ngIf="imagePreview" class="image-preview">
+          <div class="circle-image-container">
+        <img [src]="imagePreview" alt="Image Preview" class="img-thumbnail" style="max-width: 200px;" />
+      </div>
+    </div>
 
   <div class="form-group">
     <label>National ID</label>
@@ -80,15 +80,13 @@
         <label for="toTime">To Time:</label>
         <input type="time" formControlName="toTime" class="form-control" required />
       </div>
-      <button type="button" (click)="removeDate(i)">Remove Date</button>
+      <button type="button" class="btn btn-danger" (click)="removeDate(i)">Remove Date</button>
     </div>
   </div>
 
   <!-- Button to add a new date entry -->
-  <button type="button" (click)="addDate()">Add New Date</button>
+  <button type="button" class="btn btn-primary" (click)="addDate()">Add New Date</button>
 
-  <!-- Button to save dates and times -->
-  <button type="submit" (click)="saveDates()">Save Date and Time</button>
   
   <div class="custom-alert" *ngIf="showAlert">
     <div class="custom-alert-content">
@@ -96,15 +94,16 @@
       <button class="alert-close-btn" (click)="closeAlert()">OK</button>
     </div>
   </div>
-
+  
   <div class="form-group">
     <label>Phone</label>
     <input formControlName="phone" class="form-control" />
     <div *ngIf="doctorForm.get('phone')?.invalid && doctorForm.get('phone')?.touched" class="text-danger">
       <small *ngIf="doctorForm.get('phone')?.errors?.['required']">Phone is required.</small>
-      <small *ngIf="doctorForm.get('phone')?.errors?.['pattern']">Invalid phone number format (10-11 digits).</small>
+      <small *ngIf="doctorForm.get('phone')?.errors?.['pattern']">Phone must start with 011, 010, 015, or 012 followed by 8 digits.</small>
     </div>
   </div>
+  
 
   <div class="form-group">
     <label>Price</label>
@@ -121,9 +120,10 @@
     <input formControlName="email" type="email" class="form-control" />
     <div *ngIf="doctorForm.get('email')?.invalid && doctorForm.get('email')?.touched" class="text-danger">
       <small *ngIf="doctorForm.get('email')?.errors?.['required']">Email is required.</small>
-      <small *ngIf="doctorForm.get('email')?.errors?.['email']">Invalid email format.</small>
+      <small *ngIf="doctorForm.get('email')?.errors?.['pattern']">Invalid email format.</small>
     </div>
   </div>
+  
 
   <div class="form-group">
     <label>Password</label>
