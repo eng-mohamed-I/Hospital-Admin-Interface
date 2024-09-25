@@ -18,6 +18,7 @@
         Dashboard
       </a>
     </li>
+    @if(role == "admin"){
     <li class="nav-item">
       <a
         [routerLink]="['/patients']"
@@ -78,6 +79,7 @@
         Earnings
       </a>
     </li>
+    } @if(role == "doctor"){
     <li class="nav-item">
       <a
         routerLink="available-dates"
@@ -88,19 +90,23 @@
         Available Dates
       </a>
     </li>
+    }
     <hr class="bg-light" />
-    <li class="nav-item">
-      <a [routerLink]="['/login']" class="nav-link text-custom">
-        <i class="fa-solid fa-right-to-bracket"></i>
-        Login
-      </a>
-    </li>
+    @if(isLogged){
     <li class="nav-item">
       <button (click)="logOut()" class="nav-link text-custom">
         <i class="fa-solid fa-right-from-bracket"></i>
         Logout
       </button>
     </li>
+    }@else{
+    <li class="nav-item">
+      <a [routerLink]="['/login']" class="nav-link text-custom">
+        <i class="fa-solid fa-right-to-bracket"></i>
+        Login
+      </a>
+    </li>
+    }
   </ul>
 </div>
 
