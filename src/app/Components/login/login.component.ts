@@ -9,13 +9,13 @@ import { Router, RouterLink } from '@angular/router'; // Import the Router
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'] // Fix typo: styleUrl -> styleUrls
+  styleUrls: ['./login.component.css'], // Fix typo: styleUrl -> styleUrls
 })
 export class LoginComponent {
   email: string = '';
   password: string = '';
   errorMessage: string = '';
-  successMessage: string = "";
+  successMessage: string = '';
 
   constructor(
     private doctorLoginService: DoctorLoginService,
@@ -29,26 +29,32 @@ export class LoginComponent {
         // Successful login response handling
         if (response?.token) {
           // Save the token using the login service
-          this.doctorLoginService.saveToken(response.token);
-          
+          // this.doctorLoginService.saveToken(response.token);
+          console.log(response);
           // Optionally store user info in localStorage
           localStorage.setItem('userName', response.user.name);
           localStorage.setItem('userId', response.user._id);
           // save auth contain doctor info to localstorage
-          localStorage.setItem("auth", JSON.stringify({token: response.token, user: {role: response.user.role } }) )
-          this.successMessage = "Login Successfully"
+          localStorage.setItem(
+            'auth',
+            JSON.stringify({
+              token: response.token,
+              user: { role: response.user.role },
+            })
+          );
+          this.successMessage = 'Login Successfully';
           this.errorMessage = '';
-          // Redirect to the patients page (or any other page)
-          setTimeout(()=> { 
-            this.router.navigate(['/patients']);
-          },2000)
+          // Redirect to available dates
+          setTimeout(() => {
+            this.router.navigate(['/available-dates']);
+          }, 2000);
         }
       },
       error: (error) => {
         // Error handling
         this.errorMessage = 'Invalid email or password. Please try again.';
         console.error('Login error:', error);
-      }
+      },
     });
   }
 }

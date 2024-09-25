@@ -78,6 +78,16 @@
         Earnings
       </a>
     </li>
+    <li class="nav-item">
+      <a
+        routerLink="available-dates"
+        class="nav-link text-custom"
+        routerLinkActive="active-r"
+      >
+        <i class="fa-solid fa-money-bill-wave"></i>
+        Available Dates
+      </a>
+    </li>
     <hr class="bg-light" />
     <li class="nav-item">
       <a [routerLink]="['/login']" class="nav-link text-custom">
@@ -86,10 +96,10 @@
       </a>
     </li>
     <li class="nav-item">
-      <a href="#" class="nav-link text-custom">
+      <button (click)="logOut()" class="nav-link text-custom">
         <i class="fa-solid fa-right-from-bracket"></i>
         Logout
-      </a>
+      </button>
     </li>
   </ul>
 </div>

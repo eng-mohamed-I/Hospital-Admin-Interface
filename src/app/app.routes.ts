@@ -25,7 +25,12 @@ import { EarningsComponent } from './Components/earnings/earnings.component';
 import { UpdateDoctorComponent } from './Components/doctors/update-doctor/update-doctor.component';
 import { AdminLoginComponent } from './Components/admin-login/admin-login.component';
 import { AvailableDateComponent } from './Components/logined-doctor/available-date/available-date.component';
-import { AuthAdminGuard } from './guard/auth.guard';
+import {
+  AuthAdminGuard,
+  AuthDashboard,
+  AuthDoctorGuard,
+  logedGuard,
+} from './guard/auth.guard';
 
 export const routes: Routes = [
   // Main now is the home component contain all copmonent
@@ -34,9 +39,21 @@ export const routes: Routes = [
     component: MainComponent,
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: DashboardComponent },
-      { path: 'patients', component: PatientsTableComponent },
-      { path: 'patients-profile', component: PatientProfileComponent },
+      {
+        path: 'dashboard',
+        component: DashboardComponent,
+        canActivate: [AuthDashboard],
+      },
+      {
+        path: 'patients',
+        component: PatientsTableComponent,
+        canActivate: [AuthAdminGuard],
+      },
+      {
+        path: 'patients-profile',
+        component: PatientProfileComponent,
+        canActivate: [AuthAdminGuard],
+      },
       {
         path: 'department',
         component: DepartmentComponent,
@@ -47,6 +64,7 @@ export const routes: Routes = [
           { path: 'add', component: DepartmentFormComponent },
           { path: 'update/:id', component: DepartmentUpdateComponent },
         ],
+        canActivate: [AuthAdminGuard],
       },
       {
         path: 'doctor',
@@ -59,18 +77,51 @@ export const routes: Routes = [
 
           { path: '', redirectTo: 'doctor-list', pathMatch: 'full' },
         ],
+        canActivate: [AuthAdminGuard],
       },
-      { path: 'blog-management', component: BlogManagementComponent },
-      { path: 'blog/:id', component: SingleBlogComponent },
-      { path: 'blog-management/form', component: CreateComponent },
-      { path: 'blog/edit/:id', component: EditComponent },
-      { path: 'appointment', component: AppointmentsComponent },
-      { path: 'earnings', component: EarningsComponent },
+      {
+        path: 'blog-management',
+        component: BlogManagementComponent,
+        canActivate: [AuthAdminGuard],
+      },
+      {
+        path: 'blog/:id',
+        component: SingleBlogComponent,
+        canActivate: [AuthAdminGuard],
+      },
+      {
+        path: 'blog-management/form',
+        component: CreateComponent,
+        canActivate: [AuthAdminGuard],
+      },
+      {
+        path: 'blog/edit/:id',
+        component: EditComponent,
+        canActivate: [AuthAdminGuard],
+      },
+      {
+        path: 'appointment',
+        component: AppointmentsComponent,
+        canActivate: [AuthAdminGuard],
+      },
+      {
+        path: 'earnings',
+        component: EarningsComponent,
+        canActivate: [AuthAdminGuard],
+      },
+      {
+        path: 'available-dates',
+        component: AvailableDateComponent,
+        canActivate: [AuthDoctorGuard],
+      },
     ],
-    canActivate: [AuthAdminGuard],
   },
-  { path: 'login', component: LoginComponent },
-  { path: 'adminlogin', component: AdminLoginComponent },
+  { path: 'login', component: LoginComponent, canActivate: [logedGuard] },
+  {
+    path: 'adminlogin',
+    component: AdminLoginComponent,
+    canActivate: [logedGuard],
+  },
 
-  { path: 'eslam', component: AvailableDateComponent }, // logged in doctor update his Available date with his own api FF
+  // logged in doctor update his Available date with his own api FF
 ];
