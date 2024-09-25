@@ -19,7 +19,6 @@
   <table class="table">
     <thead>
       <tr>
-        <th scope="col">Id</th>
         <th scope="col">Img</th>
         <th scope="col">Title</th>
         <th scope="col">Body</th>
@@ -31,7 +30,6 @@
       <!-- Use ng-container to apply *ngIf without interfering with the table rows -->
       <ng-container *ngIf="allblogs.length > 0; else noBlogs">
         <tr *ngFor="let blog of allblogs; index as i">
-          <td>{{ blog._id }}</td>
           <td>
             <img
               *ngIf="blog.url; else fallbackImage"
