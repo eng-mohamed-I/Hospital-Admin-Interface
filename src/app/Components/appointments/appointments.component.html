@@ -1,4 +1,4 @@
-<div class="container mt-4">
+<!-- <div class="container mt-4">
     <h2 class="text-center mb-4">Daily Appointments</h2>
     <div class="mb-3 text-end">
       <button class="btn btn-primary" (click)="addAppointment()">Add Appointment</button>
@@ -37,4 +37,122 @@
         </tr>
       </tbody>
     </table>
+  </div> -->
+
+
+  <div class="container mt-4">
+    <h2 class="text-center mb-4">Daily Appointments</h2>
+    <div ></div>
+      <div class="shadow pt-1 pb-5 px-2 rounded-3">
+        <h5 class="h5 p-3">Today's Appointments</h5>
+        <ul>
+          <li *ngFor="let appointment of todayAppointments">
+            Appointment with Dr. {{ appointment.doctorID.name }} ({{ appointment.doctorID.specialization }}) for patient {{ appointment.patientID.name }} at {{ appointment.time }}
+          </li>
+        </ul>
+        <div class="text-center text-warning" *ngIf="todayAppointments.length === 0">
+          <p>No appointments for today.</p>
+        </div>
+    </div>
+   
   </div>
+    <!-- Scrollable Appointments Card -->
+    <!-- <div *ngIf="todayAppointments.length > 0">
+      <h2>Today's Appointments</h2>
+      <ul>
+        <li *ngFor="let appointment of todayAppointments">
+          Appointment with Dr. {{ appointment.doctorID.name }} ({{ appointment.doctorID.specialization }}) for patient {{ appointment.patientID.name }} at {{ appointment.time }}
+        </li>
+      </ul>
+    </div>
+    <div *ngIf="todayAppointments.length === 0">
+      <p>No appointments for today.</p>
+    </div>
+     -->
+  
+    <!-- Scrollable Table -->
+    <!-- <h4 class="mt-4">All Appointments</h4>
+    <div class="scrollable-table">
+      <input type="text" class="form-control mb-3" placeholder="Search by doctor or patient name" [(ngModel)]="searchTerm" (ngModelChange)="filterAppointments()" />
+  
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Patient Name</th>
+            <th>Doctor</th>
+            <th>Appointment Time</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let appointment of filteredAppointments">
+            <td>{{appointment.report?.patientName}}</td> 
+            <td>{{appointment.report?.doctorName}}</td> 
+            <td>{{appointment.time}}</td>
+            <td>{{appointment.status}}</td>
+            <td>
+              <button class="btn btn-warning btn-sm" (click)="editAppointment(appointment)">Edit</button>
+              <button class="btn btn-danger btn-sm" (click)="deleteAppointment(appointment._id!)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+        
+      </table>
+    </div>
+  </div>
+   -->
+
+
+
+
+
+
+   <div>
+    <div class="container mt-4">
+      <h2>Appointment Filter</h2>
+    
+      <div class="form-group">
+        <label for="department">Select Department:</label>
+        <select id="department" class="form-control" [(ngModel)]="selectedDepartment" (change)="filterAppointments()">
+          <option value="">All</option>
+          <option *ngFor="let department of departments" [value]="department">{{ department }}</option>
+        </select>
+      </div>
+    
+      <div class="form-group">
+        <label for="searchTerm">Search:</label>
+        <input type="text" id="searchTerm" class="form-control" [(ngModel)]="searchTerm" (input)="filterAppointments()" placeholder="Search by Patient or Doctor Name" />
+      </div>
+    </div>
+    
+    <table class="table table-striped">
+      <thead class="thead-dark">
+        <tr class="text-center">
+          <th scope="col text-center">Patient Name</th>
+          <th scope="col text-center">Doctor</th>
+          <th scope="col text-center">Appointment Time</th>
+          <th scope="col text-center">Day</th>  
+          <th scope="col text-center">Date</th>  
+          <th scope="col text-center">Status</th>
+          <th scope="col text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let appointment of filteredAppointments">
+          <td class="text-center">{{ appointment.patientID.name }}</td>
+          <td class="text-center">{{ appointment.doctorID.name }}</td>
+          <td class="text-center">{{ appointment.department }}</td>
+          <td class="text-center">{{ appointment.date | date }}</td>
+          <td class="text-center">{{ appointment.time }}</td>
+          <td class="text-center">{{ appointment.status }}</td>
+          <td class="text-center">
+            <button class="btn btn-success btn-sm mx-1" (click)="editAppointment(appointment)">Completed</button>
+            <button class="btn btn-danger btn-sm mx-1" (click)="deleteAppointment(appointment._id!)">Cancel</button>
+            <button class="btn btn-info btn-sm mx-1" [disabled]="appointment.status!=='completed'">Add Report</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

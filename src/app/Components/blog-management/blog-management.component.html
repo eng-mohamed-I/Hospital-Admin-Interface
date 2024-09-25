@@ -19,11 +19,9 @@
   <table class="table">
     <thead>
       <tr>
-        <th scope="col">Id</th>
         <th scope="col">Img</th>
         <th scope="col">Title</th>
         <th scope="col">Body</th>
-        <th scope="col">Info</th>
         <th scope="col">Action</th>
       </tr>
     </thead>
@@ -31,7 +29,6 @@
       <!-- Use ng-container to apply *ngIf without interfering with the table rows -->
       <ng-container *ngIf="allblogs.length > 0; else noBlogs">
         <tr *ngFor="let blog of allblogs; index as i">
-          <td>{{ blog._id }}</td>
           <td>
             <img
               *ngIf="blog.url; else fallbackImage"
@@ -51,18 +48,16 @@
             </ng-template>
           </td>
           <td>{{ blog.title.substring(0, 10) }}...</td>
-          <td>{{ blog.body.substring(0, 20) }}...</td>
-          <td>
-            <a [routerLink]="['/blog', blog._id]">Read more</a>
-          </td>
+          <td>{{ blog.body.substring(0, 20) }}... <a [routerLink]="['/blog', blog._id]">Read more</a></td>
+         
           <td>
             <a
-              style="font-size: 13px"
+              style="font-size: 15px"
               href=""
-              class="btn btn-light border border-warning mb-2 updatebtn"
+              class="btn btn-light border border-warning  updatebtn"
               [routerLink]="['/blog/edit', blog._id]"
             >
-              <i class="fa-solid fa-pen-to-square" style="font-size: 14px"></i
+              <i class="fa-solid fa-pen-to-square" style="font-size: 15px"></i
               >Update
             </a>
             <!-- this container show if you want delete or not -->
@@ -83,7 +78,7 @@
                 style="font-size: 15px"
                 type="button"
                 (click)="deleteBlog(blog._id!)"
-                class="btn btn-light border border-danger deletebtn"
+                class="btn btn-light border border-danger deletebtn ms-4"
               >
                 <i class="fa-solid fa-trash"></i>Delete
               </button>
@@ -102,12 +97,4 @@
   </table>
 </div>
 
-<!-- 
-<button
-              style="font-size: 15px"
-              type="button"
-              (click)="openDeleteConfirmation(blog._id)"
-              class="btn btn-light border border-danger deletebtn"
-            >
-              <i class="fa-solid fa-trash"></i>Delete
-            </button> -->
+

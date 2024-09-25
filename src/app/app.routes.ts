@@ -21,7 +21,6 @@ import { SingleBlogComponent } from './Components/blog-management/single-blog/si
 import { BlogManagementComponent } from './Components/blog-management/blog-management.component';
 import { CreateComponent } from './Components/blog-management/create/create.component';
 import { EditComponent } from './Components/blog-management/edit/edit.component';
-import { EarningsComponent } from './Components/earnings/earnings.component';
 import { UpdateDoctorComponent } from './Components/doctors/update-doctor/update-doctor.component';
 import { AdminLoginComponent } from './Components/admin-login/admin-login.component';
 import { AvailableDateComponent } from './Components/logined-doctor/available-date/available-date.component';
@@ -74,7 +73,6 @@ export const routes: Routes = [
           { path: 'doctor-form', component: DoctorFormComponent },
           { path: 'doctor-form/:id', component: DoctorFormComponent },
           { path: 'doctor-update/:id', component: UpdateDoctorComponent },
-
           { path: '', redirectTo: 'doctor-list', pathMatch: 'full' },
         ],
         canActivate: [AuthAdminGuard],
@@ -105,11 +103,6 @@ export const routes: Routes = [
         canActivate: [AuthAdminGuard],
       },
       {
-        path: 'earnings',
-        component: EarningsComponent,
-        canActivate: [AuthAdminGuard],
-      },
-      {
         path: 'available-dates',
         component: AvailableDateComponent,
         canActivate: [AuthDoctorGuard],
@@ -122,6 +115,4 @@ export const routes: Routes = [
     component: AdminLoginComponent,
     canActivate: [logedGuard],
   },
-
-  // logged in doctor update his Available date with his own api FF
 ];
