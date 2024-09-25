@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { DoctorService } from '../../../services/doctor/add-doctor/doctor.service';
 import { DoctorLoginService } from '../../../services/doctor/doctor-login.service';
 import { Doctor } from '../../../models/doctor.model';
@@ -10,7 +15,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './available-date.component.html',
-  styleUrls: ['./available-date.component.css']
+  styleUrls: ['./available-date.component.css'],
 })
 export class AvailableDateComponent implements OnInit {
   doctorId: string | null = null;
@@ -28,13 +33,14 @@ export class AvailableDateComponent implements OnInit {
       availableDates: [[]],
       newDate: ['', Validators.required],
       startTime: ['', Validators.required],
-      endTime: ['', Validators.required]
+      endTime: ['', Validators.required],
     });
 
     // Check if user is logged in and get the doctor's ID
     if (this.doctorLoginService.isUserLogedIn) {
       this.doctorId = this.getDoctorIdFromToken();
       if (this.doctorId) {
+        console.log(this.doctorId);
         this.getDoctorAvailableDates(this.doctorId);
       }
     }
@@ -55,7 +61,7 @@ export class AvailableDateComponent implements OnInit {
     this.doctorService.getDoctorByIdForUpdate(id).subscribe(
       (doctor: Doctor) => {
         this.availableDatesForm.patchValue({
-          availableDates: doctor.availableDates || []
+          availableDates: doctor.availableDates || [],
         });
       },
       (error) => {
@@ -133,7 +139,8 @@ export class AvailableDateComponent implements OnInit {
 
   // Remove an available date
   removeDate(index: number): void {
-    const availableDates = this.availableDatesForm.get('availableDates')?.value || [];
+    const availableDates =
+      this.availableDatesForm.get('availableDates')?.value || [];
     availableDates.splice(index, 1);
     this.availableDatesForm.patchValue({ availableDates: availableDates });
   }

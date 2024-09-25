@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./single-blog.component.css'],
 })
 export class SingleBlogComponent implements OnInit {
-  blogId: any;
+  blogId: string | null = null;
   singleBlog: Blog | null = null; // Holds the blog data
 
   constructor(
@@ -26,10 +26,18 @@ export class SingleBlogComponent implements OnInit {
       this.blogId = params.get('id');
       if (this.blogId) {
         // Fetch blog by ID using the service
-        this.blogService.getBlogsById(this.blogId).subscribe((data: Blog) => {
-          this.singleBlog = data;          
+        this.blogService.getBlogsById(this.blogId).subscribe({
+          next: (data: any) => {
+            this.singleBlog = data.blog;
+          },
+          error: (err) => {
+            console.error('Error fetching blog:', err);
+          }        
         });
       }
     });
+
+
+
   }
 }

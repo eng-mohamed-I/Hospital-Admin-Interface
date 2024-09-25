@@ -1,0 +1,66 @@
+<!-- <div class="container mt-4">
+    <h2 class="text-center mb-4">Book Appointment</h2>
+  
+    <form [formGroup]="appointmentForm" (ngSubmit)="bookAppointment()">
+      <div class="form-group mb-3">
+        <label for="patient">Select Patient</label>
+        <select id="patient" class="form-control" formControlName="patientId">
+          <option *ngFor="let patient of patients" [value]="patient.id">{{patient.name}}</option>
+        </select>
+        <div *ngIf="appointmentForm.get('patientId')?.invalid && appointmentForm.get('patientId')?.touched" class="text-danger">
+          Please select a patient.
+        </div>
+      </div>
+  
+      <div class="form-group mb-3">
+        <label for="department">Select Department</label>
+        <select id="department" class="form-control" formControlName="departmentId" (change)="onDepartmentChange($event)">
+          <option *ngFor="let department of departments" [value]="department.id">{{department.name}}</option>
+        </select>
+        <div *ngIf="appointmentForm.get('departmentId')?.invalid && appointmentForm.get('departmentId')?.touched" class="text-danger">
+          Please select a department.
+        </div>
+      </div>
+  
+      <div class="form-group mb-3">
+        <label for="doctor">Select Doctor</label>
+        <select id="doctor" class="form-control" formControlName="doctorId" (change)="onDoctorChange($event)">
+          <option *ngFor="let doctor of doctors" [value]="doctor.id">{{doctor.name}}</option>
+        </select>
+        <div *ngIf="appointmentForm.get('doctorId')?.invalid && appointmentForm.get('doctorId')?.touched" class="text-danger">
+          Please select a doctor.
+        </div>
+      </div>
+  
+      <div class="form-group mb-3">
+        <label for="date">Select Appointment Date</label>
+        <select id="date" class="form-control" formControlName="date">
+          <option *ngFor="let date of availableDates" [value]="date">{{date}}</option>
+        </select>
+        <div *ngIf="appointmentForm.get('date')?.invalid && appointmentForm.get('date')?.touched" class="text-danger">
+          Please select a date.
+        </div>
+      </div>
+  
+      <div class="form-group mb-3">
+        <label for="time">Select Appointment Time</label>
+        <select id="time" class="form-control" formControlName="time">
+          <option *ngFor="let time of availableTimes" [value]="time">{{time}}</option>
+        </select>
+        <div *ngIf="appointmentForm.get('time')?.invalid && appointmentForm.get('time')?.touched" class="text-danger">
+          Please select a time.
+        </div>
+      </div>
+  
+      <div class="form-group mb-3">
+        <label for="phone">Phone Number</label>
+        <input type="text" id="phone" class="form-control" formControlName="phone" />
+        <div *ngIf="appointmentForm.get('phone')?.invalid && appointmentForm.get('phone')?.touched" class="text-danger">
+          Please enter a valid phone number.
+        </div>
+      </div>
+  
+      <button type="submit" class="btn btn-primary" [disabled]="appointmentForm.invalid">Book Appointment</button>
+    </form>
+  </div>
+   -->

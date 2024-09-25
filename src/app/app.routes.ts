@@ -24,49 +24,95 @@ import { EditComponent } from './Components/blog-management/edit/edit.component'
 import { UpdateDoctorComponent } from './Components/doctors/update-doctor/update-doctor.component';
 import { AdminLoginComponent } from './Components/admin-login/admin-login.component';
 import { AvailableDateComponent } from './Components/logined-doctor/available-date/available-date.component';
+import {
+  AuthAdminGuard,
+  AuthDashboard,
+  AuthDoctorGuard,
+  logedGuard,
+} from './guard/auth.guard';
 
-export const routes: Routes = [  
-  
-
-        
-
-        // Main now is the home component contain all copmonent 
-        { path: '', component: MainComponent ,children: [ 
-                { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-                { path: 'dashboard' , component: DashboardComponent},
-                { path: 'patients', component: PatientsTableComponent },
-                { path: 'patients-profile', component: PatientProfileComponent },
-                { path: 'department' , component: DepartmentComponent , children: [
-                        { path: '' , redirectTo: "details" , pathMatch: "full"},
-                        { path: "details" , component: DepartmentDetailsComponent }, 
-                        { path: "list" , component: DepartmentListComponent },
-                        { path: "add" , component: DepartmentFormComponent },
-                        { path: 'update/:id' , component: DepartmentUpdateComponent}
-                      ]},
-                { path: 'doctor', component: DoctorsComponent, children: [
-                        { path: 'doctor-list', component: DoctorListComponent },
-                        { path: 'doctor-form', component: DoctorFormComponent },
-                        { path: 'doctor-form/:id', component: DoctorFormComponent },
-                        { path: 'doctor-update/:id', component: UpdateDoctorComponent },
-
-                        { path: '', redirectTo: 'doctor-list', pathMatch: 'full' }
-                      ]},
-                      { path: 'blog-management', component: BlogManagementComponent },
-                      { path: 'blog/:id', component: SingleBlogComponent },
-                      { path: 'blog-management/form', component: CreateComponent },
-                      { path: 'blog/edit/:id', component: EditComponent },
-                      { path: 'appointment' , component: AppointmentsComponent},
-                     
-        ]},
-        { path: 'login' , component: LoginComponent },
-        {path:'adminlogin',component:AdminLoginComponent},
-
-
-
-        {path:'eslam',component:AvailableDateComponent}, // logged in doctor update his Available date with his own api 
-        
-
-
-
- ];
-
+export const routes: Routes = [
+  // Main now is the home component contain all copmonent
+  {
+    path: '',
+    component: MainComponent,
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      {
+        path: 'dashboard',
+        component: DashboardComponent,
+        canActivate: [AuthDashboard],
+      },
+      {
+        path: 'patients',
+        component: PatientsTableComponent,
+        canActivate: [AuthAdminGuard],
+      },
+      {
+        path: 'patients-profile',
+        component: PatientProfileComponent,
+        canActivate: [AuthAdminGuard],
+      },
+      {
+        path: 'department',
+        component: DepartmentComponent,
+        children: [
+          { path: '', redirectTo: 'details', pathMatch: 'full' },
+          { path: 'details', component: DepartmentDetailsComponent },
+          { path: 'list', component: DepartmentListComponent },
+          { path: 'add', component: DepartmentFormComponent },
+          { path: 'update/:id', component: DepartmentUpdateComponent },
+        ],
+        canActivate: [AuthAdminGuard],
+      },
+      {
+        path: 'doctor',
+        component: DoctorsComponent,
+        children: [
+          { path: 'doctor-list', component: DoctorListComponent },
+          { path: 'doctor-form', component: DoctorFormComponent },
+          { path: 'doctor-form/:id', component: DoctorFormComponent },
+          { path: 'doctor-update/:id', component: UpdateDoctorComponent },
+          { path: '', redirectTo: 'doctor-list', pathMatch: 'full' },
+        ],
+        canActivate: [AuthAdminGuard],
+      },
+      {
+        path: 'blog-management',
+        component: BlogManagementComponent,
+        canActivate: [AuthAdminGuard],
+      },
+      {
+        path: 'blog/:id',
+        component: SingleBlogComponent,
+        canActivate: [AuthAdminGuard],
+      },
+      {
+        path: 'blog-management/form',
+        component: CreateComponent,
+        canActivate: [AuthAdminGuard],
+      },
+      {
+        path: 'blog/edit/:id',
+        component: EditComponent,
+        canActivate: [AuthAdminGuard],
+      },
+      {
+        path: 'appointment',
+        component: AppointmentsComponent,
+        canActivate: [AuthAdminGuard],
+      },
+      {
+        path: 'available-dates',
+        component: AvailableDateComponent,
+        canActivate: [AuthDoctorGuard],
+      },
+    ],
+  },
+  { path: 'login', component: LoginComponent, canActivate: [logedGuard] },
+  {
+    path: 'adminlogin',
+    component: AdminLoginComponent,
+    canActivate: [logedGuard],
+  },
+];
