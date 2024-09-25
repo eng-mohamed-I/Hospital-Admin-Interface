@@ -1,19 +1,4 @@
 <div class="container mt-4">
-  <!-- <ng-container *ngIf="confirmDeleteId">
-    <div id="c-message" class="card rounded">
-      <div class="c-message bg-light rounded">
-        <span>Are you sure? </span>
-        <button
-          class="btn btn-success p-0"
-          (click)="confirmDelete(confirmDeleteId)"
-        >
-          Yes
-        </button>
-        <button class="btn btn-danger p-0" (click)="cancelDelete()">No</button>
-      </div>
-    </div>
-  </ng-container> -->
-
   <div class="row">
     <!-- Search and filter inputs -->
     <div class="col-md-3">
@@ -76,29 +61,39 @@
         <td>{{ doctor.gender }}</td>
         <td class="table-danger">
           <ul class="list-group">
-            <li
-              *ngFor="let appointment of doctor.availableDates"
-              class="list-group-item"
-            >
-              {{ appointment | date : "longDate" }}
+            <li *ngFor="let appointment of doctor.availableDates" class="list-group-item">
+              <strong>Date:</strong> {{ appointment.date | date: 'fullDate' }} <br />
+              
+              <ng-container *ngIf="appointment.fromTime">
+                <strong>From:</strong> {{ appointment.fromTime }} <br />
+              </ng-container>
+              
+              <ng-container *ngIf="appointment.toTime">
+                <strong>To:</strong> {{ appointment.toTime }} <br />
+              </ng-container>
+          
+              <!-- Optional: If both times are missing, display a message -->
+              <ng-container *ngIf="!appointment.fromTime && !appointment.toTime">
+                <em>No available times</em>
+              </ng-container>
             </li>
           </ul>
         </td>
         <td>
           <button
-          class="btn btn-outline-warning btn-sm"
-          title="Update Doctor"
-          (click)="updateDoctor(doctor._id)"
-        >
-          <i class="fas fa-edit"></i> Update
-        </button>
+            class="btn btn-outline-warning btn-sm"
+            title="Update Doctor"
+            (click)="updateDoctor(doctor._id)"
+          >
+            <i class="fas fa-edit"></i> Update
+          </button>
           <button
-          class="btn btn-outline-danger btn-sm"
-          title="Delete Doctor"
-          (click)="deleteDoctor(doctor._id)"  
-        >
-          <i class="fas fa-trash"></i> Delete
-        </button>
+            class="btn btn-outline-danger btn-sm"
+            title="Delete Doctor"
+            (click)="deleteDoctor(doctor._id)"
+          >
+            <i class="fas fa-trash"></i> Delete
+          </button>
         </td>
       </tr>
     </tbody>

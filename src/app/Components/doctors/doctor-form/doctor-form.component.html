@@ -5,35 +5,16 @@
     <div *ngIf="doctorForm.get('name')?.invalid && doctorForm.get('name')?.touched" class="text-danger">
       <small *ngIf="doctorForm.get('name')?.errors?.['required']">Name is required.</small>
     </div>
-
-    <!-- <div class="form-group">
-      <label for="public_id">Image Public ID</label>
-      <input id="public_id" type="text" class="form-control" formControlName="public_id">
-    </div> -->
   </div>
-
-  <!-- <div class="form-group">
-    <label for="nationalID">National ID</label>
-    <input id="nationalID" type="text" class="form-control" formControlName="nationalID">
-  </div> -->
 
   <div class="form-group">
     <label>User Name</label>
     <input formControlName="userName" class="form-control" />
-    
     <div *ngIf="doctorForm.get('userName')?.invalid && doctorForm.get('userName')?.touched" class="text-danger">
-      <small *ngIf="doctorForm.get('userName')?.errors?.['required']">
-        User Name is required.
-      </small>
-      <small *ngIf="doctorForm.get('userName')?.errors?.['pattern']">
-        User Name must be lowercase letters only.
-      </small>
-      <small *ngIf="doctorForm.get('userName')?.errors?.['minlength']">
-        User Name must be at least 15 characters long.
-      </small>
-      <small *ngIf="doctorForm.get('userName')?.errors?.['maxlength']">
-        User Name cannot exceed 20 characters.
-      </small>
+      <small *ngIf="doctorForm.get('userName')?.errors?.['required']">User Name is required.</small>
+      <small *ngIf="doctorForm.get('userName')?.errors?.['pattern']">User Name must be lowercase letters only.</small>
+      <small *ngIf="doctorForm.get('userName')?.errors?.['minlength']">User Name must be at least 15 characters long.</small>
+      <small *ngIf="doctorForm.get('userName')?.errors?.['maxlength']">User Name cannot exceed 20 characters.</small>
     </div>
   </div>
 
@@ -46,10 +27,9 @@
   </div>
 
   <div class="form-group">
-    <label for="imageUpload">Upload Image</label>
+    <label>Upload Image</label>
     <input
       type="file"
-      id="imageUpload"
       (change)="onImageSelected($event)"
       class="form-control"
       accept="image/png, image/jpeg, image/gif, image/webp"
@@ -60,26 +40,21 @@
   </div>
 
   <div *ngIf="imagePreview" class="mt-2">
-    <img
-      [src]="imagePreview"
-      alt="Image Preview"
-      class="img-thumbnail"
-      style="max-width: 200px;"
-    />
+    <img [src]="imagePreview" alt="Image Preview" class="img-thumbnail" style="max-width: 200px;" />
   </div>
-
 
   <div class="form-group">
     <label>National ID</label>
     <input formControlName="nationalID" class="form-control" />
     <div *ngIf="doctorForm.get('nationalID')?.invalid && doctorForm.get('nationalID')?.touched" class="text-danger">
       <small *ngIf="doctorForm.get('nationalID')?.errors?.['required']">National ID is required.</small>
-      <small *ngIf="doctorForm.get('nationalID')?.errors?.['minlength']">National ID must be 14 number, </small>
-      <small *ngIf="doctorForm.get('nationalID')?.errors?.['maxlength']">National ID must be 14 number, </small>
-      <small *ngIf="doctorForm.get('nationalID')?.errors?.['pattern']">National ID Must Be number only</small>
+      <small *ngIf="doctorForm.get('nationalID')?.errors?.['minlength']">National ID must be 14 digits.</small>
+      <small *ngIf="doctorForm.get('nationalID')?.errors?.['maxlength']">National ID must be 14 digits.</small>
+      <small *ngIf="doctorForm.get('nationalID')?.errors?.['pattern']">National ID must be numbers only.</small>
     </div>
   </div>
 
+  
   <div class="form-group">
     <label>Department</label>
     <select formControlName="department" class="form-control">
@@ -91,20 +66,30 @@
     </div>
   </div>
 
-  <div class="form-group">
-    <label>Available Dates</label>
-    <input type="date" [(ngModel)]="newDate" [ngModelOptions]="{ standalone: true }" class="form-control" />
-    <button type="button" class="btn btn-primary mt-2" (click)="addDate()">Add Date</button>
-    
-    <ul class="date-list">
-      <li *ngFor="let date of doctorForm.get('availableDates')?.value; let i = index" class="date-item">
-        {{ date }}
-        <button type="button" class="btn btn-danger btn-sm ml-2" (click)="removeDate(i)">Remove</button>
-      </li>
-    </ul>
+  <div formArrayName="availableDates">
+    <div *ngFor="let dateGroup of availableDates.controls; let i = index" [formGroupName]="i">
+      <div>
+        <label for="date">Date:</label>
+        <input type="date" formControlName="date" class="form-control" required />
+      </div>
+      <div>
+        <label for="fromTime">From Time:</label>
+        <input type="time" formControlName="fromTime" class="form-control" required />
+      </div>
+      <div>
+        <label for="toTime">To Time:</label>
+        <input type="time" formControlName="toTime" class="form-control" required />
+      </div>
+      <button type="button" (click)="removeDate(i)">Remove Date</button>
+    </div>
   </div>
+
+  <!-- Button to add a new date entry -->
+  <button type="button" (click)="addDate()">Add New Date</button>
+
+  <!-- Button to save dates and times -->
+  <button type="submit" (click)="saveDates()">Save Date and Time</button>
   
-  <!-- Custom Alert Section -->
   <div class="custom-alert" *ngIf="showAlert">
     <div class="custom-alert-content">
       <p>Please select a date that is today or in the future.</p>
@@ -120,6 +105,16 @@
       <small *ngIf="doctorForm.get('phone')?.errors?.['pattern']">Invalid phone number format (10-11 digits).</small>
     </div>
   </div>
+
+  <div class="form-group">
+    <label>Price</label>
+    <input formControlName="price" class="form-control" />
+    <div *ngIf="doctorForm.get('price')?.invalid && doctorForm.get('price')?.touched" class="text-danger">
+      <small *ngIf="doctorForm.get('price')?.errors?.['required']">price is required.</small>
+    </div>
+  </div>
+
+
 
   <div class="form-group">
     <label>Email</label>
@@ -151,7 +146,7 @@
       <small *ngIf="doctorForm.get('gender')?.errors?.['required']">Gender is required.</small>
     </div>
   </div>
-
+  
   <div class="form-group">
     <label>Date of Birth</label>
     <input type="date" formControlName="dateOfBirth" class="form-control" />
@@ -159,7 +154,7 @@
       <small *ngIf="doctorForm.get('dateOfBirth')?.errors?.['required']">Date of Birth is required.</small>
     </div>
   </div>
-
+  
   <div class="form-group">
     <label>Experience</label>
     <input formControlName="experience" type="number" class="form-control" />
@@ -175,6 +170,6 @@
   </div>
 
   <div class="form-group">
-    <button type="submit" class="btn btn-primary">Save Doctor</button>
+    <button class="btn btn-primary">Save Doctor</button>
   </div>
 </form>
