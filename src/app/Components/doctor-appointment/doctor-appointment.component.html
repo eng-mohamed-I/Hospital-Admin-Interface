@@ -1,0 +1,96 @@
+<div>
+  <div class="container mt-4">
+    <!-- <div class="form-group">
+        <label for="department">Select Department:</label>
+        <select id="department" class="form-control" [(ngModel)]="selectedDepartment" (change)="filterAppointments()">
+          <option value="">All</option>
+          <option *ngFor="let department of departments" [value]="department">{{ department }}</option>
+        </select>
+      </div>
+    
+      <div class="form-group">
+        <label for="searchTerm">Search:</label>
+        <input type="text" id="searchTerm" class="form-control" [(ngModel)]="searchTerm" (input)="filterAppointments()" placeholder="Search by Patient or Doctor Name" />
+      </div>
+    </div> -->
+
+    <table class="table table-striped">
+      <thead class="thead-dark">
+        <tr class="text-center">
+          <th scope="col text-center">Patient Name</th>
+          <th scope="col text-center">Doctor</th>
+          <th scope="col text-center">Appointment Time</th>
+          <th scope="col text-center">Day</th>
+          <th scope="col text-center">Date</th>
+          <th scope="col text-center">Status</th>
+          <th scope="col text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for(appointment of appointments; track $index){
+        <tr>
+          <td class="text-center">{{ appointment.patientID.name }}</td>
+          <td class="text-center">{{ appointment.doctorID.name }}</td>
+          <td class="text-center">{{ appointment.department }}</td>
+          <td class="text-center">{{ appointment.date | date }}</td>
+          <td class="text-center">{{ appointment.time }}</td>
+          <td
+            class="text-center"
+            style="--bs-bg-opacity: 0.5"
+            [ngClass]="
+              appointment.status === 'completed'
+                ? 'bg-success'
+                : appointment.status === 'cancelled'
+                ? 'bg-danger'
+                : 'bg-warning'
+            "
+          >
+            {{ appointment.status }}
+          </td>
+          <td class="text-center">
+            <!-- state completed -->
+            @if(appointment.status === 'completed'){
+            <button
+              class="btn btn-secondary btn-sm mx-1"
+              [disabled]="appointment.status !== 'completed'"
+            >
+              Add Report
+            </button>
+            <button
+              class="btn btn-danger btn-sm mx-1"
+              (click)="cancelApppointment(appointment._id!)"
+            >
+              Cancel
+            </button>
+            }
+            <!-- state not completed -->
+            @if(appointment.status === 'not completed'){
+            <button
+              class="btn btn-danger btn-sm mx-1"
+              (click)="cancelApppointment(appointment._id!)"
+            >
+              Cancel
+            </button>
+            <button
+              class="btn btn-success btn-sm mx-1"
+              (click)="confirmAppointment(appointment._id!)"
+            >
+              Confirm
+            </button>
+            }
+            <!--State Cancel  -->
+            @if(appointment.status === 'cancelled'){
+            <button
+              class="btn btn-success btn-sm mx-1"
+              (click)="confirmAppointment(appointment._id!)"
+            >
+              Confirm
+            </button>
+            }
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

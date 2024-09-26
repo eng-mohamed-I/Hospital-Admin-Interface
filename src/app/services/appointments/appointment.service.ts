@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators'; // Import map operator
 import { Appointment } from '../../models/appointment.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AppointmentsService {
   private baseUrl = 'http://localhost:5000/api/appointments'; // Update with your backend URL
@@ -23,8 +23,13 @@ export class AppointmentsService {
   }
 
   // Update the status of an appointment
-  updateAppointmentStatus(appointmentID: string, status: string): Observable<any> {
-    return this.http.patch(`${this.baseUrl}/${appointmentID}/status`, { status });
+  updateAppointmentStatus(
+    appointmentID: string,
+    status: string
+  ): Observable<any> {
+    return this.http.patch(`${this.baseUrl}/${appointmentID}/status`, {
+      status,
+    });
   }
 
   // Get appointments by patient email
@@ -47,6 +52,9 @@ export class AppointmentsService {
     return this.http.delete(`${this.baseUrl}/cancel/${appointmentID}`);
   }
 
+  getDoctorAppointment(token: any): Observable<any> {
+    return this.http.get(`${this.baseUrl}/doctor/${token}`);
+  }
+
   // Get today's appointments
- 
 }
