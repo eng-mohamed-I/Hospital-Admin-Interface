@@ -33,7 +33,6 @@ export class UpdateDoctorComponent implements OnInit {
   ngOnInit(): void {
     this.updateDoctorForm = this.fb.group({
       name: ['', Validators.required],
-      specialization: ['', Validators.required],
       userName: ['', Validators.required],
       nationalID: ['', [Validators.required, Validators.minLength(14)]],
       department: ['', Validators.required],
@@ -43,6 +42,7 @@ export class UpdateDoctorComponent implements OnInit {
       dateOfBirth: ['', Validators.required],
       experience: ['', [Validators.required, Validators.min(0)]],
       availableDates: this.fb.array([]), // Initialize as a FormArray
+      image: [null], // Add image form control
     });
 
     this.loadDepartments();
@@ -76,9 +76,7 @@ export class UpdateDoctorComponent implements OnInit {
           dateOfBirth: doctor.dateOfBirth,
           experience: doctor.experience,
           image: doctor.Image || null  // Ensure this aligns with your Doctor model
-
         });
-
 
         this.imageUrl = doctor.Image?.secure_url || null; // Use optional chaining
 
@@ -119,23 +117,46 @@ export class UpdateDoctorComponent implements OnInit {
         this.imageUrl = reader.result; // Set imageUrl for preview
       };
       reader.readAsDataURL(file);
-      this.updateDoctorForm.patchValue({ image: file }); // Update the form control
+
+      // Update the form control with the file object, not the file name or URL
+      this.updateDoctorForm.patchValue({ image: file });
     }
   }
-
+  
   onSubmit(): void {
-    if (this.updateDoctorForm.valid) {
-      const updatedDoctor: Doctor = {
-        _id: this.selectedDoctorId,
-        ...this.updateDoctorForm.value,
-        availableDates: this.updateDoctorForm.value.availableDates.map((dateGroup: any) => ({
-          date: dateGroup.date,
-          fromTime: dateGroup.fromTime,
-          toTime: dateGroup.toTime,
-        })),
-      };
+    // Reset the alert before validation
+    this.showAlert = false;
 
-      this.doctorService.updateDoctor(this.selectedDoctorId, updatedDoctor).subscribe(
+    // Check for past dates
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set time to midnight for comparison
+
+    for (const dateGroup of this.availableDates.controls) {
+      const dateValue = dateGroup.get('date')?.value;
+      const selectedDate = new Date(dateValue);
+
+      if (selectedDate < today) {
+        this.showAlert = true; // Show the alert if any date is in the past
+        break; // Exit the loop as soon as we find a past date
+      }
+    }
+
+    if (this.showAlert) {
+      console.log('One or more dates are in the past. Please select a valid date.');
+      return; // Prevent form submission
+    }
+
+    // Proceed with the submission if all dates are valid
+    if (this.updateDoctorForm.valid) {
+      const formData = new FormData();
+      // Append other form fields to FormData as shown earlier
+      formData.append('availableDates', JSON.stringify(this.updateDoctorForm.value.availableDates));
+      // Append the image if selected
+      if (this.updateDoctorForm.get('image')?.value) {
+        formData.append('image', this.updateDoctorForm.get('image')?.value);
+      }
+
+      this.doctorService.updateDoctor(this.selectedDoctorId, formData).subscribe(
         () => {
           this.router.navigate(['/doctor']);
         },
@@ -148,8 +169,11 @@ export class UpdateDoctorComponent implements OnInit {
     }
   }
 
-  closeAlert(): void {
-    this.showAlert = false;
+  closeAlert() {
+    this.showAlert = true; // Ensure the alert is shown when triggered
+    setTimeout(() => {
+      this.showAlert = false; // Hide the alert after 2 seconds
+    }, 500);  
   }
 
   cancel(): void {

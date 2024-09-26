@@ -1,0 +1,22 @@
+.card {
+    border: none; /* Removes the border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
+  }
+  
+  .card-title {
+    font-size: 1.5rem; /* Adjusts title size */
+    font-weight: bold; /* Makes title bold */
+  }
+  
+  .card-text {
+    font-size: 1rem; /* Adjusts text size */
+  }
+  
+  .btn-primary {
+    background-color: #007bff; /* Custom primary button color */
+    border: none; /* Removes button border */
+  }
+  .card-img {
+  max-height: 200px; /* Set max height */
+  object-fit: cover; /* Ensure the image covers the area */
+}
