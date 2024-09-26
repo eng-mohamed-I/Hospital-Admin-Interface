@@ -30,6 +30,7 @@ import {
   AuthDoctorGuard,
   logedGuard,
 } from './guard/auth.guard';
+import { DoctorAppointmentComponent } from './Components/doctor-appointment/doctor-appointment.component';
 
 export const routes: Routes = [
   // Main now is the home component contain all copmonent
@@ -105,6 +106,11 @@ export const routes: Routes = [
       {
         path: 'available-dates',
         component: AvailableDateComponent,
+        canActivate: [AuthDoctorGuard],
+      },
+      {
+        path: 'doctor-appointment',
+        component: DoctorAppointmentComponent,
         canActivate: [AuthDoctorGuard],
       },
     ],
