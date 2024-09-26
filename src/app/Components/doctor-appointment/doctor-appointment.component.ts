@@ -43,6 +43,7 @@ export class DoctorAppointmentComponent implements OnInit {
     );
   }
 
+  // confirm
   confirmAppointment(id: any): void {
     this._appointmentService.updateAppointmentStatus(id, 'completed').subscribe(
       (response) => {
@@ -54,6 +55,7 @@ export class DoctorAppointmentComponent implements OnInit {
     );
   }
 
+  //reject
   cancelApppointment(id: any) {
     let dialoag = this.dialoag.open(ConfirmDialogComponent);
     dialoag.afterClosed().subscribe((res) => {
