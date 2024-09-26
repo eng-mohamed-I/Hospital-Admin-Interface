@@ -18,3 +18,8 @@
   color: white;
   background-color: #dc3545;
  }
+ tbody, td, tfoot, th, thead, tr{
+  border-color: inherit;
+  border-style: solid;
+  /* border-width: 0; */
+}

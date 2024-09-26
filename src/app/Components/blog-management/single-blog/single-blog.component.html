@@ -1,12 +1,19 @@
-<div *ngIf="singleBlog; else loading">
-  <h1>{{ singleBlog.title }}</h1>
-  <img [src]="singleBlog.url" alt="{{ singleBlog.title }}" width="300" />
-  <p>{{ singleBlog.body }}</p>
-  
+<div *ngIf="singleBlog; else loading" class="container mt-4">
+  <div class="card">
+    <img [src]="singleBlog.url" alt="{{ singleBlog.title }}" class="card-img-top" />
+    <div class="card-body">
+      <h1 class="card-title">{{ singleBlog.title }}</h1>
+      <p class="card-text">{{ singleBlog.body }}</p>
+      <a [routerLink]="['/blog-management']" class="btn btn-primary">Back to Blogs</a>
+    </div>
+  </div>
 </div>
 
-  
-  <ng-template #loading>
+<ng-template #loading>
+  <div class="text-center mt-4">
     <p>Loading blog...</p>
-  </ng-template>
-  
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+</ng-template>
