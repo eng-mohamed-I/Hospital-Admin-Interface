@@ -71,10 +71,10 @@
               *ngIf="confirmDeleteId === blog._id; else deleteButton"
             >
               <span>Are you sure?</span>
-              <button class="btn btn-success p-0" (click)="confirmDelete(i)">
+              <button class="btn btn-success" (click)="confirmDelete(i)">
                 Yes
               </button>
-              <button class="btn btn-danger p-0" (click)="cancelDelete()">
+              <button class="btn btn-danger" (click)="cancelDelete()">
                 No
               </button>
             </ng-container>

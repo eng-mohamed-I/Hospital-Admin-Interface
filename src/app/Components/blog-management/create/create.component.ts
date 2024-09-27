@@ -13,25 +13,39 @@ import { NgModule } from '@angular/core';
   styleUrls: ['./create.component.css'],
 })
 export class CreateComponent {
-  constructor(private blogService: BlogService, private _router: Router) {}
-
   formdata: any = {
-    title: "",
-    body: "",
+    title: '',
+    body: '',
     url: ''
   };
+  
+  selectedFile: File | null = null;
+
+  constructor(private blogService: BlogService, private _router: Router) {}
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+    }
+  }
 
   create() {
-    console.log('Form Data:', this.formdata); 
-    let data = this.formdata
-  
-    this.blogService.create(data).subscribe({
+    const formData = new FormData();
+    formData.append('title', this.formdata.title);
+    formData.append('body', this.formdata.body);
+
+    if (this.selectedFile) {
+      formData.append('image', this.selectedFile);
+    }
+
+    this.blogService.create(formData).subscribe({
       next: (data) => {
         console.log('Created blog:', data);
         this._router.navigate(['/blog-management']);
       },
       error: (err) => {
-        console.error("Blogs error" ,err);
+        console.error('Blogs error', err);
       },
     });
   }
