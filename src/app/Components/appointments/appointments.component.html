@@ -147,9 +147,24 @@
           <td class="text-center">{{ appointment.time }}</td>
           <td class="text-center">{{ appointment.status }}</td>
           <td class="text-center">
-            <button class="btn btn-success btn-sm mx-1" (click)="editAppointment(appointment)">Completed</button>
-            <button class="btn btn-danger btn-sm mx-1" (click)="deleteAppointment(appointment._id!)">Cancel</button>
-            <button class="btn btn-info btn-sm mx-1" [disabled]="appointment.status!=='completed'">Add Report</button>
+          @if(appointment.status == 'completed') {
+            <button class="btn btn-danger btn-sm mx-1" (click)="deleteAppointment(appointment._id!)">Reject</button>
+            <button class="btn btn-primary btn-sm mx-1" [disabled]="appointment.status!=='completed'"  [routerLink]="['/add-report', appointment._id]">Add Report</button>
+            <button
+            [routerLink]="['/reports', appointment._id]"
+            class="btn btn-info btn-sm mx-1"
+            [disabled]="appointment.status !== 'completed'"
+          >
+            View Report's
+          </button>
+          }
+          @if(appointment.status == 'cancelled'){ 
+            <button class="btn btn-success btn-sm mx-1" (click)="editAppointment(appointment)">Accept</button>
+          }
+          @if(appointment.status == 'not completed'){
+            <button class="btn btn-success btn-sm mx-1" (click)="editAppointment(appointment)">Accept</button>
+            <button class="btn btn-danger btn-sm mx-1" (click)="deleteAppointment(appointment._id!)">Reject</button>
+          }
           </td>
         </tr>
       </tbody>

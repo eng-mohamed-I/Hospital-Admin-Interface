@@ -1,0 +1,9 @@
+.r-style { 
+    background-color:#232f66;
+}
+
+.err-mess{
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+}

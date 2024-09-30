@@ -1,0 +1,59 @@
+<div class="r-style rounded container mt-2 p-2">
+  <div class="p-2">
+    <h4 class="h-style text-white rounded p-2">Appointment reports:</h4>
+  </div>
+
+  <div class="accordion" id="accordionExample">
+    @for(report of reports; track $index){
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button
+          class="accordion-button"
+          type="button"
+          [attr.data-bs-toggle]="'collapse'"
+          [attr.data-bs-target]="'#one' + report._id"
+          aria-expanded="true"
+          [attr.aria-controls]="'one' + report._id"
+        >
+          <div class="d-flex">
+            <div>
+              <i class="fa-solid fa-calendar-days"></i>
+              {{ report.createdAt.split("T")[0] }}
+            </div>
+            &nbsp;
+            <div>
+              <i class="fa-solid fa-clock"></i>
+              {{ report.createdAt.split("T")[1].split(".")[0] }}
+            </div>
+          </div>
+        </button>
+      </h2>
+      <div
+        [id]="'one' + report._id"
+        class="accordion-collapse collapse show"
+        data-bs-parent="#accordionExample"
+      >
+        <div class="accordion-body">
+          <div>
+            <p><strong>From</strong>: {{ report.doctorName }}</p>
+            <p><strong>To</strong>: {{ report.patientName }}</p>
+            <p><strong>Diagnosis</strong>: {{ report.diagnosis }}</p>
+            <p><strong>Doctor Comment</strong>: {{ report.doctorComment }}</p>
+            <p>
+              <strong>Treatment Prescription</strong>:
+              {{ report.treatmentPrescription }}
+            </p>
+            <p>
+              <strong>FollowUp Recommendations</strong>:
+              {{ report.followUpRecommendations }}
+            </p>
+          </div>
+          <!-- <div><button class="btn btn-danger btn-sm">delete</button></div> -->
+        </div>
+      </div>
+    </div>
+    }@empty{
+    <p class="alert alert-warning">No appointment reports available...</p>
+    }
+  </div>
+</div>
