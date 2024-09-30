@@ -31,6 +31,8 @@ import {
   logedGuard,
 } from './guard/auth.guard';
 import { DoctorAppointmentComponent } from './Components/doctor-appointment/doctor-appointment.component';
+import { ReportComponent } from './Components/report/report.component';
+import { AddReportComponent } from './Components/report/add-report/add-report.component';
 
 export const routes: Routes = [
   // Main now is the home component contain all copmonent
@@ -112,6 +114,16 @@ export const routes: Routes = [
         path: 'doctor-appointment',
         component: DoctorAppointmentComponent,
         canActivate: [AuthDoctorGuard],
+      },
+      {
+        path: 'reports/:id',
+        component: ReportComponent,
+        canActivate: [AuthDashboard],
+      },
+      {
+        path: 'add-report/:id',
+        component: AddReportComponent,
+        canActivate: [AuthDashboard],
       },
     ],
   },
