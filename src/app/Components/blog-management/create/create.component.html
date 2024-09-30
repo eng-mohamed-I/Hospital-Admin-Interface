@@ -1,17 +1,24 @@
 <div class="container">
-  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #abc2f5">
+  <nav
+    class="navbar navbar-expand-lg navbar-light"
+    style="background-color: #abc2f5"
+  >
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Blogs</a>
+      <a class="navbar-brand" href="#"> Blogs</a>
     </div>
     <div class="d-flex me-3">
-      <button class="btn btn-success" routerLink="/blog/create" style="background-color: #233763">
+      <button
+        class="btn btn-success"
+        routerLink="/blog/create"
+        style="background-color: #233763"
+      >
         ADD+
       </button>
     </div>
   </nav>
 
   <h3 style="color: #233763">Create Blog</h3>
-  <form #myForm="ngForm" class="bg-light p-3 rounded" enctype="multipart/form-data">
+  <form #myForm="ngForm" class="bg-light p-3 rounded">
     <div class="mb-3">
       <label for="txtTitle" class="form-label">Title</label>
       <input
@@ -21,7 +28,7 @@
         required
         minlength="3"
         #titleInput="ngModel"
-        [ngClass]="{'is-invalid': (titleInput.touched || titleInput.dirty) && titleInput.invalid}"
+        [ngClass]="{'is-invalid':(titleInput.touched || titleInput.dirty)  && titleInput.invalid}"
         class="form-control"
         id="txtTitle"
       />
@@ -34,7 +41,8 @@
     <div class="mb-3">
       <label for="txtBody" class="form-label">Body</label>
       <textarea
-        style="height: 100px;"
+      style="height: 100px;"
+        type="text"
         name="body"
         [(ngModel)]="formdata.body"
         required
@@ -65,7 +73,13 @@
       </div>
     </div>
 
-    <button type="button" (click)="create()" class="btn btn-primary" [disabled]="myForm.invalid || !selectedFile">
+
+    <button
+      type="button" 
+      (click)="create()"
+      class="btn btn-primary"
+      [disabled]="myForm.invalid"
+    >
       Create
     </button>
   </form>

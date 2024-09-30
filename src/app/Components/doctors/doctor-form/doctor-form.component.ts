@@ -158,7 +158,7 @@ export class DoctorFormComponent implements OnInit {
       this.doctorService.addDoctor(formData).subscribe(
         () => {
           console.log('Doctor added successfully');
-          this.router.navigate(['/doctor']);
+          this.router.navigate(["/doctor"]);
         },
         (error) => console.error(error)
       );

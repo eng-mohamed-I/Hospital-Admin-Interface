@@ -51,31 +51,39 @@
             <!-- state completed -->
             @if(appointment.status === 'completed'){
             <button
+              [routerLink]="['/add-report', appointment._id]"
               class="btn btn-secondary btn-sm mx-1"
               [disabled]="appointment.status !== 'completed'"
             >
               Add Report
             </button>
             <button
+              [routerLink]="['/reports', appointment._id]"
+              class="btn btn-info btn-sm mx-1"
+              [disabled]="appointment.status !== 'completed'"
+            >
+              View Report's
+            </button>
+            <button
               class="btn btn-danger btn-sm mx-1"
               (click)="cancelApppointment(appointment._id!)"
             >
-              Cancel
+              Reject
             </button>
             }
             <!-- state not completed -->
             @if(appointment.status === 'not completed'){
             <button
-              class="btn btn-danger btn-sm mx-1"
-              (click)="cancelApppointment(appointment._id!)"
-            >
-              Cancel
-            </button>
-            <button
               class="btn btn-success btn-sm mx-1"
               (click)="confirmAppointment(appointment._id!)"
             >
               Confirm
+            </button>
+            <button
+              class="btn btn-danger btn-sm mx-1"
+              (click)="cancelApppointment(appointment._id!)"
+            >
+              Reject
             </button>
             }
             <!--State Cancel  -->

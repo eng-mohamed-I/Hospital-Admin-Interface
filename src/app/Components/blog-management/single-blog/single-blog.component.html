@@ -1,7 +1,23 @@
 <div *ngIf="singleBlog; else loading" class="container mt-4">
   <div class="card">
-    <img [src]="singleBlog.url" alt="{{ singleBlog.title }}" class="card-img-top" />
-    <div class="card-body">
+    <img
+    *ngIf="singleBlog.url; else fallbackImage"
+    [src]="singleBlog.url"
+    alt="{{ singleBlog.title }}"
+    width="450"
+    height="300"
+    />
+    <ng-template #fallbackImage>
+    <img
+      *ngIf="singleBlog.Image"
+      [src]="singleBlog.Image.secure_url"
+      alt="{{ singleBlog.title }}"
+      width="450"
+      height="300"
+      />   
+    </ng-template>
+      
+     <div class="card-body">
       <h1 class="card-title">{{ singleBlog.title }}</h1>
       <p class="card-text">{{ singleBlog.body }}</p>
       <a [routerLink]="['/blog-management']" class="btn btn-primary">Back to Blogs</a>
@@ -17,3 +33,6 @@
     </div>
   </div>
 </ng-template>
+
+
+

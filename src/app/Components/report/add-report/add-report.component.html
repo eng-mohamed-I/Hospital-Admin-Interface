@@ -1,0 +1,290 @@
+<div class="container mt-2 col-lg-8 col-md-10 col-sm-12">
+  <form
+    [formGroup]="appointmentForm"
+    (ngSubmit)="onSubmit()"
+    class="bg-light p-4 rounded shadow"
+  >
+    <h4 class="r-style text-light rounded w-0 p-2">Report :</h4>
+    <div class="mb-3 d-flex flex-column position-relative p-2">
+      <div class="d-flex flex-row">
+        <label for="doctorName" class="form-label col-3">Doctor Name</label>
+        <input
+          formControlName="doctorName"
+          class="form-control"
+          id="doctorName"
+          placeholder="Doctor Name"
+          required
+          (input)="appointmentForm.get('doctorName')?.markAsTouched()"
+          [ngClass]="{
+            'is-invalid':
+              appointmentForm.get('doctorName')?.invalid &&
+              appointmentForm.get('doctorName')?.touched
+          }"
+        />
+      </div>
+      <small
+        *ngIf="
+          appointmentForm.get('doctorName')?.invalid &&
+          appointmentForm.get('doctorName')?.touched
+        "
+        class="text-danger text-center position-absolute err-mess"
+      >
+        Doctor Name is required.
+      </small>
+    </div>
+
+    <div class="mb-3 d-flex flex-column position-relative p-2">
+      <div class="d-flex flex-row">
+        <label for="patientName" class="form-label col-3">Patient Name</label>
+        <input
+          formControlName="patientName"
+          class="form-control"
+          id="patientName"
+          placeholder="Patient Name"
+          required
+          (input)="appointmentForm.get('patientName')?.markAsTouched()"
+          [ngClass]="{
+            'is-invalid':
+              appointmentForm.get('patientName')?.invalid &&
+              appointmentForm.get('patientName')?.touched
+          }"
+        />
+      </div>
+
+      <small
+        *ngIf="
+          appointmentForm.get('patientName')?.invalid &&
+          appointmentForm.get('patientName')?.touched
+        "
+        class="text-danger text-center position-absolute err-mess"
+      >
+        Patient Name is required.
+      </small>
+    </div>
+
+    <div class="mb-3 d-flex flex-column position-relative p-2">
+      <div class="d-flex flex-row">
+        <label for="diagnosis" class="form-label col-3">Diagnosis</label>
+        <input
+          formControlName="diagnosis"
+          class="form-control"
+          id="diagnosis"
+          placeholder="Diagnosis"
+          required
+          (input)="appointmentForm.get('diagnosis')?.markAsTouched()"
+          [ngClass]="{
+            'is-invalid':
+              appointmentForm.get('diagnosis')?.invalid &&
+              appointmentForm.get('diagnosis')?.touched
+          }"
+        />
+      </div>
+
+      <small
+        *ngIf="
+          appointmentForm.get('diagnosis')?.invalid &&
+          appointmentForm.get('diagnosis')?.touched
+        "
+        class="text-danger text-center position-absolute err-mess"
+      >
+        Diagnosis is required.
+      </small>
+    </div>
+
+    <div class="mb-3 d-flex flex-column position-relative p-2">
+      <div class="d-flex flex-row">
+        <label for="doctorComment" class="form-label col-3"
+          >Doctor's Comment</label
+        >
+        <input
+          formControlName="doctorComment"
+          class="form-control"
+          id="doctorComment"
+          placeholder="Doctor's Comment"
+          required
+          (input)="appointmentForm.get('doctorComment')?.markAsTouched()"
+          [ngClass]="{
+            'is-invalid':
+              appointmentForm.get('doctorComment')?.invalid &&
+              appointmentForm.get('doctorComment')?.touched
+          }"
+        />
+      </div>
+
+      <small
+        *ngIf="
+          appointmentForm.get('doctorComment')?.invalid &&
+          appointmentForm.get('doctorComment')?.touched
+        "
+        class="text-danger text-center position-absolute err-mess"
+      >
+        Doctor's Comment is required.
+      </small>
+    </div>
+
+    <div class="mb-3 d-flex flex-column position-relative p-2">
+      <div class="d-flex flex-row">
+        <label for="treatmentPrescription" class="form-label col-3"
+          >Treatment Prescription</label
+        >
+        <input
+          formControlName="treatmentPrescription"
+          class="form-control"
+          id="treatmentPrescription"
+          placeholder="Treatment Prescription"
+          required
+          (change)="
+            appointmentForm.get('treatmentPrescription')?.markAsTouched()
+          "
+          [ngClass]="{
+            'is-invalid':
+              appointmentForm.get('treatmentPrescription')?.invalid &&
+              appointmentForm.get('treatmentPrescription')?.touched
+          }"
+        />
+      </div>
+
+      <small
+        *ngIf="
+          appointmentForm.get('treatmentPrescription')?.invalid &&
+          appointmentForm.get('treatmentPrescription')?.touched
+        "
+        class="text-danger text-center position-absolute err-mess"
+      >
+        Treatment Prescription is required.
+      </small>
+    </div>
+
+    <div class="mb-3 d-flex flex-column position-relative p-2">
+      <div class="d-flex flex-row">
+        <label for="department" class="form-label col-3">Department</label>
+        <input
+          formControlName="department"
+          class="form-control"
+          id="department"
+          placeholder="Department"
+          required
+          (input)="appointmentForm.get('department')?.markAsTouched()"
+          [ngClass]="{
+            'is-invalid':
+              appointmentForm.get('department')?.invalid &&
+              appointmentForm.get('department')?.touched
+          }"
+        />
+      </div>
+
+      <small
+        *ngIf="
+          appointmentForm.get('department')?.invalid &&
+          appointmentForm.get('department')?.touched
+        "
+        class="text-danger text-center position-absolute err-mess"
+      >
+        Department is required.
+      </small>
+    </div>
+
+    <div class="mb-3 d-flex flex-column position-relative p-2">
+      <div class="d-flex flex-row">
+        <label for="patientAddress" class="form-label col-3"
+          >Patient Address</label
+        >
+        <input
+          formControlName="patientAddress"
+          class="form-control"
+          id="patientAddress"
+          placeholder="Patient Address"
+          required
+          (input)="appointmentForm.get('patientAddress')?.markAsTouched()"
+          [ngClass]="{
+            'is-invalid':
+              appointmentForm.get('patientAddress')?.invalid &&
+              appointmentForm.get('patientAddress')?.touched
+          }"
+        />
+      </div>
+
+      <small
+        *ngIf="
+          appointmentForm.get('patientAddress')?.invalid &&
+          appointmentForm.get('patientAddress')?.touched
+        "
+        class="text-danger text-center position-absolute err-mess"
+      >
+        Patient Address is required.
+      </small>
+    </div>
+
+    <div class="mb-3 d-flex flex-column position-relative p-2">
+      <div class="d-flex flex-row">
+        <label for="patientPhoneNumber" class="form-label col-3"
+          >Patient Phone Number</label
+        >
+        <input
+          formControlName="patientPhoneNumber"
+          class="form-control"
+          id="patientPhoneNumber"
+          placeholder="Patient Phone Number"
+          required
+          (input)="appointmentForm.get('patientPhoneNumber')?.markAsTouched()"
+          [ngClass]="{
+            'is-invalid':
+              appointmentForm.get('patientPhoneNumber')?.invalid &&
+              appointmentForm.get('patientPhoneNumber')?.touched
+          }"
+        />
+      </div>
+
+      <small
+        *ngIf="
+          appointmentForm.get('patientPhoneNumber')?.invalid &&
+          appointmentForm.get('patientPhoneNumber')?.touched
+        "
+        class="text-danger text-center position-absolute err-mess"
+      >
+        Patient Phone Number is required and must be 11 digits.
+      </small>
+    </div>
+
+    <div class="mb-3 d-flex flex-column position-relative p-2">
+      <div class="d-flex flex-row">
+        <label for="followUpRecommendations" class="form-label col-3"
+          >Follow-Up Recommendations</label
+        >
+        <input
+          formControlName="followUpRecommendations"
+          class="form-control"
+          id="followUpRecommendations"
+          placeholder="Follow-Up Recommendations"
+          required
+          (input)="
+            appointmentForm.get('followUpRecommendations')?.markAsTouched()
+          "
+          [ngClass]="{
+            'is-invalid':
+              appointmentForm.get('followUpRecommendations')?.invalid &&
+              appointmentForm.get('followUpRecommendations')?.touched
+          }"
+        />
+      </div>
+
+      <small
+        *ngIf="
+          appointmentForm.get('followUpRecommendations')?.invalid &&
+          appointmentForm.get('followUpRecommendations')?.touched
+        "
+        class="text-danger text-center position-absolute err-mess"
+      >
+        Follow-Up Recommendations are required.
+      </small>
+    </div>
+
+    <button
+      [disabled]="appointmentForm?.invalid"
+      type="submit"
+      class="btn btn-success"
+    >
+      Send
+    </button>
+  </form>
+</div>

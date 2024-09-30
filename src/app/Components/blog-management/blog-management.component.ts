@@ -14,12 +14,34 @@ export class BlogManagementComponent implements OnInit {
   allblogs: any
   confirmDeleteId: string | null = null;
 
+
+  currentPage: number = 1;
+  blogsPerPage: number = 4; 
+  totalPages: number = 0;
+  pages: number[] = [];
   constructor(private blogService: BlogService) {}
 
   ngOnInit(): void {
     this.blogService.getAll().subscribe((data) => {
       this.allblogs = data.blogs;
+      this.totalPages = Math.ceil(this.allblogs.length / this.blogsPerPage);
     });
+  }
+
+
+  get paginatedBlogs() {
+    const startIndex = (this.currentPage - 1) * this.blogsPerPage;
+    return this.allblogs.slice(startIndex, startIndex + this.blogsPerPage);
+  }
+
+
+  createPagesArray() {
+    this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  changePage(page: number): void {
+    if (page < 1 || page > this.totalPages) return; 
+    this.currentPage = page;
   }
 
 
