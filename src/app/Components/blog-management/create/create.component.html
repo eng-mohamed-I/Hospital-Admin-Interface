@@ -72,14 +72,7 @@
         Image is required
       </div>
     </div>
-
-
-    <button
-      type="button" 
-      (click)="create()"
-      class="btn btn-primary"
-      [disabled]="myForm.invalid"
-    >
+    <button type="button" (click)="create()" class="btn btn-primary" [disabled]="myForm.invalid || !selectedFile">
       Create
     </button>
   </form>
