@@ -16,7 +16,6 @@ export class CreateComponent {
   formdata: any = {
     title: '',
     body: '',
-    url: ''
   };
   
   selectedFile: File | null = null;
