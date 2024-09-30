@@ -56,10 +56,10 @@
                 *ngIf="confirmDeleteId === patient._id; else deleteButton"
               >
                 <span>Are you sure?</span>
-                <button class="btn btn-success p-0" (click)="confirmDelete()">
+                <button class="btn btn-success" (click)="confirmDelete()">
                   Yes
                 </button>
-                <button class="btn btn-danger p-0" (click)="cancelDelete()">
+                <button class="btn btn-danger" (click)="cancelDelete()">
                   No
                 </button>
               </ng-container>
