@@ -59,28 +59,21 @@
     </div>
 
     <div class="mb-3">
-      <label for="image" class="form-label">Img</label>
+      <label for="image" class="form-label">Image</label>
       <input
-        type="text"
-        name="img"
-        [(ngModel)]="formdata.url"
+        type="file"
+        name="image"
+        (change)="onFileSelected($event)"
         class="form-control"
         id="image"
         required
-        #imgInput="ngModel"
-        [ngClass]="{'is-invalid': (imgInput.touched || imgInput.dirty) && imgInput.invalid}"
       />
-      <div *ngIf="imgInput.touched && imgInput.invalid" class="text-danger">
-        <div *ngIf="imgInput.errors?.['required']">Image is required</div>
+      <div *ngIf="!selectedFile" class="text-danger">
+        Image is required
       </div>
-    </div> 
+    </div>
 
-    <button
-      type="button" 
-      (click)="create()"
-      class="btn btn-primary"
-      [disabled]="myForm.invalid"
-    >
+    <button type="button" (click)="create()" class="btn btn-primary" [disabled]="myForm.invalid || !selectedFile">
       Create
     </button>
   </form>
