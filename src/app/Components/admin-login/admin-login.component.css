@@ -13,3 +13,11 @@ a {
     font-size: 14px;
     color: #dea94d;
   }
+
+  .btn{
+    padding: 12px;
+    font-size: 18px;
+    border-radius: 5px;
+    background-color: #232f66;
+    color: white;
+  }

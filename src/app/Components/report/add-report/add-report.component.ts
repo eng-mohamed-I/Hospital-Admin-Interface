@@ -14,7 +14,8 @@ import { CommonModule } from '@angular/common';
 })
 export class AddReportComponent implements OnInit {
   appointmentForm: FormGroup;
-  appointmentID: any;
+  appointmentID: string;
+
   constructor(
     private router: ActivatedRoute,
     private fb: FormBuilder,
@@ -28,14 +29,33 @@ export class AddReportComponent implements OnInit {
       doctorComment: ['', Validators.required],
       treatmentPrescription: ['', Validators.required],
       department: ['', Validators.required],
-      patientAddress: ['', Validators.required],
-      patientPhoneNumber: ['', [Validators.required]],
       followUpRecommendations: ['', Validators.required],
     });
-    this.appointmentID = this.router.snapshot.paramMap.get('id');
+    this.appointmentID = this.router.snapshot.paramMap.get('id')!;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loadAppointmentDetails();
+  }
+
+  loadAppointmentDetails() {
+    this._reportService.getAppointmentDetails(this.appointmentID).subscribe(
+      (data) => {
+
+        // console.log("Data:",data);
+        
+        // Pre-fill the form with data from the appointment
+        this.appointmentForm.patchValue({
+          doctorName: data.doctorName,
+          patientName: data.patientName,
+          department: data.department,
+        });
+      },
+      (error) => {
+        console.error('Error fetching appointment details:', error);
+      }
+    );
+  }
 
   onSubmit() {
     if (this.appointmentForm.valid) {

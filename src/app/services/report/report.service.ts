@@ -20,4 +20,8 @@ export class ReportService {
   getAppointmentRrports(id: any): Observable<any> {
     return this._http.get(`${this.baseUrl}appointment/${id}`)
   }
+
+  getAppointmentDetails(appointmentID: string): Observable<any> {
+    return this._http.get(`http://localhost:5000/api/appointments/${appointmentID}`);
+  }
 }

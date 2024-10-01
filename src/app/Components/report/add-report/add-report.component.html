@@ -5,6 +5,8 @@
     class="bg-light p-4 rounded shadow"
   >
     <h4 class="r-style text-light rounded w-0 p-2">Report :</h4>
+    
+    <!-- Doctor Name -->
     <div class="mb-3 d-flex flex-column position-relative p-2">
       <div class="d-flex flex-row">
         <label for="doctorName" class="form-label col-3">Doctor Name</label>
@@ -33,6 +35,7 @@
       </small>
     </div>
 
+    <!-- Patient Name -->
     <div class="mb-3 d-flex flex-column position-relative p-2">
       <div class="d-flex flex-row">
         <label for="patientName" class="form-label col-3">Patient Name</label>
@@ -50,7 +53,6 @@
           }"
         />
       </div>
-
       <small
         *ngIf="
           appointmentForm.get('patientName')?.invalid &&
@@ -62,6 +64,7 @@
       </small>
     </div>
 
+    <!-- Diagnosis -->
     <div class="mb-3 d-flex flex-column position-relative p-2">
       <div class="d-flex flex-row">
         <label for="diagnosis" class="form-label col-3">Diagnosis</label>
@@ -79,7 +82,6 @@
           }"
         />
       </div>
-
       <small
         *ngIf="
           appointmentForm.get('diagnosis')?.invalid &&
@@ -91,11 +93,10 @@
       </small>
     </div>
 
+    <!-- Doctor's Comment -->
     <div class="mb-3 d-flex flex-column position-relative p-2">
       <div class="d-flex flex-row">
-        <label for="doctorComment" class="form-label col-3"
-          >Doctor's Comment</label
-        >
+        <label for="doctorComment" class="form-label col-3">Doctor's Comment</label>
         <input
           formControlName="doctorComment"
           class="form-control"
@@ -110,7 +111,6 @@
           }"
         />
       </div>
-
       <small
         *ngIf="
           appointmentForm.get('doctorComment')?.invalid &&
@@ -122,20 +122,17 @@
       </small>
     </div>
 
+    <!-- Treatment Prescription -->
     <div class="mb-3 d-flex flex-column position-relative p-2">
       <div class="d-flex flex-row">
-        <label for="treatmentPrescription" class="form-label col-3"
-          >Treatment Prescription</label
-        >
+        <label for="treatmentPrescription" class="form-label col-3">Treatment Prescription</label>
         <input
           formControlName="treatmentPrescription"
           class="form-control"
           id="treatmentPrescription"
           placeholder="Treatment Prescription"
           required
-          (change)="
-            appointmentForm.get('treatmentPrescription')?.markAsTouched()
-          "
+          (input)="appointmentForm.get('treatmentPrescription')?.markAsTouched()"
           [ngClass]="{
             'is-invalid':
               appointmentForm.get('treatmentPrescription')?.invalid &&
@@ -143,7 +140,6 @@
           }"
         />
       </div>
-
       <small
         *ngIf="
           appointmentForm.get('treatmentPrescription')?.invalid &&
@@ -155,6 +151,8 @@
       </small>
     </div>
 
+
+    <!-- Department -->
     <div class="mb-3 d-flex flex-column position-relative p-2">
       <div class="d-flex flex-row">
         <label for="department" class="form-label col-3">Department</label>
@@ -172,7 +170,6 @@
           }"
         />
       </div>
-
       <small
         *ngIf="
           appointmentForm.get('department')?.invalid &&
@@ -184,11 +181,10 @@
       </small>
     </div>
 
-    <div class="mb-3 d-flex flex-column position-relative p-2">
+    <!-- Patient Address -->
+    <!-- <div class="mb-3 d-flex flex-column position-relative p-2">
       <div class="d-flex flex-row">
-        <label for="patientAddress" class="form-label col-3"
-          >Patient Address</label
-        >
+        <label for="patientAddress" class="form-label col-3">Patient Address</label>
         <input
           formControlName="patientAddress"
           class="form-control"
@@ -203,7 +199,6 @@
           }"
         />
       </div>
-
       <small
         *ngIf="
           appointmentForm.get('patientAddress')?.invalid &&
@@ -213,13 +208,12 @@
       >
         Patient Address is required.
       </small>
-    </div>
+    </div> -->
 
-    <div class="mb-3 d-flex flex-column position-relative p-2">
+    <!-- Patient Phone Number -->
+    <!-- <div class="mb-3 d-flex flex-column position-relative p-2">
       <div class="d-flex flex-row">
-        <label for="patientPhoneNumber" class="form-label col-3"
-          >Patient Phone Number</label
-        >
+        <label for="patientPhoneNumber" class="form-label col-3">Patient Phone Number</label>
         <input
           formControlName="patientPhoneNumber"
           class="form-control"
@@ -234,7 +228,6 @@
           }"
         />
       </div>
-
       <small
         *ngIf="
           appointmentForm.get('patientPhoneNumber')?.invalid &&
@@ -242,24 +235,21 @@
         "
         class="text-danger text-center position-absolute err-mess"
       >
-        Patient Phone Number is required and must be 11 digits.
+        Phone number must be 11 digits.
       </small>
-    </div>
+    </div> -->
 
+    <!-- Follow-Up Recommendations -->
     <div class="mb-3 d-flex flex-column position-relative p-2">
       <div class="d-flex flex-row">
-        <label for="followUpRecommendations" class="form-label col-3"
-          >Follow-Up Recommendations</label
-        >
+        <label for="followUpRecommendations" class="form-label col-3">Follow-Up Recommendations</label>
         <input
           formControlName="followUpRecommendations"
           class="form-control"
           id="followUpRecommendations"
           placeholder="Follow-Up Recommendations"
           required
-          (input)="
-            appointmentForm.get('followUpRecommendations')?.markAsTouched()
-          "
+          (input)="appointmentForm.get('followUpRecommendations')?.markAsTouched()"
           [ngClass]="{
             'is-invalid':
               appointmentForm.get('followUpRecommendations')?.invalid &&
@@ -267,7 +257,6 @@
           }"
         />
       </div>
-
       <small
         *ngIf="
           appointmentForm.get('followUpRecommendations')?.invalid &&
@@ -275,16 +264,16 @@
         "
         class="text-danger text-center position-absolute err-mess"
       >
-        Follow-Up Recommendations are required.
+        Follow-Up Recommendations is required.
       </small>
     </div>
 
     <button
-      [disabled]="appointmentForm?.invalid"
       type="submit"
-      class="btn btn-success"
+      class="btn btn-primary col-12 mt-3"
+      [disabled]="appointmentForm.invalid"
     >
-      Send
+      Submit
     </button>
   </form>
 </div>

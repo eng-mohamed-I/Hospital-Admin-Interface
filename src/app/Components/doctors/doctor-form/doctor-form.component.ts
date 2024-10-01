@@ -23,6 +23,7 @@ export class DoctorFormComponent implements OnInit {
   imagePreview: string | ArrayBuffer | null = null;
   imageError: boolean = false;
   showAlert: boolean = false;
+  showAddedAlert: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -125,6 +126,16 @@ export class DoctorFormComponent implements OnInit {
     }
   }
 
+  showSuccessAlert() {
+    console.log('Success alert triggered');
+    this.showAddedAlert = true;
+    setTimeout(() => {
+      this.showAddedAlert = false;
+      console.log('Success alert closed');
+      this.router.navigate(['doctor/doctor-list']);
+    }, 2000);
+  }
+
   saveDoctor() {
     const today = new Date(); // Get today's date
     let hasPastDate = false;
@@ -141,6 +152,8 @@ export class DoctorFormComponent implements OnInit {
       this.showAlert = true; // Show the alert if there's a past date
     } else if (this.doctorForm.valid) {
       const formData = new FormData();
+      
+      this.showSuccessAlert();  // Call success alert on successful submission
       console.log('Doctor form is valid:', this.doctorForm.value);
   
       // Append all fields to formData except availableDates
@@ -158,7 +171,6 @@ export class DoctorFormComponent implements OnInit {
       this.doctorService.addDoctor(formData).subscribe(
         () => {
           console.log('Doctor added successfully');
-          this.router.navigate(["/doctor"]);
         },
         (error) => console.error(error)
       );
