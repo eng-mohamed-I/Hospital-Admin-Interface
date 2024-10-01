@@ -104,6 +104,7 @@ export class DepartmentUpdateComponent {
 
   // handle submission
   onSubmit(): void {
+    this.departmentForm.value
     if (this.departmentForm.valid) {
       const departmentData = {
         name: this.departmentForm.get('departmentName')?.value,
