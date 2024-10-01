@@ -1,6 +1,12 @@
+
+<div *ngIf="showAddedAlert" class="success-alert alert alert-success" role="alert">
+  Success! Your action was completed successfully.
+</div>
+
 <form [formGroup]="doctorForm" (ngSubmit)="saveDoctor()">
   <div class="form-group">
     
+
     <label>Name</label>
     <input formControlName="name" class="form-control" />
     <div *ngIf="doctorForm.get('name')?.invalid && doctorForm.get('name')?.touched" class="text-danger">
@@ -172,4 +178,8 @@
   <div class="form-group">
     <button class="btn btn-primary">Save Doctor</button>
   </div>
+
+
+
+  
 </form>

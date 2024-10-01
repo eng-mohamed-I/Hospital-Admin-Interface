@@ -22,6 +22,11 @@ export class LoginComponent {
     private router: Router // Inject Router
   ) {}
 
+
+
+  goToAdminLogin() {
+    this.router.navigate(['/adminlogin']);
+  }
   // Handle form submission
   onSubmit() {
     this.doctorLoginService.login(this.email, this.password).subscribe({
@@ -58,3 +63,4 @@ export class LoginComponent {
     });
   }
 }
+

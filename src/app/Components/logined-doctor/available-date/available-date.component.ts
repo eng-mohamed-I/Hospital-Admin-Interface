@@ -137,11 +137,14 @@ export class AvailableDateComponent implements OnInit {
     }
   }
 
+
+  
   // Remove an available date
   removeDate(index: number): void {
     const availableDates =
       this.availableDatesForm.get('availableDates')?.value || [];
     availableDates.splice(index, 1);
     this.availableDatesForm.patchValue({ availableDates: availableDates });
+    this.updateDoctorAvailableDates();
   }
 }

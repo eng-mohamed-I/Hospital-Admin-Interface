@@ -16,7 +16,12 @@ export class AdminLoginService {
   }
 
   get isUserLogedIn(): boolean {
+    if (typeof window !== 'undefined' && localStorage) {
+
     return localStorage.getItem('auth') ? true : false;
+    }
+      return false;
+
   }
 
   getAdminRole() {

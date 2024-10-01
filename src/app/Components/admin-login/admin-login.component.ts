@@ -19,6 +19,11 @@ export class AdminLoginComponent {
 
   constructor(private _adminLogService: AdminLoginService , private _router : Router) { }
 
+
+  goToDoctorLogin() {
+    this._router.navigate(['/login']);
+  }
+
   onLog() { 
     this._adminLogService.login({email:this.email ,password :this.password}).subscribe({
       next: (res) => { 
