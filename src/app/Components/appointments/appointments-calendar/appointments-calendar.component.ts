@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms'; // Required for ngModel
+import { FormsModule } from '@angular/forms'; 
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap'; // Required for ngb-datepicker
 import { CommonModule } from '@angular/common';
 
@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule, NgbDatepickerModule, FormsModule],
   templateUrl: './appointments-calendar.component.html',
-  styleUrls: ['./appointments-calendar.component.css'] // Correct the name to styleUrls
+  styleUrls: ['./appointments-calendar.component.css'] 
 })
 export class AppointmentsCalendarComponent {
 
