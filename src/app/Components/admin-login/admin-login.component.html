@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row justify-content-center align-items-center vh-100">
     <div class="col-md-4 border border rounded-3 p-5 bg-light">
-      <h5 class="admin-login text-center mb-3 mt-2">Admin Login</h5>
+      <h5 class="admin-login text-center mb-3 mt-2">Admin</h5>
       @if(successMessage){
       <div class="alert alert-success mt-3">
         {{ successMessage }}
@@ -16,11 +16,12 @@
           <label for="exampleInputEmail1">Email address</label>
           <input
             type="email"
-            class="form-control"
+            class="form-control position-relative"
             id="exampleInputEmail1"
             aria-describedby="emailHelp"
             placeholder="Enter email"
             name="email"
+            pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
             [(ngModel)]="email"
             required
             #emailInput="ngModel"
@@ -31,24 +32,23 @@
             aria-label="Email address"
           />
         </div>
-        <div
-          *ngIf="emailInput.touched && emailInput.invalid"
-          class="text-danger"
-        >
-          <div *ngIf="emailInput.errors?.['required']">Email is required</div>
-        </div>
+        @if(emailInput.touched || emailInput.dirty){
+        @if(emailInput.errors?.['required']){
+        <small class="position-absolute text-danger">Email is required</small>
+        } @else if(emailInput.errors?.['pattern']){
+        <small class="position-absolute text-danger">Email is invalid</small>
+        } }
 
         <div class="form-group">
           <label for="exampleInputPassword1" class="mt-3">Password</label>
           <input
             type="password"
-            class="form-control"
+            class="form-control position-relative"
             id="exampleInputPassword1"
             placeholder="Password"
             name="password"
             [(ngModel)]="password"
             required
-            minlength="8"
             #passwordInput="ngModel"
             [ngClass]="{
               'is-invalid':
@@ -58,25 +58,24 @@
             aria-label="Password"
           />
         </div>
-        <div
-          *ngIf="passwordInput.touched && passwordInput.invalid"
-          class="text-danger"
+        @if(passwordInput.touched || passwordInput.dirty){
+        @if(passwordInput.errors?.['required']){
+        <small class="text-danger position-absolute"
+          >Password is required</small
         >
-          <div *ngIf="passwordInput.errors?.['required']">
-            Password is required
-          </div>
-          <div *ngIf="passwordInput.errors?.['minlength']">
-            Password must be at least 8 characters
-          </div>
-        </div>
 
-        <div class="d-grid gap-2">
+        } }
+        <div class="d-grid gap-2 mt-2">
           <button
             type="submit"
             class="btn login mt-3 text-white"
-            [disabled]="myForm.invalid"
+            [disabled]="myForm.invalid || isLoading"
           >
-            Login
+            @if(isLoading){ @if(success){ ... }@else{
+            <div class="spinner-border spinner-border-sm" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+            } } @else{ Login }
           </button>
         </div>
       </form>
@@ -85,10 +84,10 @@
       </div>
     </div>
 
-
     <div class="d-flex justify-content-end">
-    <button class="btn btn-outline-warning" (click)="goToDoctorLogin()">Go to Doctor Login</button>    
-  </div>
-
+      <button class="btn btn-outline-warning" (click)="goToDoctorLogin()">
+        Go to Doctor Login
+      </button>
+    </div>
   </div>
 </div>

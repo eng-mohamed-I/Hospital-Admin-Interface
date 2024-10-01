@@ -16,25 +16,27 @@ export class LoginComponent {
   password: string = '';
   errorMessage: string = '';
   successMessage: string = '';
+  isLoading: boolean = false;
+  success: boolean = false;
 
   constructor(
     private doctorLoginService: DoctorLoginService,
     private router: Router // Inject Router
   ) {}
 
-
-
   goToAdminLogin() {
     this.router.navigate(['/adminlogin']);
   }
   // Handle form submission
   onSubmit() {
+    this.isLoading = true;
     this.doctorLoginService.login(this.email, this.password).subscribe({
       next: (response) => {
         // Successful login response handling
         if (response?.token) {
           // Save the token using the login service
           // this.doctorLoginService.saveToken(response.token);
+          this.success = true;
           console.log(response);
           // Optionally store user info in localStorage
           localStorage.setItem('userName', response.user.name);
@@ -56,11 +58,11 @@ export class LoginComponent {
         }
       },
       error: (error) => {
+        this.isLoading = false;
         // Error handling
-        this.errorMessage = 'Invalid email or password. Please try again.';
+        this.errorMessage = 'Invalid email or password.';
         console.error('Login error:', error);
       },
     });
   }
 }
-
