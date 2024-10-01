@@ -5,7 +5,20 @@
     background-color: #101010;
 }
 
+
 .r-main{
     position: absolute;
     right: 0px;
+}
+
+@media only screen and (max-width: 1000px) {
+    .s-bar{ 
+        height: fit-content;
+        width: 100%;
+        position: relative;
+    }
+    .r-main{
+        position: relative;
+        width: 100%;
+    }
 }
