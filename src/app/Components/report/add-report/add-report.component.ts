@@ -41,9 +41,8 @@ export class AddReportComponent implements OnInit {
   loadAppointmentDetails() {
     this._reportService.getAppointmentDetails(this.appointmentID).subscribe(
       (data) => {
-
         // console.log("Data:",data);
-        
+
         // Pre-fill the form with data from the appointment
         this.appointmentForm.patchValue({
           doctorName: data.doctorName,
@@ -56,7 +55,7 @@ export class AddReportComponent implements OnInit {
       }
     );
   }
-
+  // on submit
   onSubmit() {
     if (this.appointmentForm.valid) {
       let report = {
