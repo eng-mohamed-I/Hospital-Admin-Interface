@@ -2,8 +2,14 @@
   <div
     class="d-flex flex-column row justify-content-center align-items-center vh-100"
   >
+    <div class="container text-center">
+      <img style="width: 50px; height: 50px" src="favicon.png" alt="" />
+      <h4 class="text-center text-secondary">
+        Hospital <sup style="font-size: 20px">Admin</sup>
+      </h4>
+    </div>
     <div
-      class="position-relative col-sm-8 col-md-6 col-lg-4 border border rounded-3 p-5 shadow-sm bg-white"
+      class="position-relative col-sm-8 col-md-6 col-lg-3 border border rounded-3 p-3 shadow-sm bg-white"
     >
       <div id="message" class="position-absolute col-sm-8 col-md-6 col-lg-4">
         @if(successMessage){
@@ -16,9 +22,6 @@
         </div>
         }
       </div>
-      <h4 class="text-center text-secondary">
-        Hospital <sup style="font-size: 20px">Admin</sup>
-      </h4>
       <form [formGroup]="loginForm" (ngSubmit)="onLog()">
         <div class="form-group">
           <label for="exampleInputEmail1" class="text-secondary"
@@ -108,9 +111,10 @@
         </div>
       </form>
     </div>
-    <div class="ol-sm-8 col-md-6 col-lg-4 border rounded mt-3 p-5 shadow-sm">
+    <div class="col-sm-8 col-md-6 col-lg-3 p-2">
+      <hr />
       <div router class="text-center">
-        <p class="d-contain">
+        <p class="d-contain align-self-center">
           Are you a doctor? <span><a routerLink="/login">Login</a></span>
         </p>
       </div>

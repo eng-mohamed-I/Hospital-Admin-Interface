@@ -40,6 +40,13 @@ export class AdminLoginComponent {
       this.passwordVisibilty === 'password' ? 'text' : 'password';
   }
 
+  clearMessage() {
+    setTimeout(() => {
+      this.successMessage = '';
+      this.errorMessage = '';
+    }, 2000);
+  }
+
   goToDoctorLogin() {
     this._router.navigate(['/login']);
   }
@@ -59,6 +66,7 @@ export class AdminLoginComponent {
           localStorage.setItem('auth', JSON.stringify(data));
           this.successMessage = 'Login succssfully';
           this.errorMessage = '';
+          this.clearMessage();
           setTimeout(() => {
             this._router.navigateByUrl('/');
           }, 2000);
@@ -68,9 +76,11 @@ export class AdminLoginComponent {
           console.error(err);
           if (err.error.message) {
             this.successMessage = '';
+            this.clearMessage();
             return (this.errorMessage = err.error.message || 'Login faild');
           }
           this.errorMessage = 'Login Faild';
+          this.clearMessage();
         },
       });
     }
