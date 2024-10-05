@@ -41,44 +41,52 @@ export class LoginComponent {
       this.passwordVisibilty === 'password' ? 'text' : 'password';
   }
 
-  goToAdminLogin() {
-    this.router.navigate(['/adminlogin']);
+  clearMessage() {
+    setTimeout(() => {
+      this.successMessage = '';
+      this.errorMessage = '';
+    }, 2000);
   }
+
   // Handle form submission
   onLog() {
-    this.isLoading = true;
-    this.doctorLoginService.login(this.loginForm).subscribe({
-      next: (response) => {
-        // Successful login response handling
-        if (response?.token) {
-          // Save the token using the login service
-          this.success = true;
-          console.log(response);
-          // Optionally store user info in localStorage
-          localStorage.setItem('userName', response.user.name);
-          localStorage.setItem('userId', response.user._id);
-          // save auth contain doctor info to localstorage
-          localStorage.setItem(
-            'auth',
-            JSON.stringify({
-              token: response.token,
-              user: { role: response.user.role },
-            })
-          );
-          this.successMessage = 'Login Successfully';
-          this.errorMessage = '';
-          // Redirect to available dates
-          setTimeout(() => {
-            this.router.navigate(['/available-dates']);
-          }, 2000);
-        }
-      },
-      error: (error) => {
-        this.isLoading = false;
-        // Error handling
-        this.errorMessage = 'Invalid email or password.';
-        console.error('Login error:', error);
-      },
-    });
+    this.loginForm.markAllAsTouched();
+    if (this.loginForm.valid) {
+      this.isLoading = true;
+      this.doctorLoginService.login(this.loginForm).subscribe({
+        next: (response) => {
+          // Successful login response handling
+          if (response?.token) {
+            // Save the token using the login service
+            this.success = true;
+            console.log(response);
+            // Optionally store user info in localStorage
+            localStorage.setItem('userName', response.user.name);
+            localStorage.setItem('userId', response.user._id);
+            // save auth contain doctor info to localstorage
+            localStorage.setItem(
+              'auth',
+              JSON.stringify({
+                token: response.token,
+                user: { role: response.user.role },
+              })
+            );
+            this.successMessage = 'Login Successfully';
+            this.errorMessage = '';
+            this.clearMessage();
+            // Redirect to available dates
+            setTimeout(() => {
+              this.router.navigate(['/available-dates']);
+            }, 2000);
+          }
+        },
+        error: (error) => {
+          this.isLoading = false;
+          // Error handling
+          this.errorMessage = 'Invalid email or password';
+          this.clearMessage();
+        },
+      });
+    }
   }
 }
