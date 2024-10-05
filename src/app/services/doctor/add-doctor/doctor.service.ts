@@ -19,7 +19,7 @@ export class DoctorService {
   }
 
   // Add a new doctor (update this method to accept FormData)
-  addDoctor(doctor: FormData): Observable<Doctor> {
+  addDoctor(doctor: any): Observable<Doctor> {
     return this.http.post<Doctor>(this.apiUrl, doctor);
   }
 
@@ -32,7 +32,7 @@ export class DoctorService {
   updateDoctor(id: string, doctor: Doctor | FormData): Observable<Doctor> {
     return this.http.put<Doctor>(`${this.apiUrl}/${id}`, doctor);
   }
-  
+
   getDoctorByIdForUpdate(id: string): Observable<Doctor> {
     return this.http.get<Doctor>(`${this.apiUrl}/${id}`);
   }
@@ -42,15 +42,18 @@ export class DoctorService {
     return this.http.delete<Doctor>(`${this.apiUrl}/${id}`);
   }
 
-  updateDoctorAvailableDate(id: string, doctor: Doctor | FormData): Observable<Doctor> {
+  updateDoctorAvailableDate(
+    id: string,
+    doctor: Doctor | FormData
+  ): Observable<Doctor> {
     return this.http.put<Doctor>(`${this.apiUrl}/A/${id}`, doctor);
   }
-  
 
-
-  
   // Adjust the method to accept PartialDoctorUpdate
-  updateDoctorAvailableDatE(id: string, availableDates: PartialDoctorUpdate): Observable<Doctor> {
+  updateDoctorAvailableDatE(
+    id: string,
+    availableDates: PartialDoctorUpdate
+  ): Observable<Doctor> {
     return this.http.put<Doctor>(`${this.apiUrl}/A/${id}`, availableDates);
   }
 }

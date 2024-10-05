@@ -1,16 +1,26 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0px;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
-html, body { height: 100%; }
-body { margin: 0px; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 .centered-dialog .mat-dialog-container {
-    display: flex !important;
-    align-items: center !important; 
-    justify-content: center !important;
-    height: 100vh; /* Take the full viewport height */
-    margin: 0; /* Remove default margin */
-  }
-  
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 100vh; /* Take the full viewport height */
+  margin: 0px; /* Remove default margin */
+}
