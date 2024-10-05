@@ -1,38 +1,41 @@
+#message {
+  top: -100px;
+  left: 50%;
+  width: 90%;
+  transform: translateX(-50%);
+}
 
-  .card {
-    padding: 30px;
-    border-radius: 10px;
-  }
-  
-  .card-body {
-    padding: 20px;
-  }
-  
-  h3 {
-    font-size: 24px;
-    font-weight: 700;
-  }
-  
-  .form-control {
-    padding: 10px;
-    font-size: 16px;
-  }
-  
-  .btn{
-    padding: 12px;
-    font-size: 18px;
-    border-radius: 5px;
-    background-color: #232f66;
-    color: white;
-  }
-  
-  a {
-    font-size: 14px;
-    color: #dea94d;
-  }
-  
-  a:hover {
-    text-decoration: underline;
-  }
+sup {
+  color: #232f66;
+}
 
-  
+.login {
+  background-color: #232f66;
+}
+.login:active {
+  background-color: #192147;
+}
+.admin-login {
+  color: #212529;
+}
+
+.btn {
+  font-size: 20px;
+}
+.d-contain {
+  font-size: medium;
+  color: #232f66;
+}
+a {
+  font-size: 15px;
+  font-weight: bold;
+  color: #dea94d;
+}
+
+.btn {
+  padding: 12px;
+  font-size: 18px;
+  border-radius: 5px;
+  background-color: #232f66;
+  color: white;
+}

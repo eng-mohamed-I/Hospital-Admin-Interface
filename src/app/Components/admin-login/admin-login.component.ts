@@ -1,39 +1,56 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AdminLoginService } from '../../services/admin/admin-login.service';
 
 @Component({
   selector: 'app-admin-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, ReactiveFormsModule],
   templateUrl: './admin-login.component.html',
   styleUrl: './admin-login.component.css',
 })
 export class AdminLoginComponent {
-  email: string = '';
-  password: string = '';
+  loginForm: FormGroup = new FormGroup({
+    email: new FormControl('', [
+      Validators.required,
+      Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$'),
+    ]),
+    password: new FormControl('', [Validators.required]),
+  });
   successMessage: string = '';
   errorMessage: string = '';
   isLoading: boolean = false;
-  success: boolean = false
+  success: boolean = false;
+  passwordVisibilty: string = 'password';
   constructor(
     private _adminLogService: AdminLoginService,
     private _router: Router
   ) {}
+
+  showVesibity() {
+    this.passwordVisibilty =
+      this.passwordVisibilty === 'password' ? 'text' : 'password';
+  }
 
   goToDoctorLogin() {
     this._router.navigate(['/login']);
   }
 
   onLog() {
-    this.isLoading = true;
-    this._adminLogService
-      .login({ email: this.email, password: this.password })
-      .subscribe({
+    this.loginForm.markAllAsTouched();
+    if (this.loginForm.valid) {
+      this.isLoading = true;
+      this._adminLogService.login(this.loginForm.value).subscribe({
         next: (res) => {
-          this.success = true
+          this.success = true;
           let data = {
             data: res.data,
             token: res.token,
@@ -49,9 +66,13 @@ export class AdminLoginComponent {
         error: (err) => {
           this.isLoading = false;
           console.error(err);
-          this.errorMessage = 'Invalid email or password';
-          this.successMessage = '';
+          if (err.error.message) {
+            this.successMessage = '';
+            return (this.errorMessage = err.error.message || 'Login faild');
+          }
+          this.errorMessage = 'Login Faild';
         },
       });
+    }
   }
 }

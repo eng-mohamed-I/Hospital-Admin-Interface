@@ -18,8 +18,8 @@ export class DoctorLoginService {
   ) {}
 
   // Function to login a doctor and save the token upon successful login
-  login(email: string, password: string): Observable<any> {
-    return this.http.post<any>(this.apiUrl, { email, password }).pipe(
+  login(data: any): Observable<any> {
+    return this.http.post<any>(this.apiUrl, data).pipe(
       tap((response) => {
         if (response?.token) {
           // Save token and handle the user status
