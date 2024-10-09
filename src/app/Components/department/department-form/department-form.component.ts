@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { DepartmentService } from '../../../services/department/department.service';
 import { Router } from '@angular/router';
+import { AdminLoginService } from '../../../services/admin/admin-login.service';
 
 @Component({
   selector: 'app-department-form',
@@ -21,11 +22,11 @@ export class DepartmentFormComponent implements OnInit {
   selectedDoctors: any[] = []; // Array to store selected doctors
   doctors: any[] = []; // Array to store fetched doctors
   message: string = '';
-
   constructor(
     private _router: Router,
     private fb: FormBuilder,
-    private departmentService: DepartmentService
+    private departmentService: DepartmentService,
+    private _authService: AdminLoginService
   ) {
     this.departmentForm = this.fb.group({
       departmentName: [
@@ -34,7 +35,7 @@ export class DepartmentFormComponent implements OnInit {
       ],
       departmentDescription: [
         '',
-        [Validators.required, Validators.pattern('[a-zA-Z ]*')],
+        [Validators.required, Validators.pattern('[a-zA-Z]*')],
       ],
       doctor: [''],
     });
@@ -88,14 +89,15 @@ export class DepartmentFormComponent implements OnInit {
 
   // Handle form submission
   onSubmit(): void {
-    console.log(this.departmentForm.value);
+    this.departmentForm.markAllAsTouched();
     if (this.departmentForm.valid) {
       const departmentData = {
         name: this.departmentForm.get('departmentName')?.value,
         description: this.departmentForm.get('departmentDescription')?.value,
         doctors: this.selectedDoctors.map((doc) => doc._id),
       };
-      console.log(departmentData);
+
+      let token = this._authService.getToken();
       this.departmentService.addDepartment(departmentData).subscribe({
         next: (response) => {
           // show success message
@@ -111,6 +113,7 @@ export class DepartmentFormComponent implements OnInit {
         },
         error: (err) => {
           // show error message
+          console.log('error send', err);
           this.message = err.error.message;
 
           // clear message

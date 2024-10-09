@@ -1,5 +1,7 @@
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { auto } from '@popperjs/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
@@ -7,7 +9,10 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class AdminLoginService {
   user: BehaviorSubject<boolean>;
-  constructor(private _http: HttpClient) {
+  constructor(
+    private _http: HttpClient,
+    @Inject(PLATFORM_ID) private _platformId: Object
+  ) {
     this.user = new BehaviorSubject<boolean>(this.isUserLogedIn);
   }
 
@@ -15,13 +20,21 @@ export class AdminLoginService {
     return this._http.post('http://localhost:5000/api/users/login', user);
   }
 
+  getToken() {
+    if (this.user) {
+      if (isPlatformBrowser(this._platformId)) {
+        let data: any = localStorage.getItem('auth');
+        data = data ? JSON.parse(data) : '';
+        return data?.token;
+      }
+    }
+  }
+
   get isUserLogedIn(): boolean {
     if (typeof window !== 'undefined' && localStorage) {
-
-    return localStorage.getItem('auth') ? true : false;
+      return localStorage.getItem('auth') ? true : false;
     }
-      return false;
-
+    return false;
   }
 
   getAdminRole() {

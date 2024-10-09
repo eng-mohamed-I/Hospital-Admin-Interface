@@ -1,6 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
@@ -13,9 +20,15 @@ import { Doctor } from '../../../models/doctor.model';
 @Component({
   selector: 'app-doctor-form',
   standalone: true,
-  imports: [BsDatepickerModule, NgMultiSelectDropDownModule, CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [
+    BsDatepickerModule,
+    NgMultiSelectDropDownModule,
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+  ],
   templateUrl: './doctor-form.component.html',
-  styleUrls: ['./doctor-form.component.css']
+  styleUrls: ['./doctor-form.component.css'],
 })
 export class DoctorFormComponent implements OnInit {
   doctorForm!: FormGroup;
@@ -42,43 +55,62 @@ export class DoctorFormComponent implements OnInit {
   initForm() {
     this.doctorForm = this.fb.group({
       name: ['', Validators.required],
-      userName: ['', [
-        Validators.required,
-        Validators.minLength(10),
-        Validators.pattern('^[a-z0-9._-]+$')  // allows lowercase letters, digits, and special characters (-, _, .)
-      ]],
+      userName: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.pattern('^[a-z0-9._-]+$'), // allows lowercase letters, digits, and special characters (-, _, .)
+        ],
+      ],
       image: [''],
-      price:['',Validators.required],
-      nationalID: ['', [Validators.required, Validators.minLength(14), Validators.maxLength(14), Validators.pattern('^[0-9]+$')]],
+      price: ['', Validators.required],
+      nationalID: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(14),
+          Validators.maxLength(14),
+          Validators.pattern('^[0-9]+$'),
+        ],
+      ],
       department: ['', Validators.required],
       availableDates: this.fb.array([]), // Initializes as an empty FormArray
-      phone: ['', [Validators.required, Validators.pattern(/^(011|010|015|012)\d{8}$/)]],  // Updated pattern
-      email: ['', [
-        Validators.required,
-        Validators.pattern('^[a-zA-Z0-9._%+-]+@gmail\\.com$')  // Regex pattern for Gmail validation
-      ]],      
+      phone: [
+        '',
+        [Validators.required, Validators.pattern(/^(011|010|015|012)\d{8}$/)],
+      ], // Updated pattern
+      email: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern('^[a-zA-Z0-9._%+-]+@gmail\\.com$'), // Regex pattern for Gmail validation
+        ],
+      ],
       password: ['', [Validators.required, Validators.minLength(6)]],
       gender: ['', Validators.required],
       dateOfBirth: ['', Validators.required],
       experience: ['', [Validators.required, Validators.min(0)]],
-      history: ['']
+      history: [''],
     });
   }
 
   loadDepartments() {
     this.departmentService.getDepartments().subscribe(
-      (data) => this.departments = data.departments,
+      (data) => (this.departments = data.departments),
       (error) => console.error(error)
     );
   }
 
   addDate() {
     const availableDates = this.doctorForm.get('availableDates') as FormArray;
-    availableDates.push(this.fb.group({
-      date: ['', Validators.required],
-      fromTime: ['', Validators.required],
-      toTime: ['', Validators.required],
-    }));
+    availableDates.push(
+      this.fb.group({
+        date: ['', Validators.required],
+        fromTime: ['', Validators.required],
+        toTime: ['', Validators.required],
+      })
+    );
   }
 
   removeDate(index: number) {
@@ -99,18 +131,22 @@ export class DoctorFormComponent implements OnInit {
     return this.doctorForm.get('availableDates') as FormArray;
   }
 
-
   closeAlert() {
     this.showAlert = true; // Ensure the alert is shown when triggered
     setTimeout(() => {
       this.showAlert = false; // Hide the alert after 2 seconds
-      console.log("Alert closed automatically"); // Optional: for debugging
-    }, 500);  
+      console.log('Alert closed automatically'); // Optional: for debugging
+    }, 500);
   }
   onImageSelected(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0]; // Get the selected file
     if (file) {
-      const allowedTypes = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
+      const allowedTypes = [
+        'image/png',
+        'image/jpeg',
+        'image/gif',
+        'image/webp',
+      ];
       if (allowedTypes.includes(file.type)) {
         const reader = new FileReader();
         reader.onload = () => {
@@ -139,7 +175,7 @@ export class DoctorFormComponent implements OnInit {
   saveDoctor() {
     const today = new Date(); // Get today's date
     let hasPastDate = false;
-  
+
     // Check if any selected date is in the past
     this.availableDates.controls.forEach((dateGroup) => {
       const selectedDate = new Date(dateGroup.get('date')?.value);
@@ -147,27 +183,28 @@ export class DoctorFormComponent implements OnInit {
         hasPastDate = true;
       }
     });
-  
+
     if (hasPastDate) {
       this.showAlert = true; // Show the alert if there's a past date
     } else if (this.doctorForm.valid) {
       const formData = new FormData();
-      
-      this.showSuccessAlert();  // Call success alert on successful submission
+
+      this.showSuccessAlert(); // Call success alert on successful submission
       console.log('Doctor form is valid:', this.doctorForm.value);
-  
+
       // Append all fields to formData except availableDates
       for (const key in this.doctorForm.value) {
         if (key !== 'availableDates') {
           formData.append(key, this.doctorForm.value[key]);
         }
       }
-  
+
       // Append availableDates separately
       const availableDates = this.doctorForm.get('availableDates')?.value;
       formData.append('availableDates', JSON.stringify(availableDates));
-  
+
       // Send data
+      console.log(formData);
       this.doctorService.addDoctor(formData).subscribe(
         () => {
           console.log('Doctor added successfully');
@@ -179,5 +216,4 @@ export class DoctorFormComponent implements OnInit {
       this.doctorForm.markAllAsTouched();
     }
   }
-  
 }

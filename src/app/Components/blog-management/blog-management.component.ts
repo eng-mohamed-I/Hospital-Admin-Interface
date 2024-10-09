@@ -11,12 +11,10 @@ import { RouterLink } from '@angular/router';
   styleUrl: './blog-management.component.css',
 })
 export class BlogManagementComponent implements OnInit {
-  allblogs: any
+  allblogs: any;
   confirmDeleteId: string | null = null;
-
-
   currentPage: number = 1;
-  blogsPerPage: number = 4; 
+  blogsPerPage: number = 4;
   totalPages: number = 0;
   pages: number[] = [];
   constructor(private blogService: BlogService) {}
@@ -26,53 +24,44 @@ export class BlogManagementComponent implements OnInit {
       this.allblogs = data.blogs;
       this.totalPages = Math.ceil(this.allblogs.length / this.blogsPerPage);
     });
+    console.log(this.allblogs);
   }
-
 
   get paginatedBlogs() {
     const startIndex = (this.currentPage - 1) * this.blogsPerPage;
     return this.allblogs.slice(startIndex, startIndex + this.blogsPerPage);
   }
 
-
   createPagesArray() {
     this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
   changePage(page: number): void {
-    if (page < 1 || page > this.totalPages) return; 
+    if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
   }
 
-
   deleteBlog(id: string): void {
-    this.confirmDeleteId = id; 
+    this.confirmDeleteId = id;
   }
 
   cancelDelete(): void {
-    this.confirmDeleteId = null; 
+    this.confirmDeleteId = null;
   }
 
-  confirmDelete(index:any) :void { 
-    
-    this.blogService.delete(this.confirmDeleteId).subscribe(
-      {
-        next : () => { 
-          this.allblogs.splice(index,1)
-        },
-        error: (err) => {
-          console.log("error", err)
-        }
-      }  
-
-    )
-    console.log(this.confirmDeleteId)
+  confirmDelete(index: any): void {
+    this.blogService.delete(this.confirmDeleteId).subscribe({
+      next: () => {
+        this.allblogs.splice(index, 1);
+      },
+      error: (err) => {
+        console.log('error', err);
+      },
+    });
+    console.log(this.confirmDeleteId);
   }
 
-  openDeleteConfirmation(id : any) {
-    
-  }
-
+  openDeleteConfirmation(id: any) {}
 
   // deleteItem(id: number) {
   //   const confirmation = confirm('Are you sure you want to delete this blog?');
