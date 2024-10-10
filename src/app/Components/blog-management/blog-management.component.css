@@ -1,36 +1,54 @@
-.tbodyText{
+table {
+  max-height: 80vh;
+  overflow-y: scroll;
+}
+
+
+
+.table thead th {
+  background-color: #f8f9fa;
+  color: #495057;
+}
+
+.tbodyText {
   font-size: 12px;
 }
 
-.updatebtn{
-  color:#f5ce5b;
+.updatebtn {
+  color: #f5ce5b;
 }
-.updatebtn:hover{
+.updatebtn:hover {
   background-color: #f5ce5b;
   color: white;
- }
+}
 
- .deletebtn{
+.deletebtn {
   color: #dc3545;
- }
+}
 
- .deletebtn:hover{
+.deletebtn:hover {
   color: white;
   background-color: #dc3545;
- }
- tbody, td, tfoot, th, thead, tr{
+}
+tbody,
+td,
+tfoot,
+th,
+thead,
+tr {
   border-color: inherit;
   border-style: solid;
   /* border-width: 0; */
 }
 
-.pagNums{
-  color: rgb(0, 89, 206);
+.pagNums {
+  color: rgb(127, 178, 244);
   padding: 5px;
-margin:5px;
+  margin: 5px;
   border: solid 1px rgb(193, 193, 221);
 }
 
-.prev, .next {
+.prev,
+.next {
   cursor: pointer;
 }

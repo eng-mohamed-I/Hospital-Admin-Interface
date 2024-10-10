@@ -1,23 +1,20 @@
 <div class="container">
-  <nav
-    class="navbar navbar-expand-lg navbar-light"
-    style="background-color: #abc2f5"
-  >
+  <nav class="navbar navbar-expand-lg bg-light border navbar-light">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Blogs</a>
+      <p class="navbar-brand text-secondary">Blog list</p>
     </div>
-    <div class="d-flex me-3">
+    <div class="me-3">
       <button
         class="btn btn-success"
         [routerLink]="['form']"
         style="background-color: #233763"
       >
-        ADD+
+        Add blog+
       </button>
     </div>
   </nav>
-  <table class="table">
-    <thead>
+  <table class="table table-bordered table-hover">
+    <thead class="table-light">
       <tr>
         <th scope="col">Img</th>
         <th scope="col">Title</th>
@@ -27,78 +24,77 @@
     </thead>
     <tbody class="tbodyText">
       <!-- Use ng-container to apply *ngIf without interfering with the table rows -->
-      <ng-container *ngIf="allblogs?.length > 0; else noBlogs">
-        <tr *ngFor="let blog of allblogs; index as i">
-          <td>
+      <tr *ngFor="let blog of allblogs; index as i">
+        <td>
             <img
-              *ngIf="blog.url; else fallbackImage"
-              [src]="blog.url"
+              [src]="blog.image.secure_url"
               alt="{{ blog.title }}"
               width="50"
               height="50"
             />
-            <ng-template #fallbackImage>
-              <img
-                *ngIf="blog.image"
-                [src]="blog.image.secure_url"
-                alt="{{ blog.title }}"
-                width="50"
-                height="50"
-              />
-            </ng-template>
-          </td>
-          <td>{{ blog.title }}</td>
+        </td>
+        <td>{{ blog.title }}</td>
 
-          <div style="margin: 1rem 0rem 1rem 0rem">
-            <a [routerLink]="['/blog', blog._id]" style="text-decoration: none">
-              <td style="color: blue">{{ blog.body.substring(0, 20) }}...</td>
-            </a>
-          </div>
+        <div style="margin: 1rem 0rem 1rem 0rem">
+          <a [routerLink]="['/blog', blog._id]" style="text-decoration: none">
+            <td style="color: blue">{{ blog.body.substring(0, 20) }}...</td>
+          </a>
+        </div>
 
-          <td>
-            <a
+        <td>
+          <a
+            style="font-size: 15px"
+            href=""
+            class="btn btn-light border border-warning updatebtn"
+            [routerLink]="['/blog/edit', blog._id]"
+          >
+            <i class="fa-solid fa-pen-to-square" style="font-size: 15px"></i
+            >Update
+          </a>
+          <!-- this container show if you want delete or not -->
+          <ng-container *ngIf="confirmDeleteId === blog._id; else deleteButton">
+            <span>Are you sure?</span>
+            <button class="btn btn-success" (click)="confirmDelete(i)">
+              Yes
+            </button>
+            <button class="btn btn-danger" (click)="cancelDelete()">No</button>
+          </ng-container>
+          <!-- button of delete -->
+          <ng-template #deleteButton>
+            <button
               style="font-size: 15px"
-              href=""
-              class="btn btn-light border border-warning updatebtn"
-              [routerLink]="['/blog/edit', blog._id]"
+              type="button"
+              (click)="deleteBlog(blog._id!)"
+              class="btn btn-light border border-danger deletebtn ms-4"
             >
-              <i class="fa-solid fa-pen-to-square" style="font-size: 15px"></i
-              >Update
-            </a>
-            <!-- this container show if you want delete or not -->
-            <ng-container
-              *ngIf="confirmDeleteId === blog._id; else deleteButton"
-            >
-              <span>Are you sure?</span>
-              <button class="btn btn-success" (click)="confirmDelete(i)">
-                Yes
-              </button>
-              <button class="btn btn-danger" (click)="cancelDelete()">
-                No
-              </button>
-            </ng-container>
-            <!-- button of delete -->
-            <ng-template #deleteButton>
-              <button
-                style="font-size: 15px"
-                type="button"
-                (click)="deleteBlog(blog._id!)"
-                class="btn btn-light border border-danger deletebtn ms-4"
-              >
-                <i class="fa-solid fa-trash"></i>Delete
-              </button>
-            </ng-template>
-          </td>
-        </tr>
-      </ng-container>
-
-      <!-- Fallback when no blogs are available -->
-
-      <ng-template #noBlogs>
-        <tr>
-          <td colspan="5">No blogs available.</td>
-        </tr>
-      </ng-template>
+              <i class="fa-solid fa-trash"></i>Delete
+            </button>
+          </ng-template>
+        </td>
+      </tr>
+      <!-- show if there is no blogs -->
+      @if(isEmpty) {
+      <tr>
+        <td colspan="4" class="text-center p-3">
+          <div class="w-50 alert alert-warning">No blogs available to show</div>
+        </td>
+      </tr>
+      <!-- show if didnt get request -->
+      } @if(isLoading){
+      <tr class="loading" class="p-2">
+        <td colspan="4">
+          <p class="placeholder-glow">
+            <span class="placeholder col-6"></span>
+          </p>
+          <p class="placeholder-glow">
+            <span class="placeholder col-12"></span>
+          </p>
+          <p class="placeholder-wave">
+            <span class="placeholder col-8"></span>
+          </p>
+        </td>
+      </tr>
+      }
     </tbody>
   </table>
 </div>

@@ -3,6 +3,7 @@ import { Blog } from './blog';
 import { BlogService } from './blog.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { error } from 'node:console';
 @Component({
   selector: 'app-blog-management',
   standalone: true,
@@ -17,14 +18,25 @@ export class BlogManagementComponent implements OnInit {
   blogsPerPage: number = 4;
   totalPages: number = 0;
   pages: number[] = [];
+  isLoading: boolean = true;
+  isEmpty: boolean = false;
+
   constructor(private blogService: BlogService) {}
 
   ngOnInit(): void {
-    this.blogService.getAll().subscribe((data) => {
-      this.allblogs = data.blogs;
-      this.totalPages = Math.ceil(this.allblogs.length / this.blogsPerPage);
+    this.blogService.getAll().subscribe({
+      next: (data) => {
+        console.log(data.blogs);
+        this.allblogs = data.blogs;
+        data.blogs.length === 0
+          ? (this.isEmpty = true)
+          : (this.isEmpty = false);
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.log('Error Fetching BLogs', err);
+      },
     });
-    console.log(this.allblogs);
   }
 
   get paginatedBlogs() {
