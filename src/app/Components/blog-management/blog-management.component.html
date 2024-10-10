@@ -27,10 +27,10 @@
     <table class="table table-bordered table-hover position-relative">
       <thead class="table-light border">
         <tr>
-          <th scope="col">Img</th>
-          <th scope="col">Title</th>
-          <th scope="col">Body</th>
-          <th scope="col">Action</th>
+          <th scope="col-2">Img</th>
+          <th scope="col-2">Title</th>
+          <th scope="col-4">Body</th>
+          <th scope="col" style="width: 20%">Action</th>
         </tr>
       </thead>
       <tbody class="tbodyText">
@@ -86,7 +86,7 @@
                 style="font-size: 15px"
                 type="button"
                 (click)="deleteBlog(blog._id!)"
-                class="btn btn-light border deletebtn ms-4"
+                class="btn btn-light border deletebtn ms-2"
               >
                 <i class="fa-solid fa-trash"></i>Delete
               </button>
