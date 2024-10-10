@@ -37,10 +37,11 @@
           "
           class="text-danger mt-1"
         >
-          <small
-            *ngIf="departmentForm.get('departmentName')?.errors?.['required']"
-            >Department name is required.</small
-          >
+          @if(departmentForm.get('departmentName')?.errors?.['required']){
+          <small>Department name is required.</small>
+          } @if(departmentForm.get('departmentName')?.errors?.['pattern']){
+          <small>Department cannot contain any number</small>
+          }
         </div>
       </div>
 
