@@ -20,6 +20,7 @@ export class DepartmentListComponent implements OnInit {
   selectedDepartmentIndex: any;
   loading: boolean = true; // Track loading state
   error: string | null = null; // Track errors
+  
 
   constructor(private departmentService: DepartmentService) {}
 
@@ -51,7 +52,7 @@ export class DepartmentListComponent implements OnInit {
             dep.doctors = doctors;
           });
         });
-        console.log(this.departments)
+        console.log(this.departments);
         this.loading = false;
       },
       error: (err) => {

@@ -2,101 +2,142 @@
   <nav class="navbar navbar-expand-lg bg-light border navbar-light">
     <div class="container-fluid">
       <p class="navbar-brand text-secondary">Blog list</p>
+      <div>
+        <input
+          name="search"
+          class="form-control"
+          [(ngModel)]="searchTerm"
+          type="text"
+          placeholder="search by title"
+          (input)="felterBlog()"
+        />
+      </div>
     </div>
     <div class="me-3">
       <button
+        routerLink="/blog-management/form"
         class="btn btn-success"
-        [routerLink]="['form']"
         style="background-color: #233763"
       >
-        Add blog+
+        Blog+
       </button>
     </div>
   </nav>
-  <table class="table table-bordered table-hover">
-    <thead class="table-light">
-      <tr>
-        <th scope="col">Img</th>
-        <th scope="col">Title</th>
-        <th scope="col">Body</th>
-        <th scope="col">Action</th>
-      </tr>
-    </thead>
-    <tbody class="tbodyText">
-      <!-- Use ng-container to apply *ngIf without interfering with the table rows -->
-      <tr *ngFor="let blog of allblogs; index as i">
-        <td>
+  <div class="table-style container-fulid">
+    <table class="table table-bordered table-hover position-relative">
+      <thead class="table-light border">
+        <tr>
+          <th scope="col-2">Img</th>
+          <th scope="col-2">Title</th>
+          <th scope="col-4">Body</th>
+          <th scope="col" style="width: 20%">Action</th>
+        </tr>
+      </thead>
+      <tbody class="tbodyText">
+        <!-- Use ng-container to apply *ngIf without interfering with the table rows -->
+        @for(blog of felterBlog(); track $index){
+        <tr>
+          <td>
             <img
+              (click)="showFullImage(blog.image.secure_url)"
               [src]="blog.image.secure_url"
               alt="{{ blog.title }}"
               width="50"
               height="50"
+              role="button"
             />
-        </td>
-        <td>{{ blog.title }}</td>
+          </td>
+          <td>{{ blog.title }}</td>
+          <td>
+            <a style="text-decoration: none">
+              <td title="show more..." style="color: rgb(11, 75, 0)">
+                <p role="button" (click)="showFullBody(blog.body)">
+                  {{ blog.body.substring(0, 10) }}...
+                </p>
+              </td>
+            </a>
+          </td>
 
-        <div style="margin: 1rem 0rem 1rem 0rem">
-          <a [routerLink]="['/blog', blog._id]" style="text-decoration: none">
-            <td style="color: blue">{{ blog.body.substring(0, 20) }}...</td>
-          </a>
-        </div>
-
-        <td>
-          <a
-            style="font-size: 15px"
-            href=""
-            class="btn btn-light border border-warning updatebtn"
-            [routerLink]="['/blog/edit', blog._id]"
-          >
-            <i class="fa-solid fa-pen-to-square" style="font-size: 15px"></i
-            >Update
-          </a>
-          <!-- this container show if you want delete or not -->
-          <ng-container *ngIf="confirmDeleteId === blog._id; else deleteButton">
-            <span>Are you sure?</span>
-            <button class="btn btn-success" (click)="confirmDelete(i)">
-              Yes
-            </button>
-            <button class="btn btn-danger" (click)="cancelDelete()">No</button>
-          </ng-container>
-          <!-- button of delete -->
-          <ng-template #deleteButton>
-            <button
+          <td>
+            <a
               style="font-size: 15px"
-              type="button"
-              (click)="deleteBlog(blog._id!)"
-              class="btn btn-light border border-danger deletebtn ms-4"
+              href=""
+              class="btn btn-light border updatebtn"
+              [routerLink]="['/blog/edit', blog._id]"
             >
-              <i class="fa-solid fa-trash"></i>Delete
-            </button>
-          </ng-template>
-        </td>
-      </tr>
-      <!-- show if there is no blogs -->
-      @if(isEmpty) {
-      <tr>
-        <td colspan="4" class="text-center p-3">
-          <div class="w-50 alert alert-warning">No blogs available to show</div>
-        </td>
-      </tr>
-      <!-- show if didnt get request -->
-      } @if(isLoading){
-      <tr class="loading" class="p-2">
-        <td colspan="4">
-          <p class="placeholder-glow">
-            <span class="placeholder col-6"></span>
-          </p>
-          <p class="placeholder-glow">
-            <span class="placeholder col-12"></span>
-          </p>
-          <p class="placeholder-wave">
-            <span class="placeholder col-8"></span>
-          </p>
-        </td>
-      </tr>
-      }
-    </tbody>
-  </table>
+              <i class="fa-solid fa-pen-to-square" style="font-size: 15px"></i
+              >Update
+            </a>
+            <!-- this container show if you want delete or not -->
+            <ng-container
+              *ngIf="confirmDeleteId === blog._id; else deleteButton"
+            >
+              <span>Are you sure?</span>
+              <button class="btn btn-success" (click)="confirmDelete($index)">
+                Yes
+              </button>
+              <button class="btn btn-danger" (click)="cancelDelete()">
+                No
+              </button>
+            </ng-container>
+            <!-- button of delete -->
+            <ng-template #deleteButton>
+              <button
+                style="font-size: 15px"
+                type="button"
+                (click)="deleteBlog(blog._id!)"
+                class="btn btn-light border deletebtn ms-2"
+              >
+                <i class="fa-solid fa-trash"></i>Delete
+              </button>
+            </ng-template>
+          </td>
+        </tr>
+        }
+        <!-- full image -->
+        @if(fullImage){
+        <div (click)="closeFullImage()" class="full-container">
+          <div class="card image-card">
+            <img style="height: 400px" [src]="imageUrl" alt="img" />
+          </div>
+        </div>
+        }
+
+        <!-- full body -->
+        @if(bodyText){
+        <div (click)="closeFullBody()" class="full-container">
+          <div class="card body-card">{{ bodyText }}</div>
+        </div>
+        }
+
+        <!-- show if there is no blogs -->
+        @if(isEmpty) {
+        <tr>
+          <td colspan="4" class="text-center p-3">
+            <div class="w-50 alert alert-warning">
+              No blogs available to show
+            </div>
+          </td>
+        </tr>
+        <!-- show if didnt get request -->
+        } @if(isLoading){
+        <tr class="loading" class="p-2">
+          <td colspan="4">
+            <p class="placeholder-glow">
+              <span class="placeholder col-6"></span>
+            </p>
+            <p class="placeholder-glow">
+              <span class="placeholder col-12"></span>
+            </p>
+            <p class="placeholder-wave">
+              <span class="placeholder col-8"></span>
+            </p>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
 </div>
 <!-- hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh -->
 

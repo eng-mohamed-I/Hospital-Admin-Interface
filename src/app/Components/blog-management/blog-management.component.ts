@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { Blog } from './blog';
 import { BlogService } from './blog.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { error } from 'node:console';
+import { FormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-blog-management',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './blog-management.component.html',
   styleUrl: './blog-management.component.css',
 })
 export class BlogManagementComponent implements OnInit {
-  allblogs: any;
+  allblogs: any[] = [];
   confirmDeleteId: string | null = null;
   currentPage: number = 1;
   blogsPerPage: number = 4;
@@ -20,6 +20,11 @@ export class BlogManagementComponent implements OnInit {
   pages: number[] = [];
   isLoading: boolean = true;
   isEmpty: boolean = false;
+  searchTerm: string = '';
+  fullImage: boolean = false;
+  imageUrl: any = '';
+  fullBody: boolean = false;
+  bodyText: any = '';
 
   constructor(private blogService: BlogService) {}
 
@@ -37,6 +42,31 @@ export class BlogManagementComponent implements OnInit {
         console.log('Error Fetching BLogs', err);
       },
     });
+  }
+
+  showFullImage(url: string) {
+    this.imageUrl = url;
+    this.fullImage = true;
+  }
+  closeFullImage() {
+    this.imageUrl = '';
+    this.fullImage = false;
+  }
+
+  showFullBody(text: string) {
+    this.bodyText = text;
+    this.fullBody = true;
+  }
+  closeFullBody() {
+    this.bodyText = '';
+    this.fullBody = false;
+  }
+
+  felterBlog() {
+    let filterd = this.allblogs.filter((blog) => {
+      return blog.title.toLowerCase().includes(this.searchTerm.toLowerCase());
+    });
+    return filterd;
   }
 
   get paginatedBlogs() {
@@ -65,6 +95,9 @@ export class BlogManagementComponent implements OnInit {
     this.blogService.delete(this.confirmDeleteId).subscribe({
       next: () => {
         this.allblogs.splice(index, 1);
+        if (this.allblogs.length === 0) {
+          this.isEmpty = true;
+        }
       },
       error: (err) => {
         console.log('error', err);
