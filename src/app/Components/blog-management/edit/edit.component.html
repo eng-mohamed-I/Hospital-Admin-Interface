@@ -1,50 +1,79 @@
-<div class="container">
-  <h3 style="color: #233763">Edit Blog</h3>
-  <div *ngIf="oldImage">
-    <h5>Current Image:</h5>
-    <img [src]="oldImage" alt="Old Blog Image" style="width: 300px; height: auto;" />
+<div class="container-fulid">
+  <div class="rounded border shadow-sm">
+    <nav
+      class="bg-light navbar navbar-expand-lg navbar-light border rounded shadow-sm"
+    >
+      @if(successMessage){
+      <div class="alert alert-success position-fixed">{{ successMessage }}</div>
+      } @if(errorMessage){
+      <div class="alert alert-danger position-fixed">{{ errorMessage }}</div>
+      }
+      <div class="container-fluid">
+        <p>
+          <span role="button" class="text-primary text-hover" routerLink=""
+            >Dashboard<
+          </span>
+          <span
+            role="button"
+            routerLink="/blog-management"
+            class="text-primary"
+            style="text-decoration: none"
+            >Blog list<
+          </span>
+          <span class="text-secondary">update blog</span>
+        </p>
+      </div>
+    </nav>
+    <form
+      (ngSubmit)="update()"
+      class="bg-light p-3 rounded"
+      enctype="multipart/form-data"
+    >
+      <div class="mb-3">
+        <label for="txtTitle" class="form-label">Title</label>
+        <input
+          type="text"
+          name="title"
+          [(ngModel)]="formdata.title"
+          required
+          minlength="3"
+          class="form-control"
+          id="txtTitle"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="txtBody" class="form-label">Body</label>
+        <textarea
+          style="height: 100px"
+          name="body"
+          [(ngModel)]="formdata.body"
+          required
+          minlength="10"
+          class="form-control"
+          id="txtBody"
+        ></textarea>
+      </div>
+
+      <div class="mb-1">
+        <label for="image" class="form-label">Upload New Image</label>
+        <input
+          type="file"
+          name="image"
+          (change)="onFileSelected($event)"
+          class="form-control"
+          id="image"
+        />
+      </div>
+      <div *ngIf="imagePreview">
+        <img
+          [src]="imagePreview"
+          alt="Old Blog Image"
+          style="width: 100px; height: 100px"
+        />
+      </div>
+
+      <button type="submit" class="btn btn-success mt-2">Update</button>
+    </form>
   </div>
-  
-  <form (ngSubmit)="update()" class="bg-light p-3 rounded" enctype="multipart/form-data">
-    <div class="mb-3">
-      <label for="txtTitle" class="form-label">Title</label>
-      <input
-        type="text"
-        name="title"
-        [(ngModel)]="formdata.title"
-        required
-        minlength="3"
-        class="form-control"
-        id="txtTitle"
-      />
-    </div>
-
-    <div class="mb-3">
-      <label for="txtBody" class="form-label">Body</label>
-      <textarea
-        style="height: 100px;"
-        name="body"
-        [(ngModel)]="formdata.body"
-        required
-        minlength="10"
-        class="form-control"
-        id="txtBody"
-      ></textarea>
-    </div>
-
-    <div class="mb-3">
-      <label for="image" class="form-label">Upload New Image</label>
-      <input
-        type="file"
-        name="image"
-        (change)="onFileSelected($event)"
-        class="form-control"
-        id="image"
-      />
-    </div>
-
-    <button type="submit" class="btn btn-primary">
-      Update
-    </button>
-  </form>
 </div>

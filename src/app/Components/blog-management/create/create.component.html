@@ -1,95 +1,132 @@
-<div class="container">
-  <nav
-    class="navbar navbar-expand-lg navbar-light"
-    style="background-color: #abc2f5"
-  >
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#"> Blogs</a>
+<div class="container-fulid">
+  <div class="w-100 border col-10 shadow-sm rounded">
+    @if(successMessage){
+    <div class="alert alert-success position-fixed">{{ successMessage }}</div>
+    } @if(errorMessage){
+    <div class="alert alert-danger position-fixed">{{ errorMessage }}</div>
+
+    }
+    <nav
+      class="bg-light navbar navbar-expand-lg navbar-light border rounded shadow-sm"
+    >
+      <div class="container-fluid">
+        <p>
+          <span role="button" class="text-primary text-hover" routerLink=""
+            >Dashboard<
+          </span>
+          <span
+            role="button"
+            routerLink="/blog-management"
+            class="text-primary"
+            style="text-decoration: none"
+            >Blog list <
+          </span>
+          <span class="text-secondary">create blog</span>
+        </p>
+      </div>
+    </nav>
+    <div class="bg-light">
+      <form [formGroup]="blogData" class="p-3">
+        <div class="mb-3 position-relative">
+          <label for="txtTitle" class="form-label">Title</label>
+          <input
+            type="text"
+            name="title"
+            required
+            formControlName="title"
+            [ngClass]="{
+              'is-invalid':
+                (blogData.get('title')?.touched ||
+                  blogData.get('title')?.dirty) &&
+                blogData.get('title')?.invalid
+            }"
+            class="form-control"
+            id="txtTitle"
+          />
+          @if(blogData.get("title")?.touched || blogData.get('title')?.dirty &&
+          blogData.get('title')?.invalid){
+          @if(blogData.get('title')?.errors?.['required']){
+          <small class="text-danger position-absolute">
+            Title is required
+          </small>
+          } }
+        </div>
+
+        <div class="mb-3 position-relative">
+          <label for="txtBody" class="form-label">Body</label>
+          <textarea
+            style="height: 100px"
+            type="text"
+            name="body"
+            formControlName="body"
+            [ngClass]="{
+              'is-invalid':
+                (blogData.get('body')?.touched ||
+                  blogData.get('body')?.dirty) &&
+                blogData.get('body')?.invalid
+            }"
+            class="form-control"
+            id="txtBody"
+          ></textarea>
+          @if( blogData.get('body')?.touched || (blogData.get('body')?.dirty &&
+          blogData.get('body')?.invalid)) {
+          @if(blogData.get('body')?.errors?.['required']){
+          <small class="text-danger position-absolute">Body is required</small>
+          } }
+        </div>
+
+        <div class="mb-3 position-relative">
+          <label for="image" class="form-label">Image</label>
+          <input
+            type="file"
+            name="image"
+            (change)="onFileSelected($event)"
+            class="form-control"
+            [ngClass]="{
+              'is-invalid':
+                (blogData.get('image')?.touched ||
+                  blogData.get('image')?.dirty) &&
+                blogData.get('image')?.invalid
+            }"
+            id="image"
+            required
+          />
+          @if(imagePrview){
+          <img
+            (click)="showFullImage()"
+            [src]="imagePrview"
+            alt="image"
+            class="mt-2"
+            style="width: 100px; height: 100px"
+            role="button"
+          />
+
+          } @if(blogData.get('image')?.touched || blogData.get('image')?.dirty
+          && blogData.get('image')?.invalid){
+          @if(blogData.get('image')?.errors?.['required']){
+          <small class="text-danger position-absolute">Image is required</small>
+          } }
+        </div>
+        <button
+          [disabled]="isLoading"
+          type="button"
+          (click)="create()"
+          class="btn btn-success mt-3"
+        >
+          @if(isLoading){
+          <div class="spinner-border spinner-border-sm" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+          }@else { Create }
+        </button>
+      </form>
     </div>
-    <div class="d-flex me-3">
-      <button
-        class="btn btn-success"
-        routerLink="/blog/create"
-        style="background-color: #233763"
-      >
-        ADD+
-      </button>
-    </div>
-  </nav>
-
-  <h3 style="color: #233763">Create Blog</h3>
-  <form [formGroup]="blogData" class="bg-light p-3 rounded">
-    <div class="mb-3 position-relative">
-      <label for="txtTitle" class="form-label">Title</label>
-      <input
-        type="text"
-        name="title"
-        required
-        formControlName="title"
-        [ngClass]="{
-          'is-invalid':
-            (blogData.get('title')?.touched || blogData.get('title')?.dirty) &&
-            blogData.get('title')?.invalid
-        }"
-        class="form-control"
-        id="txtTitle"
-      />
-      @if(blogData.get("title")?.touched || blogData.get('title')?.dirty &&
-      blogData.get('title')?.invalid){
-      @if(blogData.get('title')?.errors?.['required']){
-      <small class="text-danger position-absolute"> Title is required </small>
-      } }
-    </div>
-
-    <div class="mb-3 position-relative">
-      <label for="txtBody" class="form-label">Body</label>
-      <textarea
-        style="height: 100px"
-        type="text"
-        name="body"
-        formControlName="body"
-        [ngClass]="{
-          'is-invalid':
-            (blogData.get('body')?.touched || blogData.get('body')?.dirty) &&
-            blogData.get('body')?.invalid
-        }"
-        class="form-control"
-        id="txtBody"
-      ></textarea>
-      @if( blogData.get('body')?.touched || (blogData.get('body')?.dirty &&
-      blogData.get('body')?.invalid)) {
-      @if(blogData.get('body')?.errors?.['required']){
-      <small class="text-danger position-absolute">Body is required</small>
-      } }
-    </div>
-
-    <div class="mb-3">
-      <label for="image" class="form-label">Image</label>
-      <input
-        type="file"
-        name="image"
-        (change)="onFileSelected($event)"
-        class="form-control"
-        id="image"
-        required
-      />
-      @if(imagePrview){
-
-      <img
-        [src]="imagePrview"
-        alt="image"
-        style="width: 100px; height: 100px"
-      />
-
-      } @if(blogData.get('image')?.touched || blogData.get('image')?.dirty &&
-      blogData.get('image')?.invalid){
-      @if(blogData.get('image')?.errors?.['required']){
-      <small class="text-danger">Image is required</small>
-
-      } }
-    </div>
-    <button type="button" (click)="create()" class="btn btn-primary">
-      Create
-    </button>
-  </form>
+  </div>
 </div>
+@if(fullImage) {
+<div class="full-container" (click)="hideFullImage()">
+  <div class="t-animation image-card">
+    <img [src]="imagePrview" alt="image" class="mt-2" style="height: 600px" />
+  </div>
+</div>
+}

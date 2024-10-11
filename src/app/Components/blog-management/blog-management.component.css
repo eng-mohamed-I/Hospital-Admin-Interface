@@ -7,6 +7,18 @@
   height: 100%;
 }
 
+.t-animation {
+  animation: showHidden 0.5s ease;
+}
+
+@keyframes showHidden {
+  from {
+    opacity: 0%;
+  }
+  to {
+    opacity: 100%;
+  }
+}
 .image-card {
   position: absolute;
   top: 50%;

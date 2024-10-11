@@ -13,13 +13,14 @@ import { FormsModule } from '@angular/forms';
 })
 export class EditComponent implements OnInit {
   id: any;
-  oldImage: string = ''; // Variable to store the old image URL
-  selectedFile: File | null = null; // Variable to hold the new image file
-
+  imagePreview: string | ArrayBuffer | null = '';
   formdata: any = {
     title: '',
     body: '',
+    image: '',
   };
+  successMessage: string = ' ';
+  errorMessage: string = ' ';
 
   constructor(
     private blogService: BlogService,
@@ -34,35 +35,54 @@ export class EditComponent implements OnInit {
     });
   }
 
+  clearMessage() {
+    setTimeout(() => {
+      this.successMessage = '';
+      this.errorMessage = '';
+    }, 2000);
+  }
+
   getById(id: any) {
     this.blogService.getBlogsById(id).subscribe((data) => {
       this.id = id;
       this.formdata.title = data.blog.title;
       this.formdata.body = data.blog.body;
-      this.oldImage = data.blog.Image.secure_url; // Store the old image URL
+      this.imagePreview = data.blog.image.secure_url;
     });
   }
 
   // Handle file selection
   onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0]; // Get the selected file
+    this.formdata.image = event.target.files[0];
+    console.log(this.formdata);
+    let reader = new FileReader();
+    reader.readAsDataURL(event.target.files[0]);
+    reader.onload = () => {
+      if (reader.result) {
+        this.imagePreview = reader.result;
+      }
+    };
   }
 
   update() {
     const formData = new FormData();
     formData.append('title', this.formdata.title);
     formData.append('body', this.formdata.body);
-    
-    if (this.selectedFile) {
-      formData.append('image', this.selectedFile); // Append the new image if selected
-    }
 
+    if (this.formdata.image) {
+      formData.append('image', this.formdata.image); // Append the new image if selected
+    }
+    console.log(this.formdata);
     this.blogService.update(formData, this.id).subscribe({
       next: (data) => {
+        this.successMessage = 'Blog updated successfully';
+        this.clearMessage()
         this.router.navigate(['/blog-management']);
       },
       error: (er) => {
         console.log(er);
+        this.errorMessage = 'Faild to update';
+        this.clearMessage();
       },
     });
   }

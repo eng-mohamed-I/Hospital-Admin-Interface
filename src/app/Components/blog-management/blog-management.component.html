@@ -48,7 +48,7 @@
             />
           </td>
           <td>{{ blog.title }}</td>
-          <td>
+          <td style="width: 20%">
             <a style="text-decoration: none">
               <td title="show more..." style="color: rgb(11, 75, 0)">
                 <p role="button" (click)="showFullBody(blog.body)">
@@ -61,7 +61,6 @@
           <td>
             <a
               style="font-size: 15px"
-              href=""
               class="btn btn-light border updatebtn"
               [routerLink]="['/blog/edit', blog._id]"
             >
@@ -97,8 +96,8 @@
         <!-- full image -->
         @if(fullImage){
         <div (click)="closeFullImage()" class="full-container">
-          <div class="card image-card">
-            <img style="height: 400px" [src]="imageUrl" alt="img" />
+          <div class="card t-animation image-card">
+            <img style="height: 600px" [src]="imageUrl" alt="img" />
           </div>
         </div>
         }
@@ -106,7 +105,7 @@
         <!-- full body -->
         @if(bodyText){
         <div (click)="closeFullBody()" class="full-container">
-          <div class="card body-card">{{ bodyText }}</div>
+          <div class="t-animation card body-card">{{ bodyText }}</div>
         </div>
         }
 
@@ -114,9 +113,7 @@
         @if(isEmpty) {
         <tr>
           <td colspan="4" class="text-center p-3">
-            <div class="w-50 alert alert-warning">
-              No blogs available to show
-            </div>
+            <div class="alert alert-warning">No blogs available to show</div>
           </td>
         </tr>
         <!-- show if didnt get request -->
