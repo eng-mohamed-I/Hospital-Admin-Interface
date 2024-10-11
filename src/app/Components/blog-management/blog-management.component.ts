@@ -66,6 +66,11 @@ export class BlogManagementComponent implements OnInit {
     let filterd = this.allblogs.filter((blog) => {
       return blog.title.toLowerCase().includes(this.searchTerm.toLowerCase());
     });
+    if (filterd.length === 0) {
+      this.isEmpty = true;
+    } else {
+      this.isEmpty = false;
+    }
     return filterd;
   }
 
